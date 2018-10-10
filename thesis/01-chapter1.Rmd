@@ -5,6 +5,9 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width 
 ```
 
 
+Hello world :)
+
+
 Here is an example citation [@example]. Here is an example abbreviation: \nomenclature{LDM}{Lucy D'Agostino McGowan}.
 
 Here is an example table.

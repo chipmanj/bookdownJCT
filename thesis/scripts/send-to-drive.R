@@ -17,7 +17,7 @@ file$id
 #----
 
 # paste file id, run this next part every time you want to push a new version to Google Drive
-id <- "pasted File Id"
+id <- file$id
 googledrive::drive_update(
   googledrive::as_id(id), 
   "01-chapter1.docx")
