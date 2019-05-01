@@ -1,7 +1,7 @@
 # Rematching on-the-fly: Sequential Matched Randomization and a case for covariate-adjusted randomization
 
 ```{r echo=FALSE,include=FALSE,fig.keep=FALSE,warning=FALSE,message=FALSE}
-load("results.RData")
+load("~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/results.RData")
 library(rms)
 library(xtable)
 library(tableone)
@@ -124,24 +124,24 @@ Many studies set sample size based on the average performance of block randomiza
 
 
 ```{r MaxSMD, echo=FALSE, fig.pos = "H",fig.cap="Boxplot of the maximum absolute Standardized Mean Difference among all baseline covariates for each of 20,000 simulated allocation sequences per allocation scheme.  Matched-based Randomization schemes are shaded in blue.  Seq Matched (20p) is Sequential Matching before applying proposed extensions; it uses a fixed 20th percentile of the F(p, i-p) distribution.  Min SE schemes are Minimization schemes proposed by Atkinson and Begg and Iglewicz to reduce the standard error of a pre-specified Ordinary Least Squares Model.  Min SE (Atk, 2/3 Prob) uses a 2/3 biased coin to randomize to the favorable arm under Atkinson's Minimization."}
-knitr::include_graphics("MaxSmd.jpg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/MaxSMD.jpg")
 ```
 
 ```{r AveSMD, echo=FALSE, fig.pos = "H", fig.cap="Boxplot of the average absolute Standardized Mean Difference among all baseline covariates for each of 20,000 simulated allocation sequences per allocation scheme."}
-knitr::include_graphics("AveSmd.jpg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/AveSMD.jpg")
 ```
 
 ```{r permCIwidth, echo=FALSE, fig.pos = "H", fig.cap="Boxplot of the permutation-based 95% Confidence Interval Width estimating the Sample Average Treatment Effect for each of 20,000 simulated observed datasets. Observed outcomes were generated as the predicted three month Hemoglobin A1c plus a treatment effect (if allocated to treatment) and a random residual.  The horizontal line in red is the median treatment effect Confidence Interval Width under the pre-specified Ordinary Least Square model and Block Randomization (See Figure 4)."}
-knitr::include_graphics("permutationCIwidth.jpg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/permutationCIwidth.jpg")
 ```
 
 ```{r adjCIwidth, echo=FALSE, fig.pos = "H", fig.cap="Boxplot of the model-based 95% Confidence Interval Width estimating the Sample Average Treatment Effect, adjusted for all baseline covariates, for each of 20,000 simulated observed datasets. The Ordinarly Least Squares (OLS) model was pre-specified to include all baseline covariates with restricted cubic splines on each continuous outcome and accounted for multiple imputations."}
-knitr::include_graphics("modelAdjCIwidth.jpg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/modelAdjCIwidth.jpg")
 ```
 
 
 ```{r trtDiff, echo=FALSE, fig.pos = "H", fig.cap="Boxplot of the difference in end-of-study treatment allocation for each of 20,000 simulated allocation sequences per allocation scheme."}
-knitr::include_graphics("trtBalance.jpg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/trtBalance.jpg")
 ```
 
 

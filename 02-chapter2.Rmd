@@ -18,7 +18,7 @@ Many Bayesian adaptive trial designs incorporate interval null hypotheses [@Free
 In a two-sided study, four boundaries provide clinical guideposts.  Highly actionable treatment effects are of a magnitude of at least of $\delta_E$ for benefit or of $\delta_H$ for harm.  Trivial treatment effects are between $\delta_{TE}$ and $\delta_{TH}$ and encompass the point null (Figure 1).  The remaining effects are moderately actionable; moderate treatment benefits are between $\delta_{TE}$ and $\delta_{E}$ and moderate treatment harms are between $\delta_{TH}$ and $\delta_{H}$.  In any study, the implementation of an intervention takes into account secondary measures such as side effects, costs, etc..  Hence, a highly actionable effect is likely to outweigh the off-setting benefits / costs.  A moderately actionable effect has greater equipoise with offsetting benefits / costs.A one sided study omits $\delta_H$ and $\delta_{TH}$ to focus only on $\delta_TE$ and $\delta_{E}$.  
 
 ```{r clinicalGuideposts, echo=FALSE, fig.pos = "H", fig.align='center',fig.cap="Clinically relevant guideposts are determined during study design, based on scientific context, and ought to be incorporated into the final study inference.  In a one-sided study (left figure), the clinical guideposts create the regions: no more than trivial effect, moderately actionable effect, and highly actionable effect.  In a two-sided study (right figure), three regions are created: trivial effects, moderately actionable effects, and highly actionable effects."}
-knitr::include_graphics("figs/clinicalGuideposts/Slidev03_01.jpg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/clinicalGuideposts/Slidev03_01.jpg")
 ```
 
 
@@ -53,7 +53,7 @@ Neither of these two hypotheses include moderately actionable treatment effects.
 Again, the interpretation of these regions closely relate to the interpretations of the _Region of Equivalence_.  They match exactly when in the case of a one-sided study with a _Trivial Zone_ around the point null.
 
 ```{r figs, echo=FALSE, fig.pos="H", fig.align='center',fig.cap="Final study inference ought to incorporate a-priori clinical guideposts.  The second generation p-value draws inference based on hypothesized sets of treatment effects.  We focus on two sets of hypotheses that form the Region of Clinically Trivial Effects and the Region of Clinically Highly Actionable Effects. (This figure focuses on two-sided studies yet similar conclusions are drawn for one-sided studies). With the two sets of hypotheses, the second-generation p-value can rule out trivial effects (the top four conclusions), rule out non-highly actionable effects (the middle five conclusions), or declare the study yet inconclusive.  Confidence Intervals that correspond to a p-value close to but not exceeding 0.05 would be declared inconclusive."}
-knitr::include_graphics("figs/clinicalGuideposts/Slidev03_02.jpg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/clinicalGuideposts/Slidev03_02.jpg")
 #plot(x=1,y=1)
 ```
 
@@ -108,26 +108,26 @@ The bias was well mitigated when adaptively monitoring with the second generatio
 
 
 ```{r Power, echo=FALSE, out.width = "3.5in", fig.align='center', fig.pos="H", fig.show = "hold", fig.cap="In the REACH target population, a decrease in Hemoglobin A1c reflects desireable improvement in glycemic control.  The Power curve (i.e. the probability of rejecting the point null of 0), was estimated from 20,000 adaptive monitoring simulations when monitoring using the second generation p-value, a Credible Interval with a flat prior, and a Credible Interval with a skeptical prior.  The intervention was simulated to have an effect of -1 (highly beneficial), -0.75, -0.50, -0.45, -0.35, -0.20, -0.15, to 0 effect (the point null).  Bayesian adaptive designs were calibrated to have the same Type I Error as the second generation p-value adaptive design."}
-knitr::include_graphics("figs/powerCalibrated.jpeg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/powerCalibrated.jpeg")
 #knitr::include_graphics("figs/probEff.jpeg")
 ```
 
 ```{r state, echo=FALSE, out.width= "2in",   fig.align='center', fig.pos="H", fig.show="hold", fig.cap="In adaptive monitoring, a study can end in one of three states: ending for efficacy / harm, ending for futility, or ending at the end of resources.  Above are estimated probabilities of ending in each of these states for each design and treatment effect.  The probability of stopping for efficacy / harm is an interval null equivalent to Power.  The Bayesian adaptive monitoring designs were calibrated to have the same probability of stopping for efficacy as adaptive monitoring with the second generation p-value.  All following results are based off this calibration.  The skeptical prior is pulled so much to the null that studies tend to end for futility too soon.  This can be overcome with a longer burn in."}
-knitr::include_graphics(c("figs/probEff.jpeg","figs/probFut.jpeg","figs/probMore.jpeg"))
+knitr::include_graphics(c("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probEff.jpeg","figs/probFut.jpeg","figs/probMore.jpeg"))
 ```
 
 
 ```{r sampleSize, echo=FALSE, out.width= "3.5in", fig.align='center', fig.pos="H", fig.cap="Across  simulations, the average time to stopping for the three adaptive designs is shown above.  In these simulations the earliest possible stopping time was the 120th patient.  Monitoring began at the 60th patient and continued at every 60th patient.  Stopping requires raising an alert and affirming the alert 60 patients later.  When monitoring with the second-generation p-value and Credible Interval with a flat prior, the longest studies are were when the treatment effect was neither trivial nor clinically meaningful."}
-knitr::include_graphics("figs/averageN.jpeg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/averageN.jpeg")
 ```
 
 
 ```{r bias, echo=FALSE, out.width="3.5in", fig.align='center', fig.pos="H", fig.cap="At the study end, the final estimate and interval are reported.  Across simulations, the bias (and displayed inner quartile range) was well mitagated when adaptively monitoring using the second generation p-value and flat prior Credible Interval.  A positive bias occurs when being pulled toward the null, as happens with the skeptical prior."}
-knitr::include_graphics("figs/bias.jpeg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/bias.jpeg")
 ```
 
 ```{r coverage, eval=TRUE, echo=FALSE, out.width="3.5in", fig.align='center', fig.pos="H", fig.cap="At the study end, the final estimate and interval are reported.  In these simulations, a 95\\% Confidence Interval was reported when adaptively monitoring with the second-generation p-value (though any other interval could have been used for monitoring and reporting).  And, Credible Intervals are reported for the Bayesian adaptive designs.  The final Credible Interval from a skeptical prior quickly drops off because these studies quickly reach a false conclusion of futility (Figure 4).  A longer burn-in will help the coverage of the skeptical prior design."}
-knitr::include_graphics("figs/coverage.jpeg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/coverage.jpeg")
 ```
 
 
