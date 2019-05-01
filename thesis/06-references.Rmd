@@ -1,4 +1,41 @@
-# Adaptive Monitoring using Second Generation p-Values Draft
+---
+title: |
+       | Adaptive Monitoring using 
+       | Second Generation p-Values
+       | Draft
+author: 
+  - Jonathan Chipman:
+      email: jonathan.chipman@vanderbilt.edu
+      institute: bios
+      correspondence: TRUE
+  - name: Robert A. Greevy, Jr.
+    institute: bios
+  - name: Lindsay Mayberry
+    institute: med
+  - name: Jeffrey Blume
+    institute: bios
+institute:
+  - bios: Department of Biostatistics, Vanderbilt University Medical Center, Nashville, TN, USA 
+  - med: Department of Medicine, Vanderbilt University Medical Center, Nashville, TN, USA
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  word_document:
+    pandoc_args:
+      - '--lua-filter=scholarly-metadata.lua'
+      - '--lua-filter=author-info-blocks.lua'
+header-includes:
+    - \usepackage{setspace}\doublespacing
+    - \usepackage{float}
+abstract: \singlespace The importance of developing adaptive clinical trials is reflected by the Federal Drug Administration’s commitment to the “advancement and use of complex adaptive, Bayesian, and other novel clinical trial designs” -- Prescription Drug User Fee Act (PDUFA) VI.  We propose a novel, adaptive clinical trial design using second generation p-values which were recently introduced at the 2017 ASA Symposium on Statistical Inference.  This approach integrates what effect sizes are clinically meaningful and which are meaningless to achieve a smaller False Discovery Rate than other alternative inferential approaches such as p-value adjustments for multiple comparisons and lowering the p-value threshold.  Our adaptive clinical trial design allows for fully or group sequential monitoring. It stops when the therapy of interest is either convincingly clinically superior or convincingly clinically uninteresting.  In extensive simulations and in the currently active clinical trial REACH, we compare our method’s performance in terms of Power, probability of stopping for efficacy, average sample size, bias, and coverage rates to Bayesian adaptive designs that monitor based on the Credible Interval. 
+pandoc_args: ["--natbib"]
+bibliography: refs.bib
+biblio-style: phys
+keywords: "My keywords"
+geometry: margin=1in
+fontsize: 12pt
+indent: true  
+---
+
 
 # Introduction
 
@@ -142,3 +179,5 @@ With data from the REACH randomized clinical trial, we simulated adaptive monito
 In these simulations, adaptive monitoring with a skeptical prior Credible Interval did not perform well.   The skeptical prior pulled estimates close to the null such that simulated adaptive trials stopped before being overwhelmed by the data.  However, a longer burn or an alternative tuning to $\alpha_{criteria-not-actionable}$  would ameliorate the skeptical prior Credible Interval design.
 
 All of the adaptive designs studied may be modified to achieve a desired Type I Error and Power.  When adaptively monitoring with the second generation _p_-value, one may change the wait time before monitoring and number of looks.  We encourage clinical guideposts to be anchored on clinical relevance and not change solely for the purpose of achieving statistical properties.  The same tuning parameters hold true for monitoring with Credible Intervals.  Monitoring with Credible Intervals are even more customizable by choosing the monitoring $\alpha_{criteria}$ to achieve desired Type I Errors and Power.
+
+# References
