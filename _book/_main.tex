@@ -1,3 +1,6 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
 \documentclass[12pt,oneside]{book}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
@@ -6,12 +9,9 @@
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
 \else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
+  \usepackage{unicode-math}
   \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \fi
 % use upquote if available, for straight quotes in verbatim environments
@@ -21,15 +21,20 @@
 \usepackage[]{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
-\usepackage[unicode=true]{hyperref}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
 \hypersetup{
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
 \usepackage{longtable,booktabs}
 % Fix footnotes in tables (requires footnote package)
-\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{long table}}{}
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{longtable}}{}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -39,12 +44,6 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -437,55 +436,1705 @@ All Rights Reserved
 \cftaddtitleline{toc}{chapter}{Chapter}{}
 \cftlocalchange{toc}{1.55em}{2.55em}
 
-\chapter{Introduction}\label{introduction}
+\hypertarget{introduction}{%
+\chapter{Introduction}\label{introduction}}
 
 Here is the introduction to my thesis.
 
-\chapter{Paper 1}\label{paper-1}
+\hypertarget{rematching-on-the-fly-sequential-matched-randomization-and-a-case-for-covariate-adjusted-randomization}{%
+\chapter{Rematching on-the-fly: Sequential Matched Randomization and a
+case for covariate-adjusted
+randomization}\label{rematching-on-the-fly-sequential-matched-randomization-and-a-case-for-covariate-adjusted-randomization}}
 
-Hello world :)
+\hypertarget{introduction-1}{%
+\section{Introduction}\label{introduction-1}}
 
-Here is an example citation (Last name
-\protect\hyperlink{ref-example}{2018}). Here is an example abbreviation:
-\nomenclature{LDM}{Lucy D'Agostino McGowan}.
+Randomization eliminates systematic confounding and has been considered
+the ``gold standard'' for clinical trials since World War II(Bothwell et
+al. \protect\hyperlink{ref-Bothwell:2016bc}{2016}). And yet, the most
+common approaches to randomization --- Block and Stratified
+Randomization --- are just as old (Peirce and Jastrow
+\protect\hyperlink{ref-Peirce:1884wra}{1884}; Hill
+\protect\hyperlink{ref-Hill:1952hc}{1952}; Armitage
+\protect\hyperlink{ref-Armitage:1982ji}{1982}). They are limited in
+their ability to control the balance of baseline covariates.
+Covariate-adjusted randomization, which includes Stratified Block
+Randomization, eliminates from the randomization space singular
+randomizations with poor baseline covariate balance and consequently
+reduces the uncertainty in permutation-based inference. It also
+increases the efficiency of model-based inference by orthogonalizing
+baseline covariates with treatment assignment.
 
-Here is an example table.
+Balance is an important aim for clinical trials. Poor chance imbalances
+on key baseline covariates can bring to question the face-validity of a
+randomized trial(Rosenberger and Sverdlov
+\protect\hyperlink{ref-Rosenberger:2008cm}{2008}; Leyland-Jones
+\protect\hyperlink{ref-LeylandJones:2003kt}{2003}) especially when
+estimating the Population Average Treatment Effect from the Sample
+Average Treatment Effect. Also, greater covariate balance allows
+trialists to estimate heterogenous treatment effect across key
+subgroups. Trials with secondary aims for personalizing medicine to key
+subgroups rely upon overall covariate balance(Diener-West et al.
+\protect\hyperlink{ref-DienerWest:1989uq}{1989}; Fu, Zhou, and Faries
+\protect\hyperlink{ref-Fu:2016jy}{2016}). To reduce chance imbalances,
+the trialist may turn to covariate-adjusted randomization (the focus of
+this paper) and / or fit a model that adjusts for chance
+imbalances(Berchialla, Gregori, and Baldi
+\protect\hyperlink{ref-Berchialla:2018bk}{2018}). With model-based
+inference, the trialist must convince the clinical community their model
+is fully transparent and sufficiently adequate(D. A. Freedman
+\protect\hyperlink{ref-Freedman:2008eq}{2008}\protect\hyperlink{ref-Freedman:2008eq}{a},
+\protect\hyperlink{ref-Freedman:2008em}{2008}\protect\hyperlink{ref-Freedman:2008em}{b};
+Lin \protect\hyperlink{ref-Lin:2013jh}{2013}).
 
-\begin{table}[!h]
+In non-sequential trials, where all patients or clusters are known
+before randomization, covariate-adjusted randomization randomizes within
+optimal partitions of the patients. Common and novel methods (and the
+imbalance measure they optimize) include: Stratified Block Randomization
+(exact covariate matches)(Fisher
+\protect\hyperlink{ref-fisher1935design}{1935}), Matched Randomization
+(overall sum of paired distances from a distance matrix)(Greevy et al.
+\protect\hyperlink{ref-Greevy:2004ke}{2004}), Rerandomization (any
+imbalance measure though commonly overall difference in covariate
+distances)(Morgan and Rubin
+\protect\hyperlink{ref-Morgan:2012iq}{2012}), Propensity-Constrained
+Randomization (overall difference in propensity score variability)(Loux
+\protect\hyperlink{ref-Loux:2014bu}{2014}), and Kernel Randomization (a
+linear or non-linear function of covariate differences) (Kallus and 2018
+\protect\hyperlink{ref-Kallus:2018um}{2018}). Stratified Block
+Randomization randomizes within exact matches of categorized baseline
+covariate levels whereas the other methods randomize within near matches
+of continuous and categorical baseline covariates. Exact matching is
+frequently limited in the number of matching baseline covariate levels
+before overwhelming the sample size. Though still under development,
+some theoretical and empirical evidence points to Kernel Randomization
+as the preferred method for greatest balance(Kallus and 2018
+\protect\hyperlink{ref-Kallus:2018um}{2018}).
 
-\caption{\label{tab:unnamed-chunk-2}Wookiees and their homeworld.}
-\centering
-\begin{tabular}[t]{ll}
-\toprule
-name & homeworld\\
-\midrule
-Chewbacca & Kashyyyk\\
-Tarfful & Kashyyyk\\
-\bottomrule
-\end{tabular}
-\end{table}
+With sequential enrollment, the full covariate pattern and optimal
+partitions are unknown until the end of the study. Many of the
+non-sequential methods have extensions for sequential enrollment yet
+lose some optimization compared to non-sequential randomization.
+Minimization handles the sequential optimization problem by directly
+allocating treatments to achieve optimal balance on specified imbalance
+criteria(Taves \protect\hyperlink{ref-Taves:1974hn}{1974}).
+Randomization occurs when all treatment would have the same impact on
+minimizing the imbalance criteria. Without randomization, Minimization
+schemes may remain subject to systematic confounding. To relax
+deterministic allocation, treatment may instead be allocated with a
+biased coin favoring the optimal treatment per the imbalance criteria
+(Pocock and Simon \protect\hyperlink{ref-Pocock:1975wd}{1975}; Atkinson
+\protect\hyperlink{ref-Atkinson:1982kt}{1982}). A common
+covariate-adjusted biased coin method includes Urn Randomization(Wei and
+Lachin \protect\hyperlink{ref-Wei:1988if}{1988}). Of the remaining
+non-sequential randomization schemes, Sequential Matched Randomization
+and Sequential Rerandomization set a tuning parameter to sequentially
+optimize balance according to their imbalance measure(Kapelner and
+Krieger \protect\hyperlink{ref-Kapelner:2014cu}{2014}; Zhou et al.
+\protect\hyperlink{ref-Quan:SeqRerand}{2018}).
 
-Here is an example plot.
+This work achieves two purposes. First, it extends Sequential Matched
+Randomization to recover some of the optimal balance achieved in single
+batch Matched Randomization (when all patients or clusters are known
+prior to randomization). The extensions allow (1) matches to rematch if
+a better mate enters the study, (2) the tuning parameter for optimal
+matches to adjust dynamically according to the number of current matches
+and covariate distribution, and (3) patients to enroll in blocks.
+Second, through a two-arm case study (n = 512 patients) it re-emphasizes
+the value of sequential covariate-adjusted methods, as a whole, compared
+to Block Randomization. Sequential allocation methods considered include
+Block Randomization, Stratified Block Randomization, Urn Randomization,
+Sequential Matched Randomization, Atkinson's Minimization with and
+without a biased coin, and Begg and Iglewicz's Minimization. We do not
+include Sequential Rerandomization as it requires determining an optimal
+threshold.
+
+\hypertarget{notation}{%
+\section{Notation}\label{notation}}
+
+We denote a study as having enrolled \(i = 1, \dots,\) to \(N\) patients
+throughout \(b = 1,\dots,\) to \(M\) batches of sequential enrollment.
+At the \(b^{th}\) batch of enrolling patients, denote the set of
+unmatched patients as \(U_b\) and the number of patients in the set as
+\(||U_b||\). Let \(||R_b||\) be the number of expected remaining study
+entrants. In general, covariate-adjusted randomizations are adjusted to
+\(p\) baseline covariates in which a categorical covariate having \(q\)
+levels is coded by \(q-1\) dummy variables.
+
+In the simulation section, we generate \(j = 1, \dots,\) to 20,000
+randomization schedules for each allocation scheme.
+
+\hypertarget{sequential-matching-and-sequential-rematching}{%
+\section{Sequential Matching and Sequential
+Rematching}\label{sequential-matching-and-sequential-rematching}}
+
+Sequential Matched Randomization uses the matching on-the-fly algorithm
+published elsewhere(Kapelner and Krieger
+\protect\hyperlink{ref-Kapelner:2014cu}{2014}) yet is worth summarizing
+to then extend. When the first set of patients individually enroll, they
+are randomized to either treatment or control and form a ``reservoir''
+of patients who have been randomized but, as of yet, have not matched
+with any other patient. Once a reservoir of pre-specified size has built
+up, subsequent enrolling patients are compared to reservoir members on
+baseline covariates using a distance matrix. The entering patient
+becomes mates with their best reservoir match if they meet a
+pre-specified distance threshold of similarity, and the entering patient
+receives the opposite treatment randomized to their mate. Both are
+excluded from the reservoir of potential mates. If, however, the best
+reservoir match is not similar enough, the entering patient is
+randomized and joins the reservoir awaiting a mate. By the end of the
+study, some patients may not have found a mate, and treatment allocation
+may be imbalanced. Hereafter, we'll refer to the matching-on-the-fly
+algorithm as Sequential Matching.
+
+Common practice uses Mahalanobis Distance and builds the initial
+reservoir to p+2 patients. This distance matrix reduces to euclidean
+distances when covariates are independent, and p+2 observations are
+required before distances may be uniquely estimated. Current literature
+suggests setting the pre-specified threshold as a quantile from the F(p,
+i - p) distribution(Kapelner and Krieger
+\protect\hyperlink{ref-Kapelner:2014cu}{2014}); justification lies in
+the fact that distances of normal covariates, when appropriately scaled,
+asymptotically follow the F(p, i-p) distribution.
+
+Throughout Sequential Matching, a patient may match before their better
+matching mate enrolls. We allow mates to break and rematch so long as
+patients do not match within their treatment group. For example, in a
+two arm study, controls are not allowed to match with controls and
+treatments to treatments. We refer to this re-matching on-the-fly
+algorithm as Sequential Rematching and the randomization scheme as
+Sequential Rematched Randomization.
+
+\hypertarget{dynamic-and-empirical-threshold}{%
+\section{Dynamic and Empirical
+Threshold}\label{dynamic-and-empirical-threshold}}
+
+Sequential Matching, as is, uses a fixed quantile of the F-distribution;
+we formalize the use of a dynamic threshold from an
+empirically-estimated distribution of randomly matched distances.
+Lacking omniscience, an improperly selected fixed similarity threshold
+may be problematic. An overly strict fixed threshold would yield no
+matches and in turn may be no better than Complete Randomization. In
+contrast, an overly relaxed threshold would degenerate to a block-two
+randomization scheme vulnerable to subversion bias. Our proposed dynamic
+threshold reflects the chance of matching an existing reservoir member
+out of all potential mates including those yet to enroll. More formally,
+this is the proportion \(Q_b\) where
+
+\[
+Q_b = \frac{||  U_b || - 1}{ ||U_b|| + ||R_b|| - 1}.
+\] Although the number of possible mates in Rematching is the whole set
+of entrants, we develop \(Q_b\) for use with both Sequential Matching
+and Sequential Rematching.
+
+Since not all covariates are normally distributed, we empirically
+estimate a reference null distribution, \(F\), as suggested in the
+matching on-the-fly paper(Kapelner and Krieger
+\protect\hyperlink{ref-Kapelner:2014cu}{2014}). To estimate \(F\) at the
+\(b^{th}\) batch of enrolling patients (\(F_b\)), a random set of
+\(i/2\) matches are bootstrap sampled from the upper- (or lower-)
+triangle of the distance matrix. The dynamic threshold is the averaged
+\(Q_b\) percentile across bootstrap samples of \(F_b\). To achieve equal
+treatment allocation, the threshold for matches is removed when the
+reservoir size is the same or less than the number of patients left to
+enroll.
+
+\[
+Threshold_b = \begin{cases} \hat{F}_b^{-1} (Q_b) &  || U_b || < || R_b || \\
+                    \text{best match(es)}      &  || U_b || \ge || R_b || \\
+      \end{cases}
+\]
+
+The threshold may also be removed to keep the reservoir size within a
+specified maximum tolerated imbalance (Berger, Ivanova, and Deloria
+Knoll \protect\hyperlink{ref-Berger:2003im}{2003}).
+
+\hypertarget{batch-entry}{%
+\section{Batch Entry}\label{batch-entry}}
+
+As is, Sequential Matching requires matching patients one at a time.
+However, trials will allocate treatments in batches of various
+enrollment sizes. As when all patients are known at the study outset,
+batch enrollment increases the chance of finding a better mate. We
+extend Sequential Matching to allow for batches of multiple patients
+using an ``optimal'' algorithm; mates are collectively determined based
+upon the set of matches that yield the smallest sum of distances. The R
+package nbpMatching easily finds optimal mates.
+
+\hypertarget{case-study-reach-trial}{%
+\section{Case Study: REACH Trial}\label{case-study-reach-trial}}
+
+\hypertarget{context-data-preparation-and-simulation-set-up}{%
+\subsection{Context, Data Preparation, and Simulation Set
+up}\label{context-data-preparation-and-simulation-set-up}}
+
+The Rapid Education/Encouragement And Communications for Health (REACH)
+randomized clinical trial(Nelson et al.
+\protect\hyperlink{ref-Nelson:2018bw}{2018}) provides text
+message-delivered diabetes support for 12 months to help diabetic
+patients manage glycemic control (as measured by Hemoglobin A1c) and
+adhere to treatment medication. Patients are randomized into one of
+three treatment arms with a 2:1:1 allocation ratio: no text message,
+text message, text message and monthly phone coaching. Now with complete
+enrollment, 512 patients are currently being followed up through 3, 6,
+12, and 15 months.
+
+At baseline, clinical and demographics covariates were collected that
+may be associated with 12 month Hemoglobin A1c, including baseline
+Hemoglobin A1c, age at enrollment, gender, years of education, years of
+diabetes, race / ethnicity, medication type, income, and type of
+insurance. Refer to supplement for the overall distribution of each
+baseline covariate.
+
+Randomization often occurred before all baseline covariates could be
+collected. Most notably, baseline Hemoglobin A1c generally took
+additional time to process. In this study, clinical coordinators
+enrolled patients and sent baseline data to the Data Coordinating Center
+for weekly batch randomization. Though REACH follow-up continues, all
+baseline covariates have been obtained, and 418 patients have recorded
+three month Hemoglobin A1c.
+
+\hypertarget{simulations}{%
+\subsection{Simulations}\label{simulations}}
+
+With complete baseline covariates, we simulated the ability of various
+treatment allocation schemes to achieve balance among baseline
+covariates among treatment groups and compared the efficiency in
+estimating predicted three month Hemoglobin A1c. Contender allocation
+schemes focused on Block Randomization, Stratified Block Randomization,
+Urn\((0,\beta)\) Randomization, single batch Matched Randomization,
+Sequential Matched Randomization without the proposed extensions
+(similar to current literature), Sequential Matched Randomization with
+the dynamic threshold, Atkinson's Minimization Algorithm with a 2/3
+biased coin (Efron 1971) and with deterministic allocation, and Begg and
+Iglewicz Minimization. The minimization schemes aim to reduce the
+standard error in estimating the treatment effect.
+
+We carried out Block and Stratified Block Randomization using a block
+size of two. In practice, blocks of size two are ill-advised for
+increasing the risk of subversion(Berger, Ivanova, and Deloria Knoll
+\protect\hyperlink{ref-Berger:2003im}{2003}) but provides in simulation
+the greatest chance of equal treatment allocation especially when
+stratifying with many levels. As a point of reference we included single
+batch Matched Randomization as the optimal matching when all patients
+are known prior to randomization; and, to compare against current
+Sequential Matched Randomization literature, we included Sequential
+Matched Randomization with a fixed \(20^{th}\) percentile threshold of
+the F(p, i-p) distribution. Atkinson's Algorithm determines the most
+impactful treatment for reducing the estimated treatment variability of
+a pre-specified model, which we specified as conditioning on all
+categorical covariates and first through third degree polynomials of
+continuous covariates. When there were fewer observations than model
+degrees of freedom, we determined the optimal treatment for the
+pre-specified model using the generalized inverse(Senn, Anisimov, and
+Fedorov \protect\hyperlink{ref-Senn:2010bg}{2010}).
+
+For a realistic comparison to Stratified Block Randomization, each
+covariate-adjusted allocation was adjusted to site and the most
+predictive baseline covariates of three month Hemoglobin A1c ---
+baseline Hemoglobin A1c, medication type, and time since diabetes
+diagnosis (see supplement for how these were determined). And, though
+impractical for Stratified Block Randomization, each covariate-adjusted
+allocation scheme conditioned on all baseline covariates. Stratified
+Randomization, Urn(0,\(\beta\)), and Begg and Iglewicz Minimization
+require categorized covariates; for these schemes we conditioned on
+categorized derivations of baseline Hemoglobin A1c \((<7, 7-8, 8+)\),
+age \((\leq 60, >60)\), years of education \((\leq 12, >12)\), and time
+since diabetes diagnosis \((<10, 10+)\).
+
+Though REACH includes three treatment arms, we simplified to two equally
+allocated arms --- receiving no or any text-message intervention.
+Missing baseline covariates and three month Hemoglobin A1c were multiply
+imputed using predictive meaning matching via the aregImpute function in
+the R rms package; and single mean and mode imputation from the multiple
+imputations was carried out to obtain a single complete dataset. Twenty
+thousand treatment allocation schedules for each scheme were simulated
+on the single mean imputed dataset. For each scheme's generated 20,000
+treatment schedules, we summarize with boxplots the maximum (worst-case)
+and average absolute Standardized Mean Difference of all baseline
+covariates. We also summarize end-of-study treatment allocation
+difference.
+
+To compare the efficiency of different schemes, we generated outcomes
+assuming a potential outcomes framework. Twenty thousand datasets were
+created where a patient's outcome under the control arm equaled
+predicted three month Hemoglobin A1c plus a random residual. Under the
+REACH intervention arm, the outcome decreased by 0.5 (a beneficial
+decrease in this population). By using predicted three month Hemoglobin
+A1c, we fixed the effect of baseline covariates. The only random
+components in this framework are the treatment assignment and a random
+residual of predicted three month Hemoglobin A1c.
+
+For the j\(^{th}\) generated potential outcomes dataset, we obtained an
+observed study for each allocation scheme using the scheme's j\(^{th}\)
+generated allocation schedule. From each observed study, we calculated
+the permutation-based 95\% Confidence Interval Width of the Sample
+Average Treatment Effect (difference in observed means) and model-based
+95\% Confidence Interval Width of the estimated treatment effect. The
+pre-specified Ordinary Least Square Model adjusted for all baseline
+covariates with restricted cubic splines on each continuous covariate
+and accounted for multiply imputed baseline covariates. On the
+j\(^{th}\) potential outcomes dataset, we also calculated the relative
+width of each scheme's Confidence Interval Width compared to the width
+from Block Randomization. Block Randomization was carried out twice for
+each generated dataset to compare one instance of Block Randomization to
+another. From this we calculated the difference in effective sample size
+of each scheme relative to Block Randomization.
+
+In the supplement, we further calculate the average size of the
+reservoir throughout enrollment among matched randomization methods and
+the expected amount of randomization occurring under each minimization
+scheme.
+
+\hypertarget{simulation-results}{%
+\subsection{Simulation Results}\label{simulation-results}}
+
+By themselves, the set of most predictive covariates, including site,
+are highly predictive of three-month Hemoglobin A1c (R\(^2\) = 0.43);
+adjusting for all baseline covariates is slightly more predictive
+(R\(^2\) = 0.46). Atkinson's Minimization only randomized the first
+patient and is therefore excluded from comparisons regarding
+permutation-based inference. For this reason, it is also difficult to
+draw conclusions regarding its average performance balancing baseline
+covariates.
+
+Balance of Covariates: As a point of reference and across simulations,
+Block Randomization's median worst-balanced baseline covariate had an
+absolute Standardized Mean Difference of 0.21 (95\% Percentile
+Confidence Interval: (0.13, 0.32); Figure 1) and average absolute
+Standardized Mean Difference of 0.09 (0.06, 0.14) (Figure 2).
+
+Adjusting randomization to the most predictive baseline covariates
+yielded only trivial gain in lessoning the worst-case imbalance (maximum
+absolute Standardized Mean Difference; Figure 1). Begg and Iglewicz
+Minimization performed best in reducing the worst-case imbalance to 0.20
+(0.12, 0.30). Income level and race / ethnicity remained difficult
+covariates to balance (supplement).
+
+Worst-case imbalance was better controlled when adjusting to all
+baseline covariates (Figure 1). Sequenital Matched Randomization,
+utilizing a dynamic and empirical threshold, reduced the absolute
+Standardized Mean Difference to 0.14 (0.09, 0.22). This slightly
+improved upon Sequential Matched Randomization without these extensions
+0.16 (0.10, 0.25). Sequential Rematched Randomization had a worst-case
+imbalance of 0.11 (0.07, 0.20), which was an improvement in recovering
+the performance of a single batched Matched Randomization (0.09 (0.05,
+0.16)). Begg and Iglewicz Minimization performed best among the
+sequential allocation methods (0.10 (0.05, 0.18)).
+
+Overall baseline covariate imbalance (average absolute Standardized Mean
+Difference) improved similarly and non-trivially across allocation
+schemes when adjusting randomization to most predictive baseline
+covariates (Figure 2). Again, greater improvement occurred when
+adjusting to all baseline covariates. Adding the dynamic and empirical
+threshold improved the performance of Sequential Matched Randomization,
+and Sequential Rematched Randomization recovered much of the optimal
+performance of single batch Matched Randomization. Begg and Iglewicz
+performed essentially as well as single batch Matched Randomization.
+
+Improvement Upon Precision: Block Randomization achieved a treatment
+effect permutation-based 95\% Confidence Interval width of 0.54 (0.50,
+0.58) (Figure 3) and a fully-adjusted (all baseline covariates) ordinary
+least squares 95\% Confidence Interval width of 0.38 (0.37, 0.39)
+(Figure 4). Relative to itself, the 95\% Percentile Confidence Interval
+of change in effective sample size was +/- 20 (Table 1).
+
+The greatest precision gains to permutation-based inference came from
+schemes adjusting for only the most predictive baseline covariates
+(Figure 3). An exception was Begg and Iglewicz Minimization, which
+performed essentially the same on median when adjusting for the most
+predictive versus all baseline covariates.
+
+Excepting Urn Randomization, all other schemes that adjusted allocation
+to the most predictive covariates achieved a Confidence Interval width
+of 0.43 or smaller, with single batch Matched Randomization achieving on
+median the same efficiency as the model-based efficiency under Block
+Randomization (Figure 3). Sequential Matched Randomization with the
+dynamic and empirical threshold yielded a permutation-based Confidence
+Interval width of 0.41 (0.38, 0.44), an improvement on Sequential
+Matched Randomization without extensions 0.43 (0.40, 0.47). Sequential
+Rematched Randomization (0.40 (0.36, 0.45)) further recovered some of
+the efficiency lost from single batch Matched Randomization (0.38 (0.36,
+0.41)). On median, Atkinson's Algorithm with a Biased Coin yielded the
+greatest permutation-based precision, nearly doubling the effective
+sample size compared to Block Randomization. That is, Block
+Randomization would have needed on median 436 (316, 572) additional
+patients to achieve the same amount of precision. Sequential Rematched
+Randomization increased the effective sample size by 416 (213, 663).
+
+When adjusting randomization to all baseline covariates, efficiency
+gains in permutation-based inference were not as pronounced but still
+substantial (Figure 3). Sequential Rematched Randomization achieved a
+permutation-based Confidence Interval Width of 0.46 (0.41, 0.51).
+Atkinson's Minimization with a Biased Coin and Begg and Iglewicz
+Minimization achieved the greatest permutation-based Confidence Interval
+Width precision, 0.41 (0.40, 0.42) and 0.42 (0.38, 0.49) respectively.
+On median, these were both superior to single batch Matched
+Randomization.
+
+In contrast to permutation-based inference, schemes that adjusted to all
+baseline covariates achieved the greatest gain in precision from a
+linear model adjusting to all baseline covariates (Figure 4). While
+non-trivial, the gains relative to Block Randomization were much less
+pronounced.
+
+When adjusting to all baseline covariates, the best performing
+sequential enrollment schemes included Sequential Rematched
+Randomization, Atkinson's Algorithm with and without a Biased Coin, and
+Begg and Iglewicz Minimization with Confidence Interval widths of at
+most, on median, 0.376. Sequential Rematched Randomization yielded an
+effective increase in sample size of 15 (-4, 37) above and beyond the
+pre-specified model-based inference under Block Randomization.
+
+End-of-Study Allocation Differences: Block Randomization, Sequential
+Matched Randomization with a dynamic and empirical thresold, Sequential
+Rematched Randomization, and single batch Matched Randomization always
+achieved equal end-of-study allocation (Figure 5). Begg and Iglewicz
+Minimization was close to achieving equal end-of-study allocation.
+Atkinson's Algorithm with a Biased Coin, which performed well in
+achieving balance and efficiency ran a greater risk of ending the study
+with a treatment imbalance 0.00 (-20.00, 20.00).
+
+Randomization within Minimization: When adjusting Begg and Iglewicz
+Minimzation to the most predictive covariates, randomization occurred
+for roughly 20\% of patients (7.8\% of patients when adjusting to all
+baseline covariates). See supplement.
+
+Reservoir Size: See supplement for the average reservoir size for
+Sequential Matched and Rematched Randomization.
+
+\hypertarget{conclusions}{%
+\section{Conclusions}\label{conclusions}}
+
+We've introduced extensions to Sequential Matched Randomization that
+recover much of the optimality lost from single batch Matched
+Randomization due to sequential entry of patients. These extensions
+include Sequential Rematching with a dynamic and empirical threshold and
+the ability to randomize patients in enrollment blocks. Further, our
+case study re-emphasizes (Ciolino et al.
+\protect\hyperlink{ref-Ciolino:2011ff}{2011}) the value of
+covariate-adjusted randomization for increasing overall covariate
+balance and efficiency estimating the Population Average Treatment
+Effect. The precision of the permutation-based Sample Average Treatment
+Effect estimator achieved nearly the same efficiency as model-based
+inference estimating the treatment effect.
+
+Our work is consistent with other findings that there is a balance /
+efficiency trade-off in choosing which covariates to adjust
+randomization(Kallus and 2018
+\protect\hyperlink{ref-Kallus:2018um}{2018}; {\textbf{???}}). Arguments
+can be made to prioritize balance, especially when investigating
+important subgroups and when the strength of relationship between
+baseline covariates and the outcome is unknown. And, arguments are made
+for prioritizing efficiency especially when chance imbalances may be
+adjusted with a model (Medicine and 1999
+\protect\hyperlink{ref-Atkinson:1999hq}{1999}). Weighted distance
+measures can allow an investigator to design the study prioritizing
+certain covariates over others(Greevy Jr. et al.
+\protect\hyperlink{ref-GreevyJr:2012hp}{2012}).
+
+In introducing Sequential Rematching, we add to a class of look-back
+allocation schemes. Though patients have matched, their baseline
+covariates may yet be updated or used again to increase covariate
+balance and precision. Also in this class are Minimization schemes with
+and without a biased coin and Sequential Rerandomization. Such schemes
+are beneficial when some baseline covariates are not initially available
+at the time of randomization as was the case with Baseline Hemoglobin
+A1c in the REACH trial.
+
+In this case study, Begg and Iglewicz Minimization performed frequently
+among the top performing Sequenital allocation schemes and provided
+equal randomization to, on average, roughly 20\% of patients (7\% when
+adjust randomization to all baseline covariates). This provides some
+reassurance against systematic confounding. Minimization is powerful
+from a study design perspective, and randomization is critical for
+eliminating systematic confounding. This work begs the question, what is
+the extent of randomization necessary to sufficiently reduce systematic
+confounding?
+
+Many studies set sample size based on the average performance of block
+randomization (for example by basing of a t-test). This case study
+provides a cautionary reminder that half of such studies will have a
+decreased effective sample size. Though all assumptions and operations
+of a study may work perfectly, a non-adaptive trial may fail to find a
+treatment effect due to chance alone. Covariate-adjusted randomization
+helps protect against poor covariate imbalances and increases the
+chances of a sufficient effective sample size all else the same.
 
 \begin{figure}
 \centering
-\includegraphics{_main_files/figure-latex/unnamed-chunk-3-1.pdf}
-\caption{\label{fig:unnamed-chunk-3}Starwars distribution of heights by
-species}
+\includegraphics{~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/MaxSMD.jpg}
+\caption{\label{fig:MaxSMD}Boxplot of the maximum absolute Standardized Mean
+Difference among all baseline covariates for each of 20,000 simulated
+allocation sequences per allocation scheme. Matched-based Randomization
+schemes are shaded in blue. Seq Matched (20p) is Sequential Matching
+before applying proposed extensions; it uses a fixed 20th percentile of
+the F(p, i-p) distribution. Min SE schemes are Minimization schemes
+proposed by Atkinson and Begg and Iglewicz to reduce the standard error
+of a pre-specified Ordinary Least Squares Model. Min SE (Atk, 2/3 Prob)
+uses a 2/3 biased coin to randomize to the favorable arm under
+Atkinson's Minimization.}
 \end{figure}
 
-\chapter{Paper 2}\label{paper-2}
+\begin{figure}
+\centering
+\includegraphics{~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/AveSMD.jpg}
+\caption{\label{fig:AveSMD}Boxplot of the average absolute Standardized Mean
+Difference among all baseline covariates for each of 20,000 simulated
+allocation sequences per allocation scheme.}
+\end{figure}
 
-\chapter{Paper 3}\label{paper-3}
+\begin{figure}
+\centering
+\includegraphics{~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/permutationCIwidth.jpg}
+\caption{\label{fig:permCIwidth}Boxplot of the permutation-based 95\%
+Confidence Interval Width estimating the Sample Average Treatment Effect
+for each of 20,000 simulated observed datasets. Observed outcomes were
+generated as the predicted three month Hemoglobin A1c plus a treatment
+effect (if allocated to treatment) and a random residual. The horizontal
+line in red is the median treatment effect Confidence Interval Width
+under the pre-specified Ordinary Least Square model and Block
+Randomization (See Figure 4).}
+\end{figure}
 
-\chapter{Conclusions}\label{conclusions}
+\begin{figure}
+\centering
+\includegraphics{~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/modelAdjCIwidth.jpg}
+\caption{\label{fig:adjCIwidth}Boxplot of the model-based 95\% Confidence
+Interval Width estimating the Sample Average Treatment Effect, adjusted
+for all baseline covariates, for each of 20,000 simulated observed
+datasets. The Ordinarly Least Squares (OLS) model was pre-specified to
+include all baseline covariates with restricted cubic splines on each
+continuous outcome and accounted for multiple imputations.}
+\end{figure}
 
-\chapter*{REFERENCES}\label{references}
+\begin{figure}
+\centering
+\includegraphics{~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/trtBalance.jpg}
+\caption{\label{fig:trtDiff}Boxplot of the difference in end-of-study
+treatment allocation for each of 20,000 simulated allocation sequences
+per allocation scheme.}
+\end{figure}
+
+\begin{table}[!h]
+
+\caption{\label{tab:relEff}Median and 95 Percentile Confidence Interval of difference in effective sample size relative to Block Randomization for each of 20,000 generated observed datasets.  Two Block Randomization sequences per generated observed dataset to allow comparing one instance of Block Randomization to another.  Schemes are ordered by efficiency gains for permutation-based inference.}
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{>{\bfseries\raggedright\arraybackslash}p{3cm}l>{\centering\arraybackslash}p{2.3cm}>{\centering\arraybackslash}p{2.3cm}>{\centering\arraybackslash}p{2.3cm}>{\centering\arraybackslash}p{2.3cm}}
+\toprule
+\multicolumn{2}{c}{ } & \multicolumn{2}{c}{Permutation Estimate} & \multicolumn{2}{c}{Adjusted Model Estimate} \\
+\cmidrule(l{2pt}r{2pt}){3-4} \cmidrule(l{2pt}r{2pt}){5-6}
+Covariate-Adjustment & Scheme & Relative Efficiency & Effective Change in N & Relative Efficiency & Effective Change in N\\
+\midrule
+None & Block & 1.000 & 0 (-19, 20) & 1.000 & 0 (-23, 23)\\
+\cmidrule{1-6}
+ & Stratified & 1.067 & 71 (6, 141) & 1.002 & 2 (-20, 25)\\
+\cmidrule{2-6}
+ & Urn & 1.104 & 112 (44, 183) & 1.004 & 4 (-18, 27)\\
+\cmidrule{2-6}
+ & Seq Matched (20p) & 1.112 & 122 (35, 225) & 1.006 & 6 (-15, 29)\\
+\cmidrule{2-6}
+ & Seq Matched & 1.119 & 129 (37, 242) & 1.010 & 10 (-10, 32)\\
+\cmidrule{2-6}
+ & Seq Rematched & 1.187 & 209 (62, 385) & 1.014 & 15 (-4, 37)\\
+\cmidrule{2-6}
+ & Matched (Single Batch) & 1.215 & 244 (128, 388) & 1.016 & 16 (-3, 38)\\
+\cmidrule{2-6}
+ & Min SE (BI, Assign) & 1.277 & 323 (109, 537) & 1.016 & 16 (-3, 39)\\
+\cmidrule{2-6}
+ & Min SE (Atk, 2/3 prob) & 1.326 & 388 (278, 508) & 1.018 & 19 (1, 40)\\
+\cmidrule{2-6}
+\multirow{-9}{3cm}{\raggedright\arraybackslash All Baseline Covariates} & Min SE (Atk, Assign) & N/A & N/A & 1.018 & 19 (4, 39)\\
+\cmidrule{1-6}
+ & Urn & 1.139 & 152 (79, 229) & 1.002 & 2 (-20, 25)\\
+\cmidrule{2-6}
+ & Seq Matched (20p) & 1.244 & 280 (156, 431) & 1.004 & 4 (-18, 27)\\
+\cmidrule{2-6}
+ & Min SE (BI, Assign) & 1.263 & 305 (128, 518) & 1.006 & 6 (-16, 29)\\
+\cmidrule{2-6}
+ & Stratified & 1.275 & 321 (189, 484) & 1.005 & 5 (-17, 28)\\
+\cmidrule{2-6}
+ & Seq Matched & 1.308 & 363 (222, 539) & 1.006 & 6 (-16, 28)\\
+\cmidrule{2-6}
+ & Seq Rematched & 1.347 & 416 (213, 663) & 1.008 & 8 (-13, 31)\\
+\cmidrule{2-6}
+ & Min SE (Atk, 2/3 Prob) & 1.361 & 436 (316, 572) & 1.007 & 7 (-15, 30)\\
+\cmidrule{2-6}
+ & Matched (Single Batch) & 1.408 & 503 (331, 711) & 1.010 & 10 (-12, 32)\\
+\cmidrule{2-6}
+\multirow{-9}{3cm}{\raggedright\arraybackslash Site and Most Predictive Baseline Covariates} & Min SE (Atk, Assign) & N/A & N/A & 1.001 & 1 (-13, 20)\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\hypertarget{adaptive-monitoring-using-second-generation-p-values-draft}{%
+\chapter{Adaptive Monitoring using Second Generation p-Values
+Draft}\label{adaptive-monitoring-using-second-generation-p-values-draft}}
+
+\hypertarget{introduction-2}{%
+\section{Introduction}\label{introduction-2}}
+
+Conclusive clinical trials either rule out clinically trivial or
+clinically actionable treatment effects. Like driving blind, this is a
+hard ideal to achieve without adaptive monitoring. The costs of ending
+too soon, when resources and knowledge were available otherwise, can be
+extraordinary (Pocock and Stone
+\protect\hyperlink{ref-Pocock:2016ca}{2016}\protect\hyperlink{ref-Pocock:2016ca}{b}).
+On the other hand, a significant yet non-clinically actionable study can
+also be costly (Pocock and Stone
+\protect\hyperlink{ref-Pocock:2016ey}{2016}\protect\hyperlink{ref-Pocock:2016ey}{a}).
+For these reasons, and to the extent possible, investigators turn to
+adaptive monitoring designs because the sample size is ``not too big,
+not too small, but just right (Broglio, Connor, and Berry
+\protect\hyperlink{ref-Broglio:2014fr}{2014}).'' To this we add the
+imperative: \emph{to the point of being clinically conclusive}.
+
+Unlike many study design aspects, clinical relevance is not an unknown
+assumption. A-priori scientific relevance informs which treatment
+effects are trivially null effects and which are clinically actionable
+enough to change clinical practice. Most sample size estimates already
+incorporate the latter into the study design. Though some study designs
+rule out a set of trivially null effects (Kruschke
+\protect\hyperlink{ref-Kruschke:2013jy}{2013}; Hobbs and Carlin
+\protect\hyperlink{ref-Hobbs:2008ce}{2008}; Freedman, Lowe, and
+Macaskill \protect\hyperlink{ref-Freedman:1984wz}{1984}), more common
+practice is to test for any difference from the point null.
+
+Trivial effects surround the point null and include, in the least,
+indistinguishable treatment effects due to rounding error (Blume et al.
+\protect\hyperlink{ref-Blume:SGPV}{2018}). They may also include
+clinically irrelevant changes in a biomarker. This set of effects has
+many names including but not limited to \emph{Indifference Zone} and
+\emph{Region of Practical Equivalence} (Blume et al.
+\protect\hyperlink{ref-Blume:SGPV}{2018}; Kruschke
+\protect\hyperlink{ref-Kruschke:2013jy}{2013}); we call this set of
+effects the \emph{Trivial Zone}. Switching from a point null to interval
+null carries intuitive clinical interpretation and endows a study with
+desirable statistical benefits.
+
+Interval null hypotheses reduce family-wise Type I Error rates (Blume et
+al. \protect\hyperlink{ref-Blume:SGPV}{2018}; Kruschke
+\protect\hyperlink{ref-Kruschke:2013jy}{2013}). False discoveries most
+frequently occur closest to the point null hypothesis, and an interval
+null provides a stricter rejection criteria buffer that eliminates many
+false discoveries. For the same reason, the interval null provides a
+natural Type I Error adjustment for multiple looks / comparisons.
+Inferential approaches to evaluating interval hypotheses include
+Bayesian, Likelihood, and second-generation \emph{p}-value inference.
+For any estimated interval (i.e.~Confidence Interval, Credible Interval,
+Support Interval, etc.), the second-generation \emph{p}-value draws
+conclusions from how much of the interval overlaps an interval
+hypothesis (Blume et al. \protect\hyperlink{ref-Blume:SGPV}{2018}).
+
+Many Bayesian adaptive trial designs incorporate interval null
+hypotheses (Freedman, Lowe, and Macaskill
+\protect\hyperlink{ref-Freedman:1984wz}{1984}; Berry et al.
+\protect\hyperlink{ref-Berry:2010fr}{2010}; Hobbs and Carlin
+\protect\hyperlink{ref-Hobbs:2008ce}{2008}; Kruschke
+\protect\hyperlink{ref-Kruschke:2013jy}{2013}), and we develop an
+analogous Second Generation p-value adaptive design. The rest of the
+paper follows as: establishing a-priori clinically relevant guideposts,
+introducing the second generation \emph{p}-value, adaptively monitoring
+with with the second generation p-value, comparing the second generation
+\emph{p}-value and Bayesian adaptive monitoring with the REACH clinical
+trial data, and drawing final conclusions.
+
+\hypertarget{clinically-relevant-guideposts}{%
+\section{Clinically Relevant
+Guideposts}\label{clinically-relevant-guideposts}}
+
+In a two-sided study, four boundaries provide clinical guideposts.
+Highly actionable treatment effects are of a magnitude of at least of
+\(\delta_E\) for benefit or of \(\delta_H\) for harm. Trivial treatment
+effects are between \(\delta_{TE}\) and \(\delta_{TH}\) and encompass
+the point null (Figure 1). The remaining effects are moderately
+actionable; moderate treatment benefits are between \(\delta_{TE}\) and
+\(\delta_{E}\) and moderate treatment harms are between \(\delta_{TH}\)
+and \(\delta_{H}\). In any study, the implementation of an intervention
+takes into account secondary measures such as side effects, costs, etc..
+Hence, a highly actionable effect is likely to outweigh the off-setting
+benefits / costs. A moderately actionable effect has greater equipoise
+with offsetting benefits / costs.A one sided study omits \(\delta_H\)
+and \(\delta_{TH}\) to focus only on \(\delta_TE\) and \(\delta_{E}\).
+
+\begin{figure}[H]
+
+{\centering \includegraphics{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/clinicalGuideposts/Slidev03_01} 
+
+}
+
+\caption{Clinically relevant guideposts are determined during study design, based on scientific context, and ought to be incorporated into the final study inference.  In a one-sided study (left figure), the clinical guideposts create the regions: no more than trivial effect, moderately actionable effect, and highly actionable effect.  In a two-sided study (right figure), three regions are created: trivial effects, moderately actionable effects, and highly actionable effects.}\label{fig:clinicalGuideposts}
+\end{figure}
+
+A similar set of clinical guideposts, the \emph{Region of Equivalence},
+uses only two boundaries(Freedman, Lowe, and Macaskill
+\protect\hyperlink{ref-Freedman:1984wz}{1984}; Hobbs and Carlin
+\protect\hyperlink{ref-Hobbs:2008ce}{2008}). Treatment effects outside
+the \emph{Region of Equivalence} deem the novel intervention as either
+clinically superior or inferior to the standard of care. Under certain
+conditions (a one-sided study with a buffer around the point null),
+these guideposts match the one-sided guideposts we propose. The
+\emph{Trivial Zone} is necessary to rule out effects trivial to the
+point null and receive the benefits of an interval null such as reducing
+the False Discovery Probability.
+
+Setting a-priori clinical guideposts brings transparency to the study
+design. Most study designs already incorporate \(\delta_E\) when
+determining an adequate study sample size. Yet, in many instances, end
+trial inference does not incorporate \(\delta_E\) (or other clinical
+guidepost decisions). For example, without knowing \(\delta_E\), none of
+a Confidence, Credible, or Support Interval inform original study design
+intentions.
+
+Excellent references are available for helping establish clinical
+guideposts (Freedman, Lowe, and Macaskill
+\protect\hyperlink{ref-Freedman:1984wz}{1984}; Spiegelhalter, Freedman,
+and Parmar \protect\hyperlink{ref-Spiegelhalter:1994cn}{1994}; Kruschke
+\protect\hyperlink{ref-Kruschke:2018bz}{2018}; Blume et al.
+\protect\hyperlink{ref-Blume:SGPV}{2018}).
+
+\hypertarget{second-generation-p-value}{%
+\section{Second Generation p-value}\label{second-generation-p-value}}
+
+An inferential metric, the second-generation \emph{p}-value indicates
+when the data are compatible with the alternative hypothesis, the
+\emph{Trivial Zone} null hypothesis, or when the data are inconclusive
+(Blume et al. \protect\hyperlink{ref-Blume:SGPV}{2018}). More generally,
+it may be used for any interval hypothesis. The second-generation
+\emph{p}-value calculates the overlap between an interval \emph{I} (any
+interval including but not limited to a Confidence, Credible, Support
+Interval, etc.) and the set of effects \(\Delta_H\) in the hypothesis
+\emph{H}. The interval includes {[}\emph{a}, \emph{b}{]} where \emph{a}
+and \emph{b} are real numbers such that \emph{a} \textless{} \emph{b},
+and the length of the interval is \emph{b} - \emph{a} and denoted
+\textbar{}\emph{I}\textbar{}. The overlap between the interval and the
+set \(\Delta_H\) is \(|I \bigcap \Delta_H |\). The second generation
+p-value is then calculated as
+
+\[
+p_{H} = \frac{| I \bigcap \Delta_H |}{|I|} \times max\left\{\frac{| I |}{2 | \Delta_H |}, 1 \right\}.
+\] The multiplicative factor,
+\(max\left\{\frac{| I |}{2 | \Delta_H |}, 1 \right\}\), provides a small
+sample size correction -- setting \(p_H\) to 0.5 when an interval
+overwhelms \(\Delta_H\) by at least twice the length. For a
+\emph{Trivial Zone} null hypothesis \emph{T}, trivially null effects are
+ruled out when the \(p_T = 0\) whereas non-trivial effects are ruled out
+when \(p_T = 1\). The data are inconclusive when \(0 < p_T < 1\).
+
+Based on the four clinical guideposts, we define and focus on a Highly
+Actionable Hypothesis, \emph{HA}, and Trivial Hypothesis, \emph{T} .
+
+\begin{itemize}
+\item
+  Hypothesis \emph{HA}: The treatment effect lies within a \emph{Region
+  of Clinically Highly Actionable Effects}
+  \(\Delta_{HA} = (-\infty, \delta_{H}] \cup [\delta_{E}, \infty)\) for
+  a two-sided study and \([\delta_{E}, \infty)\) for a one-sided study
+  where a positive benefit is beneficial. Where a negative effect is
+  beneficial, the one-sided study sets
+  \(\Delta_{HA} = (-\infty, \delta_{E}]\).
+\item
+  Hypothesis \emph{T}: The treatment effect lies within a \emph{Region
+  of Clinically Trivial Effects}
+  \(\Delta_T = [\delta_{TH}, \delta_{TE}]\) for a two-sided study. In a
+  one-sided study where a positive effect is beneficial,
+  \(\Delta_T = (\infty, \delta_{TE}]\) and is called a \emph{Region of
+  At Most Clinically Trivial Effects}. The bounds are mirrored when a
+  negative effect is benificial.
+\end{itemize}
+
+Neither of these two hypotheses include moderately actionable treatment
+effects. When applied to the four clinical guideposts, nine conclusions
+may be drawn from the second-generation \emph{p}-value and the Regions
+of Clinically Highly Actionable Effects and Clinically Trivial Effects
+(Figure 2). To motivate our adaptive monitoring design, we reduce to
+three conclusions:
+
+\begin{itemize}
+\tightlist
+\item
+  When \(p_{HA} = 0\), the treatment effect is not clinically highly
+  actionable.
+\item
+  When \(p_{T} = 0\), the treatment effect is not trivial different from
+  the point null.
+\item
+  Otherwise, the treatment effect is inconclusive
+\end{itemize}
+
+Again, the interpretation of these regions closely relate to the
+interpretations of the \emph{Region of Equivalence}. They match exactly
+when in the case of a one-sided study with a \emph{Trivial Zone} around
+the point null.
+
+\begin{figure}[H]
+
+{\centering \includegraphics{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/clinicalGuideposts/Slidev03_02} 
+
+}
+
+\caption{Final study inference ought to incorporate a-priori clinical guideposts.  The second generation p-value draws inference based on hypothesized sets of treatment effects.  We focus on two sets of hypotheses that form the Region of Clinically Trivial Effects and the Region of Clinically Highly Actionable Effects. (This figure focuses on two-sided studies yet similar conclusions are drawn for one-sided studies). With the two sets of hypotheses, the second-generation p-value can rule out trivial effects (the top four conclusions), rule out non-highly actionable effects (the middle five conclusions), or declare the study yet inconclusive.  Confidence Intervals that correspond to a p-value close to but not exceeding 0.05 would be declared inconclusive.}\label{fig:figs}
+\end{figure}
+
+\hypertarget{adaptive-monitoring-rules-guidance}{%
+\section{Adaptive Monitoring Rules /
+Guidance}\label{adaptive-monitoring-rules-guidance}}
+
+A study implements the following rules for adaptive monitoring with the
+second-generation \emph{p}-value:
+
+\begin{itemize}
+\item
+  Design: Investigators a-priori determine the four clinical guideposts
+  (two guideposts in the case of a one-sided study).
+\item
+  Wait to Monitor: Enroll \emph{B} patients before applying monitoring.
+\item
+  Monitor: Calculate the second-generation p-value using an inferential
+  interval of choice. Raise an alert when \(p_{HA} = 0\) or \(p_T = 0\).
+  Continue monitoring until affirming the \emph{same} alert (i.e.~that
+  again \(p_{HA} = 0\) or \(p_T = 0\)) \emph{K} patients later.
+\item
+  Stop: Stop once affirming an alert or at the end of resources.
+\item
+  Report: Report only the interval at stopping.
+\end{itemize}
+
+Finding the appropriate \emph{B} and \emph{K} is done through
+simulations in the study design stage; both help protect against Type I
+Errors and bias. Chapter 3 provides practical guidance for determining
+\emph{B} and \emph{K}. Type I Errors more commonly occur early in
+adaptive monitoring while estimated statistics are yet unstable, and
+they may occur randomly in the discrete Brownian motion of the
+Monitoring Interval. Bias is inherent in all adaptive monitoring schemes
+that stop at the first instance an alert is raised. Requiring \emph{K}
+patients to affirm an alert allows regression to the true treatment
+effect and improves the reported interval's coverage rate. To draw
+emphasis, we call intervals used in the monitoring phase Monitoring
+Intervals as they are not to be interpreted.
+
+When the true effect is moderately actionable, the study may stop for
+concluding the effect to be either not-trivial or not-highly actionable.
+This may bring consertnation; however, it is an important study design
+feature. Without a region of clinically moderately actionable effects, a
+highly actionable effect would border trivial effects and have a 50-50
+chance of stopping for being actionable or trivial. A study that stops
+for concluding a non-trivial effect may include moderately actionable
+effects in the inferential interval. And similarly, moderately
+actionable effects may be included in inferential intervals when
+stopping to conclude a non-actionable effect. This behavior reflects the
+greater degree of equipoise between the moderately actionable effects
+and the off-setting harms/benefits.
+
+Moderately actionable effects have a greater chance of raising
+conflicting alerts -- for example to raise an alert for a non-trivial
+effect then \emph{K} patients later alert for a non-highly actionable
+effect. For this reason, we require the affirmation alert to be the same
+as the alert it affirms. Only the final interval's operating
+characteristics are relevant.
+
+With only adapting the monitoring rules, the remaining rules apply to
+monitoring with Bayesian Credible Intervals. An alert for a non-highly
+actionable effect when P(Treatment Effect \(\notin \Delta_{HA}\)
+\textbar{} Data) \textgreater{} 1 --
+\(\alpha_{criteria-not-actionable}\) or for a non-trivial effect when
+P(Treatment Effect \(\notin \Delta_{T}\) \textbar{} Data) \textgreater{}
+1 -- \(\alpha_{criteria-not-trivial}\).
+\(\alpha_{criteria-not-actionable}\) and
+\(\alpha_{criteria-not-trivial}\) are study design tuning parameters
+based on simulations to achieve a desired end of study Type I Error and
+Power.
+
+\hypertarget{adaptively-monitoring-the-reach-clinical-trial}{%
+\section{Adaptively Monitoring the REACH clinical
+trial}\label{adaptively-monitoring-the-reach-clinical-trial}}
+
+\hypertarget{context}{%
+\subsection{Context}\label{context}}
+
+The Rapid Education/Encouragement And Communications for Health (REACH)
+randomized clinical trial (Nelson et al.
+\protect\hyperlink{ref-Nelson:2018bw}{2018}) is designed to help
+patients with diabetes better manage glycemic control (as measured by
+Percent Hemoglobin A1c) and adhere to medication. Patients randomized to
+the intervention receive text message-delivered diabetes support for
+over 12 months. Now with complete enrollment, 512 patients are currently
+being followed up through 3, 6, 12, and 15 months.
+
+In this population, lower Hemoglobin A1c reflects improved glycemic
+control. A change in Hemoglobin A1c of +/- of 0.15 (median REACH
+baseline Hemoglobin A1c of 8.20 {[}IQR of 7.20, 9.53{]}) is clinically
+trivial, whereas a decrease of Hemoglobin A1c of 0.5 is highly
+actionable to the point of adopting this novel intervention. While we
+anticipate the intervention to improve Hemoglobin A1c, we designed the
+study to be two-sided. That is, \(\delta_E\) = -0.50, \(\delta_{TE}\) =
+-0.15, \(\delta_{TH}\) = 0.15, and \(\delta_H\) = 0.50.
+
+\hypertarget{simulation}{%
+\subsection{Simulation}\label{simulation}}
+
+For comparison, 20,000 bootstrap samples of baseline Hemoglobin A1c were
+drawn for assessing the second-generation \emph{p}-value and Bayesian
+adaptive design. With block two randomization, half of each bootstrap's
+sampled patients were assigned to intervention. Their outcome equaled
+baseline Hemoglobin A1c plus a treatment effect at settings \{Treatment
+Effect: -1, -0.75, -0.50, -0.45, -0.35, -0.20, -0.15, 0\}. The outcome
+of those on the standard of care equaled their baseline Hemoglobin A1c.
+Only negative effects were investigated but by symmetry, increases in
+Hemoglobin A1c of the same magnitude perform similarly. For these
+simulations, outcomes occurred instantaneously.
+
+Monitoring began after the 60th enrolled patient and continued every
+60th patient until either affirming an alert 60 patients later or until
+reaching the end of resources (512 patients). For each second-generation
+\emph{p}-value Monitoring Interval, we fit a marginal ordinary least
+squares regression of outcome Hemoglobin A1c given treatment assignment
+and obtained the 95\% Confidence Interval for the treatment effect. And,
+for the Bayesian adaptive monitoring, we used a Bayesian alternative to
+the t-test: two-sample difference of means where the intervention group
+mean, \(Y_I\), and control group mean, \(Y_C\), were both distributed
+\(t(\mu, \sigma, \nu)\) (Kruschke
+\protect\hyperlink{ref-Kruschke:2013jy}{2013}).
+
+For Bayesian priors, we set \(\mu\) \textasciitilde{} \(N(\bar{y}\), 1 /
+\(\phi\)-1(.9)) as a fairly flat prior centered on the average mean
+Hemoglobin A1c of all observations with a 0.10 probability of observing
+an absolute change in Hemoglobin A1c greater than 1. For a skeptical
+prior on \(\mu\), we mixed the flat prior 1:1 with \(\mu\)
+\textasciitilde{} \(N(\bar{y}\), 0.15 / \(\phi\)-1(0.95)). We set
+\(\sigma\) \textasciitilde{} Gamma(\(s_y\) / 1000, \(s_y\) 1000) where
+\(s_y\) was the non-pooled standard deviation of all Hemoglobin A1c
+outcomes, and \(\nu\) \textasciitilde{} \(Gamma(1 / 600, 30) + 1\). The
+\(\nu\) parameter places a prior on the skewness of the data, and was
+chosen such that with the flat prior yielded group means similar to raw
+means.
+
+The two Bayesian adaptive designs (one with a flat and the other
+skeptical prior) were calibrated by finding the
+\(\alpha_{criteria-not-actionable} = \alpha_{criteria-not-trivial}\)
+that achieve the same Type I Error and probability of stopping for
+efficacy as the second-generation \emph{p}-value adaptive design. The
+later calibration was then used to compare adaptive designs in terms of
+average trial sample size, bias, and coverage of reported interval.
+Operating characteristics are estimated for given treatment effects.
+When allowing for distributional assumptions, a correctly specified
+prior has zero bias. A challenge lies in comparing the operating
+charactersitics from two different priors, as one would be assumed true
+and the other a sensitivity analysis. However, priors are often
+determined as though a true reflection of distribution of effects that
+may be observed.
+
+\hypertarget{results}{%
+\subsection{Results}\label{results}}
+
+The flat and skeptical prior Credible Interval adaptive monitoring
+designs were calibrated to have the same Type I Error as adaptive
+monitoring with the second-generation \emph{p}-value (Type I Error =
+0.049; Figure 3). While this was close to 0.05, the Type I Error changes
+depending on the wait time until monitoring and the number of looks.
+Adaptive monitoring using the second-generation \emph{p}-value and flat
+prior Credible Interval were near identical in Power; whereas, adaptive
+monitoring using a skeptical prior Credible Interval achieved less
+Power. The same trend was seen in all other results.
+
+The probability of stopping for being not-trivial provides an adaptive
+monitoring analog for a Type I error under an interval null hypothesis.
+When the treatment effect was truly zero, and when adaptively monitoring
+with second-generation \emph{p}-values, the probability of stopping for
+efficacy was 0.015 (Figure 4). Again, the adaptive monitoring designs
+using the flat prior Credible Interval and skeptical prior Credible
+Interval were calibrated to the same probability. The probability of
+stopping for efficacy was slightly higher when monitoring on the flat
+prior Credible Interval. However, for a clinically meaningful treatment
+effect of -0.50, monitoring on the flat prior Credible Interval had a
+higher false negative rate than monitoring with the second generation
+\emph{p}-value. The two designs that monitored on Credible Intervals
+were more likely to stop for futility than monitoring on the
+second-generation \emph{p}-value. This was dramatically true for
+monitoring on the skeptical prior Credible Interval. However, the
+skeptical prior Credible Interval design could be re-tuned (such as
+having a longer burn in) to improve performance.
+
+Trials lasted longer when the treatment effect was neither trivial nor
+clinically meaningful (Figure 5). The exception was when monitoring with
+the skeptical prior Credible Interval. Because treatment effects were
+drawn to the null early on, treatment effects were estimated to be
+outside the \emph{Clinically Highly Actionable Region} before the data
+could adequately overwhelm the prior. As a consequence, the bias and
+coverage suffered greatly when monitoring with the skeptical prior
+Credible Interval (Figures 6 and 7).
+
+The bias was well mitigated when adaptively monitoring with the second
+generation \emph{p}-value and flat prior Credible Interval (Figure 6).
+The flat prior Credible Interval pulls estimates toward the point null,
+which tended to slightly help when the treatment effect was clinically
+meaningful and slightly hurt when the trivially null. Coverage rates
+were slightly higher when monitoring with the flat prior Credible
+Interval compared to the second generation \emph{p}-value. Of the
+treatment effects investigated, the worst coverage was 0.93 when
+monitoring with the second generation \emph{p}-value.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/powerCalibrated} 
+
+}
+
+\caption{In the REACH target population, a decrease in Hemoglobin A1c reflects desireable improvement in glycemic control.  The Power curve (i.e. the probability of rejecting the point null of 0), was estimated from 20,000 adaptive monitoring simulations when monitoring using the second generation p-value, a Credible Interval with a flat prior, and a Credible Interval with a skeptical prior.  The intervention was simulated to have an effect of -1 (highly beneficial), -0.75, -0.50, -0.45, -0.35, -0.20, -0.15, to 0 effect (the point null).  Bayesian adaptive designs were calibrated to have the same Type I Error as the second generation p-value adaptive design.}\label{fig:Power}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=2in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probEff} \includegraphics[width=2in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probFut} \includegraphics[width=2in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probMore} 
+
+}
+
+\caption{In adaptive monitoring, a study can end in one of three states: ending for efficacy / harm, ending for futility, or ending at the end of resources.  Above are estimated probabilities of ending in each of these states for each design and treatment effect.  The probability of stopping for efficacy / harm is an interval null equivalent to Power.  The Bayesian adaptive monitoring designs were calibrated to have the same probability of stopping for efficacy as adaptive monitoring with the second generation p-value.  All following results are based off this calibration.  The skeptical prior is pulled so much to the null that studies tend to end for futility too soon.  This can be overcome with a longer burn in.}\label{fig:state}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/averageN} 
+
+}
+
+\caption{Across  simulations, the average time to stopping for the three adaptive designs is shown above.  In these simulations the earliest possible stopping time was the 120th patient.  Monitoring began at the 60th patient and continued at every 60th patient.  Stopping requires raising an alert and affirming the alert 60 patients later.  When monitoring with the second-generation p-value and Credible Interval with a flat prior, the longest studies are were when the treatment effect was neither trivial nor clinically meaningful.}\label{fig:sampleSize}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/bias} 
+
+}
+
+\caption{At the study end, the final estimate and interval are reported.  Across simulations, the bias (and displayed inner quartile range) was well mitagated when adaptively monitoring using the second generation p-value and flat prior Credible Interval.  A positive bias occurs when being pulled toward the null, as happens with the skeptical prior.}\label{fig:bias}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/coverage} 
+
+}
+
+\caption{At the study end, the final estimate and interval are reported.  In these simulations, a 95\% Confidence Interval was reported when adaptively monitoring with the second-generation p-value (though any other interval could have been used for monitoring and reporting).  And, Credible Intervals are reported for the Bayesian adaptive designs.  The final Credible Interval from a skeptical prior quickly drops off because these studies quickly reach a false conclusion of futility (Figure 4).  A longer burn-in will help the coverage of the skeptical prior design.}\label{fig:coverage}
+\end{figure}
+
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
+
+We developed an adaptive monitoring scheme, using the second generation
+\emph{p}-value, to follow studies until either ruling out trivially null
+or clinically highly actionable treatment effects. Two major
+contributions come from this scheme: (1) the monitoring scheme
+incorporates clinically relevant guideposts that may help trivially null
+and clinically meaningful studies stop quickly while still reaching a
+clear clinical conclusion and (2) the easy-to-calculate second
+generation \emph{p}-value allows an investigator to adaptively monitor
+with their inferential interval of choice (including but not limited to
+Confidence Intervals, Credible Intervals, Support Intervals, etc.).
+While not explored explicity in this paper, this design is well suited
+for following multiple outcomes and following subgroups until they reach
+clear clinical conclusions.
+
+As seen in other similar designs, the use of an interval null decreases
+the False Discovery Rate, making the results more reproducible (Blume et
+al. \protect\hyperlink{ref-Blume:SGPV}{2018}; Kruschke
+\protect\hyperlink{ref-Kruschke:2013jy}{2013}). Incorporating clinical
+relevance into the inference brings study design transparency that
+otherwise may get lost. For example, a Confidence, Credible, or Support
+Interval alone do not inform of the targeted treatment effect when
+choosing a sample size.
+
+With data from the REACH randomized clinical trial, we simulated
+adaptive monitoring using rules based on the second-generation
+\emph{p}-value compared to rules based on the Credible Interval. The
+second-generation \emph{p}-value and flat prior Credible Interval
+adaptive monitoring designs performed similarly in terms of Power,
+probability of stopping for efficacy, average sample size, bias, and
+reported interval coverage. Monitoring using a flat prior Credible
+Interval had a slight edge in these metrics but also a slightly worse
+False Negative Rate for a clinically meaningful treatment effect.
+
+In these simulations, adaptive monitoring with a skeptical prior
+Credible Interval did not perform well. The skeptical prior pulled
+estimates close to the null such that simulated adaptive trials stopped
+before being overwhelmed by the data. However, a longer burn or an
+alternative tuning to \(\alpha_{criteria-not-actionable}\) would
+ameliorate the skeptical prior Credible Interval design.
+
+All of the adaptive designs studied may be modified to achieve a desired
+Type I Error and Power. When adaptively monitoring with the second
+generation \emph{p}-value, one may change the wait time before
+monitoring and number of looks. We encourage clinical guideposts to be
+anchored on clinical relevance and not change solely for the purpose of
+achieving statistical properties. The same tuning parameters hold true
+for monitoring with Credible Intervals. Monitoring with Credible
+Intervals are even more customizable by choosing the monitoring
+\(\alpha_{criteria}\) to achieve desired Type I Errors and Power.
+
+\hypertarget{the-sgpvam-package-and-practical-recommendations-for-adaptive-monitoring-with-the-second-generation-p-value}{%
+\chapter{The sgpvAM Package and Practical Recommendations for Adaptive
+Monitoring with the Second Generation
+p-value}\label{the-sgpvam-package-and-practical-recommendations-for-adaptive-monitoring-with-the-second-generation-p-value}}
+
+\hypertarget{introduction-3}{%
+\section{Introduction}\label{introduction-3}}
+
+In Paper 2 (Chapter 3) we present an adaptive monitoring scheme that
+follows studies until evidence supports either a non-trivial or
+non-highly actionable treatment effect. The design is very easy to
+implement. It can done by anyone who can think about the clinical
+interpretation of possible effect sizes and calculate an interval
+estimate for their effect, such as a support or confidence interval
+(CI). However, estimating the operating characteristics of a given study
+design is not as easy. Without tools to assist them, it could be a
+barrier to implementation of the method. In practice, the trialist will
+want to know the operating characteristics under the following adaptive
+monitoring design features.
+
+\begin{itemize}
+\tightlist
+\item
+  Frequency of looks at the data, i.e.~recalculate CI at every jth
+  subject.
+\item
+  Minimum precision requirement before applying monitoring rules,
+  i.e.~check monitoring rules only if \textbar{}CI\textbar{} \textless{}
+  w.
+\item
+  Required observations between an alert and affirmation to stop,
+  i.e.~evaluate stopping rule j*k subjects after alert.
+\item
+  Anticipated maximum amount of data that could be collected, maxN,
+  i.e.~the sample size at which the study will cease collection
+  regardless of the stopping rules.
+\item
+  Lag time between enrolling a subject and observing their outcome
+  measured in the number of subjects recruited during the lag, i.e.~m
+  additional subjects will be recruited in the time between one subject
+  being recruited and that one subject's outcome being observed. The
+  traditional trialist will mainly be looking for the point null Type I
+  error probability and Power, i.e.~the probability of concluding an
+  effect is non-trivial for a given true effect size. They may also want
+  some simple summary statistics for the potential sample sizes. We hope
+  to provide access to these and to a more rich set of operating
+  characteristics. Operating characteristics we can potentially estimate
+  for a given set of design features include the following.
+\item
+  Distribution of potential sample sizes.
+\item
+  Point Null Type I error, when the point null is true, i.e.~probability
+  of excluding the point null from the final interval estimate.
+  Classical trialists will want reassurance this is \textless{} 5\%.
+\item
+  Interval Null Type I error, when the point null is true,
+  i.e.~probability of excluding the entire trivial zone from the final
+  interval estimate. This will be less than or equal to the point null
+  Type I error.
+\item
+  Power vs the point null, i.e.~probability the final interval estimate
+  excludes the point null for a given true effect size. This is akin to
+  classical statistical power.
+\item
+  Power vs the interval null, i.e.~probability the final interval
+  estimate excludes the null zone for a given true effect size. This
+  will be less than or equal to the point null power, but is
+  conceptually the preferable quantity. In better terms, this is the
+  probability of concluding the effect is non-trivial for given true
+  effect sizes.
+\item
+  Probability of concluding effect is non-highly actionable for given
+  true effect sizes.
+\item
+  Probability of an inconclusive finding at the end of resources. Note a
+  clinically inconclusive finding is a possibility whenever maxN is
+  finite and/or m \textgreater{} 0.
+\item
+  Bias, MSE, and interval coverage probability from a frequentist
+  perspective.
+\item
+  False confirmation probability under a specified prior distribution.
+  To address these needs, we provide an R function, sgpvAM, that
+  simulates the above design operating characteristics for normal and
+  binomial outcomes, and we offer practical advice setting the minimum
+  wait time (in terms of inferential interval width) and the number of
+  looks before affirming an alert.
+\end{itemize}
+
+\hypertarget{sgpvam-package}{%
+\section{sgpvAM Package}\label{sgpvam-package}}
+
+The sgpvAM package allows the user to obtain study design operating
+characteristics under a variety of settings for adaptive monitoring
+using the second generation p-value.
+
+\hypertarget{mcmc-replicates}{%
+\subsection{MCMC Replicates}\label{mcmc-replicates}}
+
+The user may use the sgpvAM function to generate MCMC replicates of
+outcomes and intervention assignments along with an estimate of the
+effect and a lower- and upper- interval bound; replicates are generated
+using parallel computing. Alternatively, the user may provide their own
+generated data together with an estimated effect and interval bounds.
+When using the sgpvAM function, the user specifies the data generation
+function (any of the r{[}dist{]} such as rnorm) along with arguments to
+the function. Similarly, the user specifies effect generation. At this
+point, only fixed effects have been thoroughly tested. However, by
+specifing a distribution for the effects, the user may explore False
+Discovery Probabilities and other operating characteristics, such as
+bias, dependent on distributional assumptions of the effect.
+
+\hypertarget{one--vs-two-sided-hypotheses}{%
+\subsection{One- vs Two-Sided
+Hypotheses}\label{one--vs-two-sided-hypotheses}}
+
+Clinical Guideposts defining regions of Trivial and Highly Actionable
+Effects must be provided though may be one- or two-sided. The point null
+must be within the Trivial Region and cannot be a boundary of the
+region. For general nomenclature, inputs to define the regions are:
+deltaL2 (the Clinically Highly Actionable Boundary less than the point
+null), deltaL1 (the Trivial Region Boundary less than the point null),
+deltaG1 (the Trivial Region Boundary greater than the point null), and
+deltaG2 (the Clinically Highly Actionable Boundary greater than the
+point null). See Paper 2 (Chapter 3) for a thorough discussion of these
+regions.
+
+\hypertarget{tuning-study-parameters}{%
+\subsection{Tuning study parameters}\label{tuning-study-parameters}}
+
+To maximize performance of operating characteristics under a given
+sample size the sgpvAM function allows the user to specify multiple wait
+time settings, frequency of looks, and number of steps before affirming
+a stopping rule. (The wait time is the time until the expected
+Confidence Interval Width achieves a certain length or less).
+
+\hypertarget{operating-characteristics-under-normal-outcomes}{%
+\subsection{Operating characteristics under normal
+outcomes}\label{operating-characteristics-under-normal-outcomes}}
+
+After generating the operating characteristics under a fixed normal
+outcome, the user may use the locationShift function to obtain operating
+characteristics under a range of fixed treatment effects. The function
+uses the saved MCMC replicates and adds to them if needed for additional
+monitoring.
+
+\hypertarget{ecdf-of-sample-size-and-bias}{%
+\subsection{ECDF of sample size and
+bias}\label{ecdf-of-sample-size-and-bias}}
+
+Once a study design has been selected based on average performance
+(sample size, bias, and error probabilities), the user may use the
+ecdf.sgpv function to see the empirical cumulative distribution across
+the MCMC replicates for sample size and bias under a specific design.
+The user may see the estimated probability of the sample size exceeding
+a certain maximum sample size.
+
+\hypertarget{general-suggestions}{%
+\subsection{General suggestions}\label{general-suggestions}}
+
+Computations may be time consuming. It is recommended to start with 1000
+replicates to get a general sense of average sample size and error
+probabilities under a variety of investigated wait times and affirmation
+steps. Investigating many wait times increases the computational burden.
+It is also recommended to generate MCMC replicates in the (or one of
+the) mid point(s) between the Clinically Trivial and Highly Actionable
+Regions. This is the region with greatest expected sample size and
+reduces the burden of the locationShift function to generate more data.
+
+\hypertarget{inputs}{%
+\subsection{Inputs}\label{inputs}}
+
+\hypertarget{return-values}{%
+\subsection{Return values}\label{return-values}}
+
+The sgpvAM function returns a list with three elements:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  mcmcMonitoring -- the mcmcReplicates when outData is TRUE,
+\item
+  mcmcEndOfStudy -- operating characteristics on average and ECDF for
+  each combination of wait time and number of steps before affirming a
+  stopping rule
+\item
+  inputs -- Inputs in to the sgpv function
+\end{enumerate}
+
+As supporting material for the package, we have developed an extensive
+vignette that illustrates using sgpvAM to estimate and explore the
+impact of study design choices on Point Null Type I error, Power for a
+range of true effect sizes, average sample sizes, the distribution of
+possible sample sizes, and more. These include the types of figures and
+calculations that will be of particular interest to the traditional
+trialist. The full vignette may be found at
+\url{https://github.com/chipmanj/sgpvAM} or by loading the sgpvAM
+package and calling Vignette(package = ``sgpvAM'', topic = ``README'').
+Three of the example figures are presented briefly below. Figure 1 is a
+classical power curve which shows the probability the final CI will
+exclude the point null at various true effect sizes. The power when the
+true effect size is equal to the point null is the classical point null
+Type I error probability. The figure illustrates the impact of various
+wait times on the power curve. The second generation p-value adaptive
+design allows for designing trials with finite and infinite sample sizes
+in mind. We recommend presenting both. Figure 1 illustrates the infinite
+sample size. Notice the point null Type I error is bounded below 5\%
+even when the maximum sample size is theoretically infinite. Under this
+framework, a study that stopped for reaching a maximum sample size could
+be restarted without concern of controlling point null Type I error.
+Figure 2 displays the impact of increasing the affirmation steps on the
+average sample size. Increasing the affirmation steps has benefits in
+reducing bias, increasing interval coverage probabilities, and
+increasing the stability of conclusions particularly in the presence of
+a lag between recruitment and outcome observation. These benefits come
+with an increase in average sample size, particularly in between the
+bounds of the Trivial and Highly Actionable regions, i.e.~where
+erroneous conclusions due to stopping too early are most likely.
+Non-adaptive studies are typically designed a with high probability of
+an inconclusive finding. Consider a non-adaptive study designed to have
+80\% power at a clinically highly actionable effect size. Such a study
+will include the point null in its final interval 20\% of the time. It
+will include values from the null region with an even higher
+probability. Although designed to only stop when a clinically highly
+actionable conclusion has been found, second generation p-value adaptive
+monitored trials may yield a clinically inconclusive finding if the
+trial has a fixed maximum sample size and/or a lag between recruitment
+and outcome observation. This probability is highest in between the
+bounds of the Trivial and Highly Actionable regions. Figure 3
+illustrates the control of this probability provided through increasing
+the affirmation steps in the presence of a 50 subject lag time. Even
+with this large lag, a relatively small affirmation step requirement
+bounds the probability of an inconclusive finding below 20\%.
+
+\hypertarget{practical-recommendations}{%
+\section{Practical Recommendations}\label{practical-recommendations}}
+
+Of key importance to classical trialists is controlling point null Type
+I Error and achieving a high probability of excluding the point null
+when the true effect size is clinically highly actionable. Of key
+importance to medical researchers is completing the study with a
+clinically highly actionable finding. We show that focusing on the later
+will achieve the former. When a study is not able to observe outcomes
+immediately, care should be taken to reduce the risk of stopping and
+then being inconclusive after observing the remaining observations. To
+control error rates, one may change the clinical guideposts, reduce the
+number of times monitoring the study, and/or increase the number of
+steps before affirming a stopping rule. Ideally, the clinical guideposts
+chosen for their clinical interpretation. We discourage altering them
+for the sake of operational characteristics. Instead, we encourage
+optimizing operating characteristics through the waiting a period of
+time before monitoring and requiring a number of observations to pass
+until affirming an alert to stop the study. We consider various wait
+times based upon the expected confidence interval width under an assumed
+outcome standard deviation. Twenty thousand MCMC replicates of a study
+with standard normal outcomes are generated using the sgpvAM package
+under five one-sided hypotheses settings and five symmetric two-sided
+hypotheses. The settings reflect situations where (Setting 1) the
+Trivial and Highly Actionable Effect bounds are both close to the point
+null of zero, (Settings 2-4) the Trivial Effect bound is close to the
+null and the Highly Actionable Effect is far from the point null, and
+(Setting 5) situations where the bound for Highly Actionable Effects is
+far from the null and the bound for Trivial Effects is increasingly
+close to the Highly Actionable Effect bound. These results generalize to
+normal outcomes with clinical guideposts relative to the standard
+deviation. For both one- and symmetric two-sided hypotheses, the
+probability of a Type I Error is minimized by waiting until the
+Confidence Interval Width is the midpoint between the Trivial and Highly
+Actionable Zones (Figure 4). For example, a one-sided study with At Most
+Trivial Effects defined as (-\(\infty\), 0.1{]} and Highly Actionable
+Effects as {[}0.2, \(\infty\)) reduces the probability of a Type I Error
+by waiting until the Confidence Interval Width is 0.15. In these
+simulations, the probability of a Type I Error remained less than or
+equal to 0.05 when waiting longer, until the Confidence Interval Width
+equaled the positive boundary of the Trivial Effects. The following
+operating characteristics benefit from a longer wait time (i.e.~waiting
+until the CI Width is more narrow): power (Figure 5); an interval null
+equivalent to Type I Error (Figures 7 and 8), Power (Figure 9), and Type
+Two Error (Figure 10); and the probability of stopping for conclusive
+observed outcomes yet becoming inconclusive after observing the
+remaining unobserved outcomes (Figure 11). On the other hand, a shorter
+wait time yields smaller average sample sizes (Figure 6). The gains in
+sample size diminishes once the wait time is the midpoint between the
+Trivial and Highly Actionable Zones.\\
+On whole, this suggests waiting no longer than this midpoint and may
+motivate waiting slightly longer (for a smaller Confidence Interval
+Width). When the boundary of the Trivial Zone is close to half the
+boundary of the Highly Actionable Zone, it may be worthwhile to set the
+Confidence Interval wait time to the boundary of the Trivial Zone (refer
+to settings 3 and 4 in Figure 6 compared to setting 2). Across these
+simulations, setting the wait width to one quarter between the Trivial
+and Highly Actionable boundaries balances well maximizing operating
+characteristics without a substantive increase in average observed
+sample size. In the earlier one-sided example, this would be to wait
+until the expected Confidence Interval Width equals 0.125. This leads us
+to some practical recommendations regarding wait time. First, if the
+outcome's variability is well known, set the wait time to one quarter of
+the distance between the Trivial and Highly Actionable boundaries.
+Second, if the variability is not well known, error on over-assuming the
+variability. This will result in setting a longer-wait time than needed.
+In this instance, we suggest setting the Confidence Interval Width to
+the mid point between the Trivial and Highly Actionable boundaries.
+Studies may have intermediate outcomes. For effects that are neither
+Trivial nor Highly Actionable, there's a very plausible chance the study
+ends conclusively for the outcomes observed yet becomes inconclusive
+after observing the outcomes of remaining study observations (Figure
+11). To reduce this risk, we recommend increasing the number of steps
+required to affirm stopping rules.
+
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
+
+We provide the sgpvAM package to provide greater ease of access to
+develop and study the operating characteristics of adaptive monitoring
+with the second generation p-value. Based on simulations of normally
+distributed data, we recommend waiting until the expected Confidence
+Interval Width is one quarter the absolute distance between the Trivial
+and Highly Actionable Region boundaries. When outcomes do not occur
+immediately, there is a risk of the study stopping then being
+inconclusive once all observations are observed. This risk is reduced by
+requiring an increased number of steps before affirming an alert to stop
+the study.
+
+\hypertarget{conclusions-1}{%
+\chapter{Conclusions}\label{conclusions-1}}
+
+This body of work introduces study design methods and to improve the
+effective sample size, allow for greater personalization of intervention
+to subgroups, and adaptively follow studies until reaching a clear
+clinical conclusion. Software and practical recommendations are provided
+for developing adaptive monitoring study designs.
+
+First, we provide novel extensions to Sequential Matched Randomization
+which achieve greater covariate balance and efficiency than existing
+Sequential Matched Randomization and traditional methods such as
+Stratified Block Randomization. A dynamic and empirically-estimated
+matching threshold allows all patients to match and relaxes an
+assumption that baseline covariates are normally distributed. We allow
+matches to break and rematch if a better matches enrolls in the study.
+Under our method, randomization-based inference achieves nearly the same
+efficiency as fitting an adjusted linear model to adjust for baseline
+covariates. And, with greater covariate balance, an investigator may
+better investigate the response of subgroups to intervention.
+
+Second, we introduce adaptive monitoring with the second-generation
+p-value which allows for following a study until ruling out effects
+deemed trivial or until ruling out effects highly actionable to change
+clinical practice. This grounds the clinical trial not only on
+statistical significance but also clinical relevance, and can help
+reduce the risk of a trial ending with inconclusive findings. We provide
+a case study through the REACH, a Vanderbilt University Clinical Trial,
+aimed to help patients with diabetes increase glycemic control and
+better adhere to medications.
+
+Finally, we develop statistical software and provide practical
+recommendations for designing an adaptive monitoring trial using the
+second generation p-value. The R package sgpvAM simulates data to
+estimate operating characteristics for these trials; the required
+simulation may be a barrier of entry to use this adaptive trial design.
+We recommend a wait time before applying monitoring rules to control the
+classical Type I error. When outcomes are not immediately observed
+relative to enrollment, we recommend increasing the number of
+observations before affirming a stopping alert. This reduces the risk of
+stopping based on observed observations then finding a study
+inconclusive when observing the remaining observations.
+
+\hypertarget{references}{%
+\chapter*{REFERENCES}\label{references}}
 \addcontentsline{toc}{chapter}{REFERENCES}
 
 \hypertarget{refs}{}
-\hypertarget{ref-example}{}
-Last name, First name. 2018. ``Title of article.'' \emph{Journal} volume
-(number): pages.
+\leavevmode\hypertarget{ref-Armitage:1982ji}{}%
+Armitage, Peter. 1982. ``The role of randomization in clinical trials.''
+\emph{Statistics in Medicine} 1 (4): 345--52.
+
+\leavevmode\hypertarget{ref-Atkinson:1982kt}{}%
+Atkinson, A C. 1982. ``Optimum Biased Coin Designs for Sequential
+Clinical Trials with Prognostic factors.'' \emph{Biometrika} 69 (1): 61.
+
+\leavevmode\hypertarget{ref-Berchialla:2018bk}{}%
+Berchialla, Paola, Dario Gregori, and Ileana Baldi. 2018. ``The Role of
+Randomization in Bayesian and Frequentist Design of Clinical Trial.''
+\emph{Topoi} 76 (4): 479.
+
+\leavevmode\hypertarget{ref-Berger:2003im}{}%
+Berger, Vance W, Anastasia Ivanova, and Maria Deloria Knoll. 2003.
+``Minimizing predictability while retaining balance through the use of
+less restrictive randomization procedures.'' \emph{Statistics in
+Medicine} 22 (19): 3017--28.
+
+\leavevmode\hypertarget{ref-Berry:2010fr}{}%
+Berry, Scott, Bradley Carlin, J Lee, and Peter Müller. 2010. ``Bayesian
+Adaptive Methods for Clinical Trials.'' CRC Press.
+
+\leavevmode\hypertarget{ref-Blume:SGPV}{}%
+Blume, Jeffrey D, Lucy DAgostino McGowan, William D Dupont, and Robert A
+Greevy Jr. 2018. ``Second-generation p-values: Improved rigor,
+reproducibility, \& transparency in statistical analyses.'' \emph{PloS
+One} 13 (3): e0188299 EP.
+
+\leavevmode\hypertarget{ref-Bothwell:2016bc}{}%
+Bothwell, Laura E, Jeremy A Greene, Scott H Podolsky, and David S Jones.
+2016. ``Assessing the Gold Standard--Lessons from the History of RCTs.''
+\emph{New England Journal of Medicine} 374 (22): 2175--81.
+
+\leavevmode\hypertarget{ref-Broglio:2014fr}{}%
+Broglio, Kristine R, Jason T Connor, and Scott M Berry. 2014. ``Not too
+big, not too small: a goldilocks approach to sample size selection.''
+\emph{Journal of Biopharmaceutical Statistics} 24 (3): 685--705.
+
+\leavevmode\hypertarget{ref-Ciolino:2011ff}{}%
+Ciolino, Jody, Wenle Zhao, Renee Martin, and Yuko Palesch. 2011.
+``Quantifying the cost in power of ignoring continuous covariate
+imbalances in clinical trial randomization.'' \emph{Contemporary
+Clinical Trials} 32 (2): 250--59.
+
+\leavevmode\hypertarget{ref-DienerWest:1989uq}{}%
+Diener-West, M, T W Dobbins, T L Phillips, and D F Nelson. 1989.
+``Identification of an optimal subgroup for treatment evaluation of
+patients with brain metastases using RTOG study 7916.''
+\emph{International Journal of Radiation Oncology, Biology, Physics} 16
+(3): 669--73.
+
+\leavevmode\hypertarget{ref-fisher1935design}{}%
+Fisher, Ronald A. 1935. ``The design of experiments. 1935.''
+\emph{Oliver and Boyd, Edinburgh}.
+
+\leavevmode\hypertarget{ref-Freedman:2008eq}{}%
+Freedman, David A. 2008a. ``On regression adjustments to experimental
+data.'' \emph{Advances in Applied Mathematics} 40 (2): 180--93.
+
+\leavevmode\hypertarget{ref-Freedman:2008em}{}%
+---------. 2008b. ``On regression adjustments in experiments with
+several treatments.'' \emph{The Annals of Applied Statistics} 2 (1):
+176--96.
+
+\leavevmode\hypertarget{ref-Freedman:1984wz}{}%
+Freedman, L S, D Lowe, and P Macaskill. 1984. ``Stopping rules for
+clinical trials incorporating clinical opinion.'' \emph{Biometrics} 40
+(3): 575--86.
+
+\leavevmode\hypertarget{ref-Fu:2016jy}{}%
+Fu, Haoda, Jin Zhou, and Douglas E Faries. 2016. ``Estimating optimal
+treatment regimes via subgroup identification in randomized control
+trials and observational studies.'' \emph{Statistics in Medicine} 35
+(19): 3285--3302.
+
+\leavevmode\hypertarget{ref-Greevy:2004ke}{}%
+Greevy, R, B Lu, J H Silber, and P Rosenbaum. 2004. ``Optimal
+multivariate matching before randomization.'' \emph{Biostatistics
+(Oxford, England)}.
+
+\leavevmode\hypertarget{ref-GreevyJr:2012hp}{}%
+Greevy Jr., Robert A, Carlos G Grijalva, Christianne L Roumie, Cole
+Beck, Adriana M Hung, Harvey J Murff, Xulei Liu, and Marie R Griffin.
+2012. ``Reweighted Mahalanobis distance matching for cluster-randomized
+trials with missing data.'' \emph{Pharmacoepidemiology and Drug Safety}
+21 (May): 148--54.
+
+\leavevmode\hypertarget{ref-Hill:1952hc}{}%
+Hill, A Bradford. 1952. ``The Clinical Trial.'' \emph{New England
+Journal of Medicine} 247 (4): 113--19.
+
+\leavevmode\hypertarget{ref-Hobbs:2008ce}{}%
+Hobbs, Brian P, and Bradley P Carlin. 2008. ``Practical Bayesian design
+and analysis for drug and device clinical trials.'' \emph{Journal of
+Biopharmaceutical Statistics} 18 (1): 54--80.
+
+\leavevmode\hypertarget{ref-Kallus:2018um}{}%
+Kallus, N, and 2018. 2018. ``Optimal a priori balance in the design of
+controlled experiments.'' \emph{Journal of the Royal Statistical Society
+Series B} 80: 85--112.
+
+\leavevmode\hypertarget{ref-Kapelner:2014cu}{}%
+Kapelner, Adam, and Abba Krieger. 2014. ``Matching on-the-fly:
+Sequential allocation with higher power and efficiency.''
+\emph{Biometrics} 70 (2): 378--88.
+
+\leavevmode\hypertarget{ref-Kruschke:2013jy}{}%
+Kruschke, John K. 2013. ``Bayesian estimation supersedes the t test.''
+\emph{Journal of Experimental Psychology. General} 142 (2): 573--603.
+
+\leavevmode\hypertarget{ref-Kruschke:2018bz}{}%
+---------. 2018. ``Rejecting or Accepting Parameter Values in Bayesian
+Estimation:'' \emph{Advances in Methods and Practices in Psychological
+Science} 1 (2): 270--80.
+
+\leavevmode\hypertarget{ref-LeylandJones:2003kt}{}%
+Leyland-Jones, B. 2003. \emph{Breast cancer trial with erythropoietin
+terminated unexpectedly}. The lancet oncology.
+
+\leavevmode\hypertarget{ref-Lin:2013jh}{}%
+Lin, Winston. 2013. ``Agnostic notes on regression adjustments to
+experimental data: Reexamining Freedman's critique.'' \emph{The Annals
+of Applied Statistics} 7 (1): 295--318.
+
+\leavevmode\hypertarget{ref-Loux:2014bu}{}%
+Loux, Travis M. 2014. ``Randomization, matching, and propensity scores
+in the design and analysis of experimental studies with measured
+baseline covariates.'' \emph{Statistics in Medicine} 34 (4): 558--70.
+
+\leavevmode\hypertarget{ref-Atkinson:1999hq}{}%
+Medicine, AC Atkinson Statistics in, and 1999. 1999. ``Optimum
+biased-coin designs for sequential treatment allocation with covariate
+information (With Discussion).'' \emph{Journal of the Royal Statistical
+Society Series B} 18 (14): 1753--5.
+
+\leavevmode\hypertarget{ref-Morgan:2012iq}{}%
+Morgan, K L, and D B Rubin. 2012. ``Rerandomization to improve covariate
+balance in experiments.'' \emph{The Annals of Statistics}.
+
+\leavevmode\hypertarget{ref-Nelson:2018bw}{}%
+Nelson, Lyndsay A, Kenneth A Wallston, Sunil Kripalani, Robert A Greevy
+Jr., Tom A Elasy, Erin M Bergner, Chad K Gentry, and Lindsay S Mayberry.
+2018. ``Mobile Phone Support for Diabetes Self-Care Among Diverse
+Adults: Protocol for a Three-Arm Randomized Controlled Trial.''
+\emph{JMIR Research Protocols} 7 (4): e92.
+
+\leavevmode\hypertarget{ref-Peirce:1884wra}{}%
+Peirce, C S, and J Jastrow. 1884. ``On small differences in sensation.''
+\emph{Memoirs of the National Academy of Sciences} III: 73--83.
+
+\leavevmode\hypertarget{ref-Pocock:1975wd}{}%
+Pocock, Stuart J, and Richard Simon. 1975. ``Sequential Treatment
+Assignment with Balancing for Prognostic Factors in the Controlled
+Clinical Trial.'' \emph{Biometrics} 31 (1): 103--15.
+
+\leavevmode\hypertarget{ref-Pocock:2016ey}{}%
+Pocock, Stuart J, and Gregg W Stone. 2016a. ``The Primary Outcome Fails
+- What Next?'' \emph{New England Journal of Medicine} 375 (9): 861--70.
+
+\leavevmode\hypertarget{ref-Pocock:2016ca}{}%
+---------. 2016b. ``The Primary Outcome Is Positive - Is That Good
+Enough?'' \emph{New England Journal of Medicine} 375 (10): 971--79.
+
+\leavevmode\hypertarget{ref-Rosenberger:2008cm}{}%
+Rosenberger, W F, and O Sverdlov. 2008. ``Handling covariates in the
+design of clinical trials.''
+
+\leavevmode\hypertarget{ref-Senn:2010bg}{}%
+Senn, Stephen, Vladimir V Anisimov, and Valerii V Fedorov. 2010.
+``Comparisons of minimization and Atkinson\&apos;s algorithm.''
+\emph{Statistics in Medicine} 29 (7-8): 721--30.
+
+\leavevmode\hypertarget{ref-Spiegelhalter:1994cn}{}%
+Spiegelhalter, David J, Laurence S Freedman, and Mahesh K B Parmar.
+1994. ``Bayesian Approaches to Randomized Trials.'' \emph{Journal of the
+Royal Statistical Society: Series A (Statistics in Society)} 157 (3):
+357.
+
+\leavevmode\hypertarget{ref-Taves:1974hn}{}%
+Taves, Donald R. 1974. ``Minimization: A new method of assigning
+patients to treatment and control groups.'' \emph{Clinical Pharmacology
+\&Amp; Therapeutics} 15 (5): 443--53.
+
+\leavevmode\hypertarget{ref-Wei:1988if}{}%
+Wei, L J, and John M Lachin. 1988. ``Properties of the urn randomization
+in clinical trials.'' \emph{Controlled Clinical Trials} 9 (4): 345--64.
+
+\leavevmode\hypertarget{ref-Quan:SeqRerand}{}%
+Zhou, Quan, Philip Ernst, Kari Lock Morgan, Donald B Rubin, and Anru
+Zhang. 2018. ``Sequential Rerandomization.'' \emph{arXiv.org}, April,
+1--23.
 
 \end{document}
