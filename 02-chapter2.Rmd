@@ -1,6 +1,6 @@
 # Adaptive Monitoring using Second Generation p-Values Draft
 
-# Introduction
+## Introduction
 
 Conclusive clinical trials either rule out clinically trivial or clinically actionable treatment effects.  Like driving blind, this is a hard ideal to achieve without adaptive monitoring.  The costs of ending too soon, when resources and knowledge were available otherwise, can be extraordinary [@Pocock:2016ca].  On the other hand, a significant yet non-clinically actionable study can also be costly [@Pocock:2016ey].  For these reasons, and to the extent possible, investigators turn to adaptive monitoring designs because the sample size is “not too big, not too small, but just right [@Broglio:2014fr].”  To this we add the imperative: _to the point of being clinically conclusive_.
 
@@ -13,12 +13,12 @@ Interval null hypotheses reduce family-wise Type I Error rates  [@Blume:SGPV; @K
 Many Bayesian adaptive trial designs incorporate interval null hypotheses [@Freedman:1984wz; @Berry:2010fr; @Hobbs:2008ce; @Kruschke:2013jy], and we develop an analogous Second Generation p-value adaptive design. The rest of the paper follows as: establishing a-priori clinically relevant guideposts, introducing the second generation _p_-value, adaptively monitoring with with the second generation p-value, comparing the second generation _p_-value and Bayesian adaptive monitoring with the REACH clinical trial data, and drawing final conclusions.
 
 
-# Clinically Relevant Guideposts
+## Clinically Relevant Guideposts
 
 In a two-sided study, four boundaries provide clinical guideposts.  Highly actionable treatment effects are of a magnitude of at least of $\delta_E$ for benefit or of $\delta_H$ for harm.  Trivial treatment effects are between $\delta_{TE}$ and $\delta_{TH}$ and encompass the point null (Figure 1).  The remaining effects are moderately actionable; moderate treatment benefits are between $\delta_{TE}$ and $\delta_{E}$ and moderate treatment harms are between $\delta_{TH}$ and $\delta_{H}$.  In any study, the implementation of an intervention takes into account secondary measures such as side effects, costs, etc..  Hence, a highly actionable effect is likely to outweigh the off-setting benefits / costs.  A moderately actionable effect has greater equipoise with offsetting benefits / costs.A one sided study omits $\delta_H$ and $\delta_{TH}$ to focus only on $\delta_TE$ and $\delta_{E}$.  
 
 ```{r clinicalGuideposts, echo=FALSE, fig.pos = "H", fig.align='center',fig.cap="Clinically relevant guideposts are determined during study design, based on scientific context, and ought to be incorporated into the final study inference.  In a one-sided study (left figure), the clinical guideposts create the regions: no more than trivial effect, moderately actionable effect, and highly actionable effect.  In a two-sided study (right figure), three regions are created: trivial effects, moderately actionable effects, and highly actionable effects."}
-knitr::include_graphics("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/clinicalGuideposts/Slidev03_01.jpg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/clinicalGuideposts/Slidev03_01.png")
 ```
 
 
@@ -29,7 +29,7 @@ Setting a-priori clinical guideposts brings transparency to the study design.  M
 Excellent references are available for helping establish clinical guideposts [@Freedman:1984wz; @Spiegelhalter:1994cn; @Kruschke:2018bz; @Blume:SGPV]. 
 
 
-# Second Generation p-value
+## Second Generation p-value
 
 An inferential metric, the second-generation _p_-value indicates when the data are compatible with the alternative hypothesis, the _Trivial Zone_ null hypothesis, or when the data are inconclusive [@Blume:SGPV].  More generally, it may be used for any interval hypothesis.  The second-generation _p_-value calculates the overlap between an interval _I_ (any interval including but not limited to a Confidence, Credible, Support Interval, etc.) and the set of effects $\Delta_H$ in the hypothesis _H_.  The interval includes [_a_, _b_] where _a_ and _b_ are real numbers such that _a_ < _b_, and the length of the interval is _b_ - _a_ and denoted |_I_|.  The overlap between the interval and the set $\Delta_H$ is $|I \bigcap \Delta_H |$.  The second generation p-value is then calculated as
 
@@ -53,11 +53,11 @@ Neither of these two hypotheses include moderately actionable treatment effects.
 Again, the interpretation of these regions closely relate to the interpretations of the _Region of Equivalence_.  They match exactly when in the case of a one-sided study with a _Trivial Zone_ around the point null.
 
 ```{r figs, echo=FALSE, fig.pos="H", fig.align='center',fig.cap="Final study inference ought to incorporate a-priori clinical guideposts.  The second generation p-value draws inference based on hypothesized sets of treatment effects.  We focus on two sets of hypotheses that form the Region of Clinically Trivial Effects and the Region of Clinically Highly Actionable Effects. (This figure focuses on two-sided studies yet similar conclusions are drawn for one-sided studies). With the two sets of hypotheses, the second-generation p-value can rule out trivial effects (the top four conclusions), rule out non-highly actionable effects (the middle five conclusions), or declare the study yet inconclusive.  Confidence Intervals that correspond to a p-value close to but not exceeding 0.05 would be declared inconclusive."}
-knitr::include_graphics("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/clinicalGuideposts/Slidev03_02.jpg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/clinicalGuideposts/Slidev03_02.png")
 #plot(x=1,y=1)
 ```
 
-# Adaptive Monitoring Rules / Guidance
+## Adaptive Monitoring Rules / Guidance
 
 A study implements the following rules for adaptive monitoring with the second-generation _p_-value:
 
@@ -80,14 +80,14 @@ Moderately actionable effects have a greater chance of raising conflicting alert
 
 With only adapting the monitoring rules, the remaining rules apply to monitoring with Bayesian Credible Intervals.  An alert for a non-highly actionable effect when P(Treatment Effect $\notin \Delta_{HA}$ | Data) > 1 – $\alpha_{criteria-not-actionable}$ or for a non-trivial effect when P(Treatment Effect $\notin \Delta_{T}$ | Data) > 1 – $\alpha_{criteria-not-trivial}$.  $\alpha_{criteria-not-actionable}$ and $\alpha_{criteria-not-trivial}$ are study design tuning parameters based on simulations to achieve a desired end of study Type I Error and Power.
 
-# Adaptively Monitoring the REACH clinical trial
+## Adaptively Monitoring the REACH clinical trial
 
-## Context
+### Context
 The Rapid Education/Encouragement And Communications for Health (REACH) randomized clinical trial [@Nelson:2018bw] is designed to help patients with diabetes better manage glycemic control (as measured by Percent Hemoglobin A1c) and adhere to medication.  Patients randomized to the intervention receive text message-delivered diabetes support for over 12 months.  Now with complete enrollment, 512 patients are currently being followed up through 3, 6, 12, and 15 months.  
 
 In this population, lower Hemoglobin A1c reflects improved glycemic control.  A change in Hemoglobin A1c of +/- of 0.15 (median REACH baseline Hemoglobin A1c of 8.20 [IQR of 7.20, 9.53]) is clinically trivial, whereas a decrease of Hemoglobin A1c of 0.5 is highly actionable to the point of adopting this novel intervention.  While we anticipate the intervention to improve Hemoglobin A1c, we designed the study to be two-sided.  That is, $\delta_E$ = -0.50, $\delta_{TE}$ = -0.15, $\delta_{TH}$ = 0.15, and $\delta_H$ = 0.50.
 
-## Simulation
+### Simulation
 For comparison, 20,000 bootstrap samples of baseline Hemoglobin A1c were drawn for assessing the second-generation _p_-value and Bayesian adaptive design.  With block two randomization, half of each bootstrap’s sampled patients were assigned to intervention.  Their outcome equaled baseline Hemoglobin A1c plus a treatment effect at settings {Treatment Effect: -1, -0.75, -0.50, -0.45, -0.35, -0.20, -0.15, 0}. The outcome of those on the standard of care equaled their baseline Hemoglobin A1c. Only negative effects were investigated but by symmetry, increases in Hemoglobin A1c of the same magnitude perform similarly.  For these simulations, outcomes occurred instantaneously.  
 
 Monitoring began after the 60th enrolled patient and continued every 60th patient until either affirming an alert 60 patients later or until reaching the end of resources (512 patients).  For each second-generation _p_-value Monitoring Interval, we fit a marginal ordinary least squares regression of outcome Hemoglobin A1c given treatment assignment and obtained the 95% Confidence Interval for the treatment effect.  And, for the Bayesian adaptive monitoring, we used a Bayesian alternative to the t-test: two-sample difference of means where the intervention group mean, $Y_I$, and control group mean, $Y_C$, were both distributed $t(\mu, \sigma, \nu)$ [@Kruschke:2013jy].
@@ -96,7 +96,7 @@ For Bayesian priors, we set $\mu$ ~ $N(\bar{y}$, 1 / $\phi$-1(.9)) as a fairly f
 
 The two Bayesian adaptive designs (one with a flat and the other skeptical prior) were calibrated by finding the $\alpha_{criteria-not-actionable} = \alpha_{criteria-not-trivial}$ that achieve the same Type I Error  and probability of stopping for efficacy as the second-generation _p_-value adaptive design.  The later calibration was then used to compare adaptive designs in terms of average trial sample size, bias, and coverage of reported interval.  Operating characteristics are estimated for given treatment effects.  When allowing for distributional assumptions, a correctly specified prior has zero bias.  A challenge lies in comparing the operating charactersitics from two different priors, as one would be assumed true and the other a sensitivity analysis.  However, priors are often determined as though a true reflection of distribution of effects that may be observed.  <!-- For a point of reference, we include the Power curve for a fixed, one-look, hypothesis test given the data’s variability and the Type I Error of the equally calibrated adaptive designs. -->
 
-## Results
+### Results
 
 The flat and skeptical prior Credible Interval adaptive monitoring designs were calibrated to have the same Type I Error as adaptive monitoring with the second-generation _p_-value (Type I Error = 0.049; Figure 3).  While this was close to 0.05, the Type I Error changes depending on the wait time until monitoring and the number of looks.  Adaptive monitoring using the second-generation _p_-value and flat prior Credible Interval were near identical in Power; whereas, adaptive monitoring using a skeptical prior Credible Interval achieved less Power.  The same trend was seen in all other results.
 
@@ -113,7 +113,7 @@ knitr::include_graphics("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manu
 ```
 
 ```{r state, echo=FALSE, out.width= "2in",   fig.align='center', fig.pos="H", fig.show="hold", fig.cap="In adaptive monitoring, a study can end in one of three states: ending for efficacy / harm, ending for futility, or ending at the end of resources.  Above are estimated probabilities of ending in each of these states for each design and treatment effect.  The probability of stopping for efficacy / harm is an interval null equivalent to Power.  The Bayesian adaptive monitoring designs were calibrated to have the same probability of stopping for efficacy as adaptive monitoring with the second generation p-value.  All following results are based off this calibration.  The skeptical prior is pulled so much to the null that studies tend to end for futility too soon.  This can be overcome with a longer burn in."}
-knitr::include_graphics(c("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probEff.jpeg","figs/probFut.jpeg","figs/probMore.jpeg"))
+knitr::include_graphics(c("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probEff.jpeg","~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probFut.jpeg","~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probMore.jpeg"))
 ```
 
 
@@ -131,7 +131,7 @@ knitr::include_graphics("~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manu
 ```
 
 
-# Discussion
+## Discussion
 
 We developed an adaptive monitoring scheme, using the second generation _p_-value, to follow studies until either ruling out trivially null or clinically highly actionable treatment effects. Two major contributions come from this scheme: (1) the monitoring scheme incorporates clinically relevant guideposts that may help trivially null and clinically meaningful studies stop quickly while still reaching a clear clinical conclusion and (2) the easy-to-calculate second generation _p_-value allows an investigator to adaptively monitor with their inferential interval of choice (including but not limited to Confidence Intervals, Credible Intervals, Support Intervals, etc.).  While not explored explicity in this paper, this design is well suited for following multiple outcomes and following subgroups until they reach clear clinical conclusions.
 

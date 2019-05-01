@@ -8,7 +8,7 @@ library(tableone)
 library(kableExtra)
 ```
 
-# Introduction
+## Introduction
 Randomization eliminates systematic confounding and has been considered the “gold standard” for clinical trials since World War II[@Bothwell:2016bc].  And yet, the most common approaches to randomization --- Block and Stratified Randomization --- are just as old [@Peirce:1884wra;@Hill:1952hc;@Armitage:1982ji].  They are limited in their ability to control the balance of baseline covariates.  Covariate-adjusted randomization, which includes Stratified Block Randomization, eliminates from the randomization space singular randomizations with poor baseline covariate balance and consequently reduces the uncertainty in permutation-based inference.  It also increases the efficiency of model-based inference by orthogonalizing baseline covariates with treatment assignment.
 
 Balance is an important aim for clinical trials.  Poor chance imbalances on key baseline covariates can bring to question the face-validity of a randomized trial[@Rosenberger:2008cm;@LeylandJones:2003kt] especially when estimating the Population Average Treatment Effect from the Sample Average Treatment Effect. Also, greater covariate balance allows trialists to estimate heterogenous treatment effect across key subgroups. Trials with secondary aims for personalizing medicine to key subgroups rely upon overall covariate balance[@DienerWest:1989uq;@Fu:2016jy]. To reduce chance imbalances, the trialist may turn to covariate-adjusted randomization (the focus of this paper) and / or fit a model that adjusts for chance imbalances[@Berchialla:2018bk].  With model-based inference, the trialist must convince the clinical community their model is fully transparent and sufficiently adequate[@Freedman:2008eq; @Freedman:2008em; @Lin:2013jh].
@@ -19,13 +19,13 @@ With sequential enrollment, the full covariate pattern and optimal partitions ar
 
 This work achieves two purposes.  First, it extends Sequential Matched Randomization to recover some of the optimal balance achieved in single batch Matched Randomization (when all patients or clusters are known prior to randomization).  The extensions allow (1) matches to rematch if a better mate enters the study, (2) the tuning parameter for optimal matches to adjust dynamically according to the number of current matches and covariate distribution, and (3) patients to enroll in blocks. Second, through a two-arm case study (n = 512 patients) it re-emphasizes the value of sequential covariate-adjusted methods, as a whole, compared to Block Randomization.  Sequential allocation methods considered include Block Randomization, Stratified Block Randomization, Urn Randomization, Sequential Matched Randomization, Atkinson’s Minimization with and without a biased coin, and Begg and Iglewicz’s Minimization.  We do not include Sequential Rerandomization as it requires determining an optimal threshold.  
 
-# Notation
+## Notation
 
 We denote a study as having enrolled $i = 1, \dots,$ to $N$ patients throughout $b = 1,\dots,$ to $M$ batches of sequential enrollment. At the $b^{th}$ batch of enrolling patients, denote the set of unmatched patients as $U_b$ and the number of patients in the set as $||U_b||$.  Let $||R_b||$ be the number of expected remaining study entrants.  In general, covariate-adjusted randomizations are adjusted to $p$ baseline covariates in which a categorical covariate having $q$ levels is coded by $q-1$ dummy variables.
 
 In the simulation section, we generate $j = 1, \dots,$ to 20,000 randomization schedules for each allocation scheme.
 
-# Sequential Matching and Sequential Rematching
+## Sequential Matching and Sequential Rematching
 
 Sequential Matched Randomization uses the matching on-the-fly algorithm published elsewhere[@Kapelner:2014cu] yet is worth summarizing to then extend. When the first set of patients individually enroll, they are randomized to either treatment or control and form a “reservoir” of patients who have been randomized but, as of yet, have not matched with any other patient. Once a reservoir of pre-specified size has built up, subsequent enrolling patients are compared to reservoir members on baseline covariates using a distance matrix. The entering patient becomes mates with their best reservoir match if they meet a pre-specified distance threshold of similarity, and the entering patient receives the opposite treatment randomized to their mate. Both are excluded from the reservoir of potential mates. If, however, the best reservoir match is not similar enough, the entering patient is randomized and joins the reservoir awaiting a mate. By the end of the study, some patients may not have found a mate, and treatment allocation may be imbalanced. Hereafter, we’ll refer to the matching-on-the-fly algorithm as Sequential Matching.
 
@@ -33,7 +33,7 @@ Sequential Matched Randomization uses the matching on-the-fly algorithm publishe
 
   Throughout Sequential Matching, a patient may match before their better matching mate enrolls. We allow mates to break and rematch so long as patients do not match within their treatment group. For example, in a two arm study, controls are not allowed to match with controls and treatments to treatments. We refer to this re-matching on-the-fly algorithm as Sequential Rematching and the randomization scheme as Sequential Rematched Randomization.
 
-# Dynamic and Empirical Threshold
+## Dynamic and Empirical Threshold
 Sequential Matching, as is, uses a fixed quantile of the F-distribution; we formalize the use of a dynamic threshold from an empirically-estimated distribution of randomly matched distances. Lacking omniscience, an improperly selected fixed similarity threshold may be problematic. An overly strict fixed threshold would yield no matches and in turn may be no better than Complete Randomization. In contrast, an overly relaxed threshold would degenerate to a block-two randomization scheme vulnerable to subversion bias. Our proposed dynamic threshold reflects the chance of matching an existing reservoir member out of all potential mates including those yet to enroll. More formally, this is the proportion $Q_b$ where
 
 $$
@@ -51,19 +51,19 @@ $$
 
 The threshold may also be removed to keep the reservoir size within a specified maximum tolerated imbalance [@Berger:2003im].
 
-# Batch Entry
+## Batch Entry
 As is, Sequential Matching requires matching patients one at a time.  However, trials will allocate treatments in batches of various enrollment sizes. As when all patients are known at the study outset, batch enrollment increases the chance of finding a better mate. We extend Sequential Matching to allow for batches of multiple patients using an “optimal” algorithm; mates are collectively determined based upon the set of matches that yield the smallest sum of distances. The R package nbpMatching easily finds optimal mates.
 
 
-# Case Study: REACH Trial
-## Context, Data Preparation, and Simulation Set up
+## Case Study: REACH Trial
+### Context, Data Preparation, and Simulation Set up
   The Rapid Education/Encouragement And Communications for Health (REACH) randomized clinical trial[@Nelson:2018bw] provides text message-delivered diabetes support for 12 months to help diabetic patients manage glycemic control (as measured by Hemoglobin A1c) and adhere to treatment medication. Patients are randomized into one of three treatment arms with a 2:1:1 allocation ratio: no text message, text message, text message and monthly phone coaching.  Now with complete enrollment, 512 patients are currently being followed up through 3, 6, 12, and 15 months.
 
   At baseline, clinical and demographics covariates were collected that may be associated with 12 month Hemoglobin A1c, including baseline Hemoglobin A1c, age at enrollment, gender, years of education, years of diabetes, race / ethnicity, medication type, income, and type of insurance.  Refer to supplement for the overall distribution of each baseline covariate.
   
   Randomization often occurred before all baseline covariates could be collected. Most notably, baseline Hemoglobin A1c generally took additional time to process. In this study, clinical coordinators enrolled patients and sent baseline data to the Data Coordinating Center for weekly batch randomization. Though REACH follow-up continues, all baseline covariates have been obtained, and 418 patients have recorded three month Hemoglobin A1c.
 
-# Simulations
+### Simulations
 With complete baseline covariates, we simulated the ability of various treatment allocation schemes to achieve balance among baseline covariates among treatment groups and compared the efficiency in estimating predicted three month Hemoglobin A1c. Contender allocation schemes focused on Block Randomization, Stratified Block Randomization, Urn$(0,\beta)$ Randomization, single batch Matched Randomization, Sequential Matched Randomization without the proposed extensions (similar to current literature), Sequential Matched Randomization with the dynamic threshold, Atkinson’s Minimization Algorithm with a 2/3 biased coin (Efron 1971) and with deterministic allocation, and Begg and Iglewicz Minimization.  The minimization schemes aim to reduce the standard error in estimating the treatment effect.
 
   We carried out Block and Stratified Block Randomization using a block size of two. In practice, blocks of size two are ill-advised for increasing the risk of subversion[@Berger:2003im] but provides in simulation the greatest chance of equal treatment allocation especially when stratifying with many levels. As a point of reference we included single batch Matched Randomization as the optimal matching when all patients are known prior to randomization; and, to compare against current Sequential Matched Randomization literature, we included Sequential Matched Randomization with a fixed $20^{th}$ percentile threshold of the F(p, i-p) distribution. Atkinson's Algorithm determines the most impactful treatment for reducing the estimated treatment variability of a pre-specified model, which we specified as conditioning on all categorical covariates and first through third degree polynomials of continuous covariates. When there were fewer observations than model degrees of freedom, we determined the optimal treatment for the pre-specified model using the generalized inverse[@Senn:2010bg].
@@ -80,7 +80,7 @@ In the supplement, we further calculate the average size of the reservoir throug
 
 
 
-# Simulation Results
+### Simulation Results
 By themselves, the set of most predictive covariates, including site, are highly predictive of three-month Hemoglobin A1c (R$^2$ = `r r2redCovs`); adjusting for all baseline covariates is slightly more predictive (R$^2$ = `r r2allCovs`).  Atkinson’s Minimization only randomized the first patient and is therefore excluded from comparisons regarding permutation-based inference.  For this reason, it is also difficult to draw conclusions regarding its average performance balancing baseline covariates.
 
 Balance of Covariates: As a point of reference and across simulations, Block Randomization’s median worst-balanced baseline covariate had an absolute Standardized Mean Difference of `r RPTblockMaxSMD["m"]` (95% Percentile Confidence Interval: `r RPTblockMaxSMD["ci"]`; Figure 1) and average absolute Standardized Mean Difference of `r RPTblockAveSMD["mci"]` (Figure 2).
@@ -110,7 +110,7 @@ Randomization within Minimization: When adjusting Begg and Iglewicz Minimzation 
 Reservoir Size: See supplement for the average reservoir size for Sequential Matched and Rematched Randomization.
 
 
-# Conclusions
+## Conclusions
 We’ve introduced extensions to Sequential Matched Randomization that recover much of the optimality lost from single batch Matched Randomization due to sequential entry of patients.  These extensions include Sequential Rematching with a dynamic and empirical threshold and the ability to randomize patients in enrollment blocks.  Further, our case study re-emphasizes [@Ciolino:2011ff] the value of covariate-adjusted randomization for increasing overall covariate balance and efficiency estimating the Population Average Treatment Effect.  The precision of the permutation-based Sample Average Treatment Effect estimator achieved nearly the same efficiency as model-based inference estimating the treatment effect.  
 
 Our work is consistent with other findings that there is a balance / efficiency trade-off in choosing which covariates to adjust randomization[@Kallus:2018um; @Atkinson:1999va].  Arguments can be made to prioritize balance, especially when investigating important subgroups and when the strength of relationship between baseline covariates and the outcome is unknown.  And, arguments are made for prioritizing efficiency especially when chance imbalances may be adjusted with a model [@Atkinson:1999hq].  Weighted distance measures can allow an investigator to design the study prioritizing certain covariates over others[@GreevyJr:2012hp].
