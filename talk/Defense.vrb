@@ -1,2 +1,28 @@
-\frametitle{ }
-\figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/permutationCIwidth_uu2}{.825}
+\frametitle{REACH}
+
+
+\begin{centering}
+\vspace{0.3cm}
+
+\textbf{R}apid \textbf{E}ducation/Encouragement \textbf{A}nd \textbf{C}ommunications for \textbf{H}ealth
+
+\vspace{1.3cm}
+
+
+\figw{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/izCmREACH}{0.5}
+
+\vspace{0.6cm}
+
+SGPV$_T$ to rule out trivial effects\\
+SGPV$_{HA}$ to rule out highly-actionable effects
+
+\vspace{0.6cm}
+
+\bi
+	{\setlength\itemindent{15pt}\item[] SGPV$_{T}$ = 0.0: Ruled out trivial effects}
+	{\setlength\itemindent{15pt}\item[] SGPV$_{HA}$ = 0.0: Ruled out highly actionable effects}
+\ei
+
+\end{centering}
+
+

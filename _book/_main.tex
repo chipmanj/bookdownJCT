@@ -439,12 +439,147 @@ All Rights Reserved
 \hypertarget{introduction}{%
 \chapter{Introduction}\label{introduction}}
 
-Here is the introduction to my thesis.
+Randomized Trials are considered the gold standard in establishing the
+benefit of an intervention. A review of Phase III trials funded by the
+National Institute of Neurological Disorders and Stroke systematically
+found the overall societal benefit of their trials to be much greater
+than the total costs (Johnston et al.
+\protect\hyperlink{ref-Johnston:2006ju}{2006}). Societal costs that were
+that of trials ending pre-maturely -- before reaching a clear clinical
+conclusion when it could have otherwise continued. While the overall
+societal benefit is great for randomized clinical trials, the face-value
+cost may be prohibitive for starting a trial. Among agents approved by
+the Food and Drug Administration between 2015-2016, the median
+enrollment was 488 patients (IQR, 230 -- 740) with a median cost per
+patient of \$41,117 (IQR, \$31,802 - \$82,362) (Moore et al.,
+\protect\hyperlink{ref-Moore:wc}{n.d.}). The long-ago rally cry endures
+that: ``Reducing the costs of trials is absolutely crucial for the
+public good'' (Collier \protect\hyperlink{ref-Collier:2009du}{2009}).
+Regardless of how financially well-endowed is a clinical trial, all
+investigators seek to reach a clear clinical conclusion while minimizing
+burderns and resources. From regulatory bodies, to industry, to
+academia, all can agree on the need to run an efficient and efficacious
+trial.
 
-\hypertarget{rematching-on-the-fly-sequential-matched-randomization-and-a-case-for-covariate-adjusted-randomization}{%
-\chapter{Rematching on-the-fly: Sequential Matched Randomization and a
+In this body of work, we develop new methods that increase the
+efficiency and balance of clinical trials and the ability to follow
+studies until reaching clear clinical conclusions. The developments
+include novel extensions to Sequential Matched Randomization and
+adaptive monitoring of clinical trials using the Second Generation
+p-value. While the context focuses on randomized trials, both contain
+insights that extend into efficient and efficacious use of observational
+studies.
+
+Randomization removes systematic confounding and, for the Frequentist,
+further provides the foundation of accurate estimates of uncertainty in
+estimating treatment effects. While the randomization space provides
+these overall benefits, any single instance of randomization includes at
+least some degree of imbalance on baseline covariates. To reduce the
+risk of imbalances, trialists often turn to Stratified Block
+Randomization, which allocates treatments within categorical profiles
+(strata) of select baseline covariates. It is easy to implement yet is
+limited to balancing on categorical, or categorized, baseline
+covariates. The number of strata increases multiplicatively for each
+baseline covariate used to create strata.
+
+In Chapter 1, we extend Sequential Matched Randomization which has
+already been shown to provide greater efficiency and balance than
+Stratified Block Randomization. Matched Randomization is a refined form
+of Stratified Randomization which finds the set of patients (or
+clusters) which collectively are most similar to each other based upon a
+distance matrix. Randomization occurs within each pair. As patients
+enter a study sequentially, some optimality is lost in determining the
+best pairing of patients. Our extensions allow for (1) dynamically
+updating an empirically estimated matching threshold throughout the
+study and (2) breaking matches when a better match enters the study.
+These extensions nearly regain the optimality lost when patients all
+known and matched prior to randomization. We show through the REACH
+clinical trial case-study that randomization-based inference under our
+method can achieve nearly the same efficiency as a fully-adjusted linear
+model. And we are able to increase overall balance of baseline
+covariates which is important for study that which to explore subgroup
+analyses for personalizing medicine.
+
+While chapter one makes a case for our method, it also provides insight
+to other covariate-adjusted randomization schemes and observational
+studies. We note that minimization schemes vary in allowing a degree of
+randomization. Some provide little randomization while other have
+embedded an element of randomization. To the extent that randomization
+is included with minimization, it is a powerful contender for increasing
+efficiency and balance of baseline covariates in trials. As for the
+balance of baseline covariates, the case study sheds insights on how
+overall balancing can be influenced by the distribution of each baseline
+covariate.
+
+Randomization itself comes with a great degree of variability that can
+affect the sample size assumptions made when designing a clinical trial.
+Traditional sample size estimates are often based upon a minimal size to
+detect an effect to be statistically significant. However, achieving
+statistical significance alone does not imply a novel target is
+beneficial to the scientific community.
+
+In Chapter Two we introduce an adaptive monitoring design grounded on
+following studies until either ruling out effects deemed trivial to the
+null hypothesis or until ruling out a highly actionable effect that
+would change practice. These effects are ruled out making use of the
+Second Generation p-value which draws inference upon interval
+hypotheses. Under any inferential paradigm, one calculates the overlap
+between an estimated interval and the interval hypothesis. Complete
+overlap is evidence for the hypothesis, zero overlap is evidence for the
+alternative, and partial overlap indicates an inconclusive study.
+
+Monitoring a study until ruling out trivial or highly actionable effects
+endows the study with clinical relevance and many statistically
+beneficial properties. False discoveries most commonly occur when an
+effect is close to the null hypothesis (the corresponding p-value is
+barely less than alpha). Following a study until ruling out trivial
+effects reduces the false discovery probability by eliminating those
+effects estimated to be close to the point null. We compare our adaptive
+monitoring design with monitoring with posterior probabilities which may
+similarly follow studies until ruling out the set of trivial or highly
+actionable effects.
+
+To improve operational characteristics, the design waits until a period
+of time before applying monitoring rules and requires affirming alerts
+to stop a trial. The wait time reduces errors which may occur before the
+estimated effect and interval have sufficiently stabilized. And, the
+affirmation step reduces bias inherent in all adaptive monitoring
+designs.
+
+The operating characteristics of these adaptive monitoring designs
+require simulation, which may be a barrier to implementation. We
+provide, in Chapter Three, an R package, sgpvAM, which simulates
+adaptive monitoring with the second generation p-value. The function is
+versatile to allow the user to provide their own generated MCMC
+replicates with intervals or to generate MCMC replicates with effects
+and outcomes under any random distribution. The output allows the user
+to address practical considerations such as the probability of a study
+ending by a certain number of observations and the probability of study
+being inconconclusive. An inconclusive study can occur when outcomes are
+not observed immediately. Observed outcomes may suggest stopping for
+ruling out trivial or highly actionable effects, yet the study may not
+rule out the same effects after observing the remaining outcomes.
+
+In this chapter, we conduct extensive simulations to then make practical
+recommendations. The Type I error is minimized, and less than 0.05, when
+waiting until the interval width has the length equal to the absolute
+midpoint between the trivial and highly actionable effects. This holds
+true even when allowing an unrestricted, infinite sample size. Though
+not investigated in this work, this open the door in a principled manner
+for restarting trials or continuing to gather observational data as it
+accumlates. In many trials, observations are not immediately observed
+relative to enrollment. By increasing the number of steps required to
+affirm an alert, one is able to substantively reduce the risk of an
+inconclusive study when outcomes are not immediately observed relative
+to enrollment.
+
+This body of work lays a foundation for many future developments.
+\ldots{}
+
+\hypertarget{rematching-on-the-fly-sequential-rematched-randomization-and-a-case-for-covariate-adjusted-randomization}{%
+\chapter{Rematching on-the-fly: Sequential Rematched Randomization and a
 case for covariate-adjusted
-randomization}\label{rematching-on-the-fly-sequential-matched-randomization-and-a-case-for-covariate-adjusted-randomization}}
+randomization}\label{rematching-on-the-fly-sequential-rematched-randomization-and-a-case-for-covariate-adjusted-randomization}}
 
 \hypertarget{introduction-1}{%
 \section{Introduction}\label{introduction-1}}
@@ -963,7 +1098,7 @@ chances of a sufficient effective sample size all else the same.
 
 \begin{figure}
 \centering
-\includegraphics{~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/MaxSMD.jpg}
+\includegraphics{~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/MaxSMD.jpeg}
 \caption{\label{fig:MaxSMD}Boxplot of the maximum absolute Standardized Mean
 Difference among all baseline covariates for each of 20,000 simulated
 allocation sequences per allocation scheme. Matched-based Randomization
@@ -1435,55 +1570,50 @@ bias.
 The flat and skeptical prior Credible Interval adaptive monitoring
 designs were calibrated to have the same Type I Error as adaptive
 monitoring with the second-generation \emph{p}-value (Type I Error =
-0.049; \textbf{Figure 3.7}). While this was close to 0.05, the Type I
-Error changes depending on the wait time until monitoring and the number
-of looks. Adaptive monitoring using the second-generation \emph{p}-value
-and flat prior Credible Interval were near identical in Power.
-\textbf{whereas, adaptive monitoring using a skeptical prior Credible
-Interval achieved less Power. The same trend was seen in all other
-results.}
+\emph{0.036}; Figure \ref{fig:Power}). While this was close to 0.05, the
+Type I Error changes depending on the wait time until monitoring and the
+number of looks. The flat and skeptical priors as specified both favor,
+at least some degree the null hypothesis which is reflected as a
+decrease in Power.
 
 The probability of stopping for being not-trivial provides an adaptive
 monitoring analog for a Type I error under an interval null hypothesis.
 When the true treatment effect was truly -0.15 (i.e.~the boundary of
 trivial effects), and when adaptively monitoring with second-generation
 \emph{p}-values, the probability of stopping for concluding not-trivial
-was \emph{0.015} (\emph{Figure 4}). Posterior probability monitoring
-designs were again calibrated to this same probability for this and the
-remaining figure results. The probability of stopping for being
-not-trivial was slightly higher when monitoring on the flat prior
-Credible Interval. However, for a clinically meaningful treatment effect
-of -0.50, monitoring on the flat prior Credible Interval had a higher
-probability of stopping for concluding a non-highly-actionable effect
-than monitoring with the second generation \emph{p}-value. The two
-designs that monitored on Credible Intervals were more likely to stop
-for concluding not-highly actionable effects than monitoring on the
-second-generation \emph{p}-value; this is consistent with both priors
-being at least slightly favorable to the point null. \emph{This was
-dramatically true for monitoring on the skeptical prior Credible
-Interval. However, the skeptical prior Credible Interval design could be
-re-tuned (such as having a longer burn in) to improve performance.}
+was \emph{0.055} (\ref{fig:state}). \emph{Posterior probability
+monitoring designs were again calibrated to this same probability for
+this and the remaining figure results}. The probability of stopping for
+being not-trivial was slightly higher when monitoring using posterior
+probabilities conditioned on the flat prior. However, for a clinically
+meaningful treatment effect of -0.50, monitoring on posterior
+probabilities conditioned the flat had a higher probability of stopping
+for concluding a non-highly-actionable effect than monitoring with the
+second generation \emph{p}-value. The two designs that monitored on
+Credible Intervals were more likely to stop for concluding not-highly
+actionable effects than monitoring on the second-generation
+\emph{p}-value; this is consistent with both priors being at least
+slightly favorable to the point null.
 
-Trials lasted longer when the treatment effect was moderately-actionable
-(\emph{Figure 5}). \emph{The exception was when monitoring with the
-skeptical prior Credible Interval. Because treatment effects were drawn
-to the null early on, treatment effects were estimated to be outside the
-\emph{Clinically Highly Actionable Region} before the data could
-adequately overwhelm the prior. As a consequence, the bias and coverage
-suffered greatly when monitoring with the skeptical prior Credible
-Interval (Figures 6 and 7).}
+Trials monitored with the second-generation p-value using monitoring
+conifence intervals lasted longest when the treatment effect was
+moderately-actionable (Figure \ref{fig:sampleSize}). As posterior
+probabilities condition on priors more strongly favoring the null, the
+longer trials occur for effects deemed moderately- to highly-actionable
+effects.
 
 The bias was well mitigated when adaptively monitoring with the second
 generation \emph{p}-value and a posterior conditioned on a flat prior
-(Figure 6). The flat prior Credible Interval pulls estimates toward the
-point null, which tended to slightly help when the treatment effect was
-clinically meaningful and slightly hurt when the trivially null. Neither
-the flat nor skeptical prior are biased if they are each reflective of
-the true distribution of observing treatment effects. Coverage rates
-were slightly higher when monitoring with the flat prior Credible
-Interval compared to the second generation \emph{p}-value. Of the
-treatment effects investigated, the worst coverage was \emph{0.93} when
-monitoring with the second generation \emph{p}-value.
+(Figure \ref{fig:bias}). The flat prior Credible Interval pulls
+estimates toward the point null, which tended to slightly help when the
+treatment effect was clinically meaningful and slightly hurt when the
+trivially null. Neither the flat nor skeptical prior are biased if they
+are each reflective of the true distribution of observing treatment
+effects. Coverage rates were increasingly better when monitoring with
+posterior probabilities compared to the second generation
+\emph{p}-value. Of the treatment effects investigated, the worst
+coverage was \emph{0.93} when monitoring with the second generation
+\emph{p}-value.
 
 \begin{figure}[H]
 
@@ -1496,7 +1626,7 @@ monitoring with the second generation \emph{p}-value.
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=2in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probEffLooks20} \includegraphics[width=2in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probFutLooks20} \includegraphics[width=2in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probMoreLooks20} 
+{\centering \includegraphics[width=1.8in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probEffLooks20} \includegraphics[width=1.8in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probFutLooks20} \includegraphics[width=1.8in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probMoreLooks20} 
 
 }
 
@@ -1523,7 +1653,7 @@ monitoring with the second generation \emph{p}-value.
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/coverage} 
+{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/coverageLooks20} 
 
 }
 
@@ -1547,6 +1677,12 @@ Intervals). While not explored explicity in this paper, this design is
 well suited for following multiple outcomes and following subgroups
 until they reach clear clinical conclusions.
 
+In any adaptive monitoring implementation, the adoption of a novel agent
+depends on multiple outcomes and reaching concluding an effect is highly
+actionable may not mean the agent should be adopted. Data Safety
+Monitoring Boards are encouraged to think of stopping rules more as
+guidelines when weighing the totality of evidence.
+
 As seen in other similar designs, the use of an interval null decreases
 the False Discovery Rate, making the results more reproducible (Blume et
 al. \protect\hyperlink{ref-Blume:SGPV}{2018}; Kruschke
@@ -1568,13 +1704,6 @@ worse probability of concluding highly-actionable effects were
 not-highly actionable. The flat prior was not uniformly flat, it
 slightly favored the point null.
 
-\emph{In these simulations, adaptive monitoring with a skeptical prior
-Credible Interval did not perform well. The skeptical prior pulled
-estimates close to the null such that simulated adaptive trials stopped
-before being overwhelmed by the data. However, a longer burn or an
-alternative tuning to \(\alpha_{criteria-not-actionable}\) would
-ameliorate the skeptical prior Credible Interval design.}
-
 All of the adaptive designs studied may be modified to achieve a desired
 Type I Error and Power. When adaptively monitoring with the second
 generation \emph{p}-value, one may change the wait time before
@@ -1592,17 +1721,18 @@ p-value}\label{the-sgpvam-package-and-practical-recommendations-for-adaptive-mon
 \hypertarget{introduction-3}{%
 \section{Introduction}\label{introduction-3}}
 
-In Paper 2 (Chapter 3) we present an adaptive monitoring scheme that
-follows studies until evidence supports either a non-trivial or
-non-highly actionable treatment effect. The design is very easy to
-implement. It can done by anyone who can think about the clinical
-interpretation of possible effect sizes and calculate an interval
-estimate for their effect, such as a support or confidence interval
-(CI). However, estimating the operating characteristics of a given study
+In Chapter 2 we present an adaptive monitoring scheme that follows
+studies until evidence supports either a non-trivial or non-highly
+actionable treatment effect. The design is very easy to implement. It
+can done by anyone who can think about the clinical interpretation of
+possible effect sizes and calculate an interval estimate for their
+effect, such as a credible, support, or confidence interval (CI).
+However, estimating the operating characteristics of a given study
 design is not as easy. Without tools to assist them, it could be a
-barrier to implementation of the method. In practice, the trialist will
-want to know the operating characteristics under the following adaptive
-monitoring design features.
+barrier to implementation of the method.
+
+In practice, the trialist will want to know the operating
+characteristics under the following adaptive monitoring design features.
 
 \begin{itemize}
 \tightlist
@@ -1624,14 +1754,19 @@ monitoring design features.
   Lag time between enrolling a subject and observing their outcome
   measured in the number of subjects recruited during the lag, i.e.~m
   additional subjects will be recruited in the time between one subject
-  being recruited and that one subject's outcome being observed. The
-  traditional trialist will mainly be looking for the point null Type I
-  error probability and Power, i.e.~the probability of concluding an
-  effect is non-trivial for a given true effect size. They may also want
-  some simple summary statistics for the potential sample sizes. We hope
-  to provide access to these and to a more rich set of operating
-  characteristics. Operating characteristics we can potentially estimate
-  for a given set of design features include the following.
+  being recruited and that one subject's outcome being observed.
+\end{itemize}
+
+The traditional trialist will mainly be looking for the point null Type
+I error probability and Power, i.e.~the probability of concluding an
+effect is non-trivial for a given true effect size. They may also want
+some simple summary statistics for the potential sample sizes. We hope
+to provide access to these and to a more rich set of operating
+characteristics. Operating characteristics we can potentially estimate
+for a given set of design features include the following.
+
+\begin{itemize}
+\tightlist
 \item
   Distribution of potential sample sizes.
 \item
@@ -1690,8 +1825,8 @@ using parallel computing. Alternatively, the user may provide their own
 generated data together with an estimated effect and interval bounds.
 When using the sgpvAM function, the user specifies the data generation
 function (any of the r{[}dist{]} such as rnorm) along with arguments to
-the function. Similarly, the user specifies effect generation. At this
-point, only fixed effects have been thoroughly tested. However, by
+the function. Similarly, the user specifies effect generation.
+Currently, only fixed effects have been thoroughly tested. However, by
 specifing a distribution for the effects, the user may explore False
 Discovery Probabilities and other operating characteristics, such as
 bias, dependent on distributional assumptions of the effect.
@@ -1702,14 +1837,13 @@ Hypotheses}\label{one--vs-two-sided-hypotheses}}
 
 Clinical Guideposts defining regions of Trivial and Highly Actionable
 Effects must be provided though may be one- or two-sided. The point null
-must be within the Trivial Region and cannot be a boundary of the
-region. For general nomenclature, inputs to define the regions are:
-deltaL2 (the Clinically Highly Actionable Boundary less than the point
-null), deltaL1 (the Trivial Region Boundary less than the point null),
-deltaG1 (the Trivial Region Boundary greater than the point null), and
-deltaG2 (the Clinically Highly Actionable Boundary greater than the
-point null). See Paper 2 (Chapter 3) for a thorough discussion of these
-regions.
+must be within and not a boundary of the Trivial Region. For general
+nomenclature, inputs to define the regions are: deltaL2 (the Clinically
+Highly Actionable Boundary less than the point null), deltaL1 (the
+Trivial Region Boundary less than the point null), deltaG1 (the Trivial
+Region Boundary greater than the point null), and deltaG2 (the
+Clinically Highly Actionable Boundary greater than the point null). See
+Chapter 2 for a thorough discussion of these regions.
 
 \hypertarget{tuning-study-parameters}{%
 \subsection{Tuning study parameters}\label{tuning-study-parameters}}
@@ -1717,8 +1851,9 @@ regions.
 To maximize performance of operating characteristics under a given
 sample size the sgpvAM function allows the user to specify multiple wait
 time settings, frequency of looks, and number of steps before affirming
-a stopping rule. (The wait time is the time until the expected
-Confidence Interval Width achieves a certain length or less).
+a stopping rule. (The wait time is the time until the expected Margin of
+Error achieves a certain length or less). Here we define the Margin of
+Error as one-half the interval width.
 
 \hypertarget{operating-characteristics-under-normal-outcomes}{%
 \subsection{Operating characteristics under normal
@@ -1738,8 +1873,8 @@ Once a study design has been selected based on average performance
 (sample size, bias, and error probabilities), the user may use the
 ecdf.sgpv function to see the empirical cumulative distribution across
 the MCMC replicates for sample size and bias under a specific design.
-The user may see the estimated probability of the sample size exceeding
-a certain maximum sample size.
+This provides an estimate of the probabilitiy a study does not exceed a
+certain maximum sample size.
 
 \hypertarget{general-suggestions}{%
 \subsection{General suggestions}\label{general-suggestions}}
@@ -1748,13 +1883,93 @@ Computations may be time consuming. It is recommended to start with 1000
 replicates to get a general sense of average sample size and error
 probabilities under a variety of investigated wait times and affirmation
 steps. Investigating many wait times increases the computational burden.
-It is also recommended to generate MCMC replicates in the (or one of
-the) mid point(s) between the Clinically Trivial and Highly Actionable
-Regions. This is the region with greatest expected sample size and
-reduces the burden of the locationShift function to generate more data.
+When generating data that allows for a location shift, it is recommended
+to generate MCMC replicates in the (or one of the) mid point(s) between
+the Clinically Trivial and Highly Actionable Regions. This is the region
+with greatest expected sample size and reduces the burden of the
+locationShift function generating additional data when necessary.
 
 \hypertarget{inputs}{%
 \subsection{Inputs}\label{inputs}}
+
+\textbf{mcmcData} Previously generated data. Default (NULL) uses MCMC
+generation inputs to generate new or additional data.
+
+\textbf{nreps} Number of MCMC replicates to generate
+
+\textbf{waitWidths} Wait time, in terms of Margin of Error (one half the
+confidence interval width), before monitoring data.
+
+\textbf{dataGeneration} Function (such as rnorm) to generate outcomes.
+
+\textbf{dataGenArgs} Arguments for dataGeneration function. This
+includes, in the least, `n' observations to generate. If `n' is
+insufficient for unrestricted adaptive monitoring, addtional data will
+be generated.
+
+\textbf{effectGeneration} Function (such as rnorm) or fixed value to
+generate intervention effect (theta).
+
+\textbf{effectGenArgs} Arguments for effectGeneration function (if any)
+
+\textbf{modelFit} An existing or user-defined function to obtain
+intervals. Two existing functions are provided: 1) lmCI which obtains a
+confidence interval from a linear model and has class `normal'
+indicating normal data and 2) lrCI obtains Wald Confidence Interval from
+logistic regression model and has class `binomial' indicating binomial
+data.
+
+\textbf{pointNull} Point null.
+
+\textbf{deltaL2} Clinical guidepost less than and furthest from point
+null.
+
+\textbf{deltaL1} Clinical guidepost less than and closest to point null.
+
+\textbf{deltaG1} Clinical guidepost greater than and closest to point
+null.
+
+\textbf{deltaG2} Clinical guidepost greater than and furthest from point
+null.
+
+\textbf{lookSteps} The frequency data are observed (defaults to 1 --
+fully sequential).
+
+\textbf{kSteps} Affirmation steps to consider range from 0 to
+maxAlertSteps by kSteps.
+
+\textbf{maxAlertSteps} Maximum number of steps before affirming an
+alert.
+
+\textbf{maxN} Total enrolled patients equals maxN observed patients plus
+lagOutcomeN.
+
+\textbf{lagOutcomeN} Total enrolled patients equals MaxN observed
+patients plus lagOutcomeN. lagOutcomeN are number of observations
+enrolled but awaiting to observe outcome.
+
+\textbf{monitoringIntervalLevel} Traditional (1-alpha) used in
+monitoring intervals.
+
+\textbf{printProgress} Prints when adding more data for MCMC replicates
+to have sufficient observations to monitor until a conclusion. Defaults
+to TRUE.
+
+\textbf{outData} Returns the MCMC generated data. This can result in an
+out object with large memory. Yet, with location shift data, can be
+re-used to obtain operating characteristics of shifted effects.
+
+\textbf{getECDF} Returns the ECDF of sample size and bias for each wait
+width and number of steps before affirming end of study.
+
+\textbf{cores} Number of cores used in parallel computing. The default
+(NULL) does not run on parallel cores.
+
+\textbf{fork} Fork clustering, works on POSIX systems (Mac, Linux, Unix,
+BSD) and not Windows. Defaults to TRUE.
+
+\textbf{socket} Socket clustering. Defaults to TRUE yet only applies if
+FORK = FALSE.
 
 \hypertarget{return-values}{%
 \subsection{Return values}\label{return-values}}
@@ -1783,26 +1998,49 @@ calculations that will be of particular interest to the traditional
 trialist. The full vignette may be found at
 \url{https://github.com/chipmanj/sgpvAM} or by loading the sgpvAM
 package and calling Vignette(package = ``sgpvAM'', topic = ``README'').
-Three of the example figures are presented briefly below. Figure 1 is a
-classical power curve which shows the probability the final CI will
-exclude the point null at various true effect sizes. The power when the
-true effect size is equal to the point null is the classical point null
-Type I error probability. The figure illustrates the impact of various
-wait times on the power curve. The second generation p-value adaptive
-design allows for designing trials with finite and infinite sample sizes
-in mind. We recommend presenting both. Figure 1 illustrates the infinite
-sample size. Notice the point null Type I error is bounded below 5\%
-even when the maximum sample size is theoretically infinite. Under this
-framework, a study that stopped for reaching a maximum sample size could
-be restarted without concern of controlling point null Type I error.
-Figure 2 displays the impact of increasing the affirmation steps on the
-average sample size. Increasing the affirmation steps has benefits in
-reducing bias, increasing interval coverage probabilities, and
-increasing the stability of conclusions particularly in the presence of
-a lag between recruitment and outcome observation. These benefits come
-with an increase in average sample size, particularly in between the
-bounds of the Trivial and Highly Actionable regions, i.e.~where
-erroneous conclusions due to stopping too early are most likely.
+Three of the example figures are presented briefly below.
+
+Figure \ref{fig:exampleRejPN} is a classical power curve which shows the
+probability the final CI will exclude the point null at various true
+effect sizes. The power when the true effect size is equal to the point
+null is the classical point null Type I error probability. The figure
+illustrates the impact of various wait times on the power curve. The
+second generation p-value adaptive design allows for designing trials
+with finite and infinite sample sizes in mind. We recommend presenting
+both. Figure 1 illustrates the infinite sample size. Notice the point
+null Type I error is bounded below 5\% even when the maximum sample size
+is theoretically infinite. Under this framework, a study that stopped
+for reaching a maximum sample size could be restarted without concern of
+controlling point null Type I error.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/sgpvAMexampleRejPN} 
+
+}
+
+\caption{Power Curve across treatment effects for rejecting the point null in a one-sided study when requiring different wait times before monitoring.  The horizontal line is at 0.05 to indicate the alpha level corresponding to the final reported confidence interval.  The first vertical line denotes the upper boundary of At Most Trivial Effects, and the second vertical line denotes the boundary of the Highly Actionable Effects.  The Wait times are the expected sample size for achieving a confidence interval width.  In this figure there is no restriction on sample size nor a lag in observing outcomes.}\label{fig:exampleRejPN}
+\end{figure}
+
+Figure \ref{fig:exampleAveN} displays the impact of increasing the
+affirmation steps on the average sample size. Increasing the affirmation
+steps has benefits in reducing bias, increasing interval coverage
+probabilities, and increasing the stability of conclusions particularly
+in the presence of a lag between recruitment and outcome observation.
+These benefits come with an increase in average sample size,
+particularly in between the bounds of the Trivial and Highly Actionable
+regions, i.e.~where erroneous conclusions due to stopping too early are
+most likely.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/sgpvAMexampleAveN} 
+
+}
+
+\caption{The average sample size across treatment effects in a one-sided study when requiring different wait times before monitoring.  The first vertical line denotes the upper boundary of At Most Trivial Effects, and the second vertical line denotes the boundary of the Highly Actionable Effects.  The Wait times are the expected sample size for achieving a confidence interval width.  In this figure there is no restriction on sample size nor a lag in observing outcomes.}\label{fig:exampleAveN}
+\end{figure}
+
 Non-adaptive studies are typically designed a with high probability of
 an inconclusive finding. Consider a non-adaptive study designed to have
 80\% power at a clinically highly actionable effect size. Such a study
@@ -1813,86 +2051,164 @@ actionable conclusion has been found, second generation p-value adaptive
 monitored trials may yield a clinically inconclusive finding if the
 trial has a fixed maximum sample size and/or a lag between recruitment
 and outcome observation. This probability is highest in between the
-bounds of the Trivial and Highly Actionable regions. Figure 3
-illustrates the control of this probability provided through increasing
-the affirmation steps in the presence of a 50 subject lag time. Even
-with this large lag, a relatively small affirmation step requirement
-bounds the probability of an inconclusive finding below 20\%.
+bounds of the Trivial and Highly Actionable regions.
+
+Figure \ref{fig:exampleMore} illustrates the control of this probability
+provided through increasing the affirmation steps in the presence of a
+50 subject lag time. Even with this large lag, a relatively small
+affirmation step requirement bounds the probability of an inconclusive
+finding below 20\%.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/sgpvAMexampleProbMore} 
+
+}
+
+\caption{The probability of an inconclusive study (i.e. not ruling out Trivial or Highly Actionable effects) when outcomes have a lag time until being observed relative to enrollment.  The study stops based upon drawing conclusions from observed data, yet after the remaining lagged outcomes (50 in this figure), the study would suggest more observations are needed to rule out Trivial or Highly Actionable effects.  The risk of being inconclusive is greatest in the midpoint between the Trivial and Highly Actionable Regions (the boundary of the regions are respectively denoted by the two vertical lines). Requiring fifty observations to affirm an alert reduces the worst-case risk of being inconclusive to 20\% in this setting.}\label{fig:exampleMore}
+\end{figure}
 
 \hypertarget{practical-recommendations}{%
 \section{Practical Recommendations}\label{practical-recommendations}}
 
 Of key importance to classical trialists is controlling point null Type
 I Error and achieving a high probability of excluding the point null
-when the true effect size is clinically highly actionable. Of key
-importance to medical researchers is completing the study with a
+when the true effect size is clinically highly actionable. To the
+medical researcher, key importance is to complete the study with a
 clinically highly actionable finding. We show that focusing on the later
 will achieve the former. When a study is not able to observe outcomes
 immediately, care should be taken to reduce the risk of stopping and
-then being inconclusive after observing the remaining observations. To
-control error rates, one may change the clinical guideposts, reduce the
-number of times monitoring the study, and/or increase the number of
+then being inconclusive after observing the remaining observations.
+
+To control error rates, one may change the clinical guideposts, reduce
+the number of times monitoring the study, and/or increase the number of
 steps before affirming a stopping rule. Ideally, the clinical guideposts
 chosen for their clinical interpretation. We discourage altering them
 for the sake of operational characteristics. Instead, we encourage
 optimizing operating characteristics through the waiting a period of
 time before monitoring and requiring a number of observations to pass
-until affirming an alert to stop the study. We consider various wait
-times based upon the expected confidence interval width under an assumed
-outcome standard deviation. Twenty thousand MCMC replicates of a study
-with standard normal outcomes are generated using the sgpvAM package
-under five one-sided hypotheses settings and five symmetric two-sided
-hypotheses. The settings reflect situations where (Setting 1) the
-Trivial and Highly Actionable Effect bounds are both close to the point
-null of zero, (Settings 2-4) the Trivial Effect bound is close to the
-null and the Highly Actionable Effect is far from the point null, and
-(Setting 5) situations where the bound for Highly Actionable Effects is
-far from the null and the bound for Trivial Effects is increasingly
-close to the Highly Actionable Effect bound. These results generalize to
-normal outcomes with clinical guideposts relative to the standard
-deviation. For both one- and symmetric two-sided hypotheses, the
-probability of a Type I Error is minimized by waiting until the
-Confidence Interval Width is the midpoint between the Trivial and Highly
-Actionable Zones (Figure 4). For example, a one-sided study with At Most
-Trivial Effects defined as (-\(\infty\), 0.1{]} and Highly Actionable
-Effects as {[}0.2, \(\infty\)) reduces the probability of a Type I Error
-by waiting until the Confidence Interval Width is 0.15. In these
-simulations, the probability of a Type I Error remained less than or
-equal to 0.05 when waiting longer, until the Confidence Interval Width
-equaled the positive boundary of the Trivial Effects. The following
-operating characteristics benefit from a longer wait time (i.e.~waiting
-until the CI Width is more narrow): power (Figure 5); an interval null
-equivalent to Type I Error (Figures 7 and 8), Power (Figure 9), and Type
-Two Error (Figure 10); and the probability of stopping for conclusive
-observed outcomes yet becoming inconclusive after observing the
-remaining unobserved outcomes (Figure 11). On the other hand, a shorter
-wait time yields smaller average sample sizes (Figure 6). The gains in
+until affirming an alert to stop the study.
+
+We consider various wait times based upon the expected confidence
+interval width under an assumed outcome standard deviation. Twenty
+thousand MCMC replicates of a study with standard normal outcomes are
+generated using the sgpvAM package under five one-sided hypotheses
+settings and five symmetric two-sided hypotheses. The settings reflect
+situations where (Setting 1) the Trivial and Highly Actionable Effect
+bounds are both close to the point null of zero, (Settings 2-4) the
+Trivial Effect bound is close to the null and the Highly Actionable
+Effect is far from the point null, and (Setting 5) situations where the
+bound for Highly Actionable Effects is far from the null and the bound
+for Trivial Effects is increasingly close to the Highly Actionable
+Effect bound. These results generalize to normal outcomes with clinical
+guideposts relative to the standard deviation.
+
+For both one- and symmetric two-sided hypotheses, the probability of a
+Type I Error is minimized by waiting until the Margin of Error equals
+the midpoint between the Trivial and Highly Actionable Zones (Figure
+\ref{fig:power}). For example, a one-sided study with At Most Trivial
+Effects defined as (-\(\infty\), 0.1{]} and Highly Actionable Effects as
+{[}0.2, \(\infty\)) reduces the probability of a Type I Error by waiting
+until the Margin of Error is 0.15. In these simulations, the probability
+of a Type I Error remained less than or equal to 0.05 when waiting
+longer, until the Margin of Error equaled the positive boundary of the
+Trivial Effects.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=6in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/waitTimeRejPN} 
+
+}
+
+\caption{Impact of different wait times upon Type I Error.  Studies observe a minimum sample size to achieve an expected minimum Margin of Error (half-width of a 95\% confidence interval) under an assumed outcome standard deviation of 1.  Five one-sided (A) and five symmetric two-sided (B) hypotheses are investigated.  The upper bound for the Trivial Effect is denoted by the first vertical line, and the second vertical line denotes the minimal highly actionable effect greater than zero. Five combinations of effect size boundaries are shown.  The lower bounds for the symmetric two-sided hypotheses are not shown.  For each minimum sample size / minimum CI width, operating characteristics are provided with varying steps before affirming the stopping rule.}\label{fig:power}
+\end{figure}
+
+The following operating characteristics benefit from a longer wait time
+(i.e.~waiting until the Margin of Error is more narrow): power (Figure
+\ref{fig:powerImpact}); an interval null equivalent to Type I Error
+(Figure \ref{fig:typeiTrivial} and 8), Power (Figure
+\ref{fig:powInterval}), and Type Two Error (Figure \ref{fig:typeii});
+and the probability of stopping for conclusive observed outcomes yet
+becoming inconclusive after observing the remaining unobserved outcomes
+(Figure \ref{fig:inconclusive}). On the other hand, a shorter wait time
+yields smaller average sample sizes (Figure \ref{fig:n}). The gains in
 sample size diminishes once the wait time is the midpoint between the
-Trivial and Highly Actionable Zones.\\
-On whole, this suggests waiting no longer than this midpoint and may
-motivate waiting slightly longer (for a smaller Confidence Interval
-Width). When the boundary of the Trivial Zone is close to half the
-boundary of the Highly Actionable Zone, it may be worthwhile to set the
-Confidence Interval wait time to the boundary of the Trivial Zone (refer
-to settings 3 and 4 in Figure 6 compared to setting 2). Across these
-simulations, setting the wait width to one quarter between the Trivial
-and Highly Actionable boundaries balances well maximizing operating
-characteristics without a substantive increase in average observed
-sample size. In the earlier one-sided example, this would be to wait
-until the expected Confidence Interval Width equals 0.125. This leads us
-to some practical recommendations regarding wait time. First, if the
-outcome's variability is well known, set the wait time to one quarter of
-the distance between the Trivial and Highly Actionable boundaries.
-Second, if the variability is not well known, error on over-assuming the
-variability. This will result in setting a longer-wait time than needed.
-In this instance, we suggest setting the Confidence Interval Width to
-the mid point between the Trivial and Highly Actionable boundaries.
-Studies may have intermediate outcomes. For effects that are neither
-Trivial nor Highly Actionable, there's a very plausible chance the study
-ends conclusively for the outcomes observed yet becomes inconclusive
-after observing the outcomes of remaining study observations (Figure
-11). To reduce this risk, we recommend increasing the number of steps
-required to affirm stopping rules.
+Trivial and Highly Actionable Zones.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=6in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/waitTimeRejectPointNullThetaDeltaG2} 
+
+}
+
+\caption{Impact of different wait times upon power, i.e. probability of rejecting the point null when the true effect is equal to the boundary of the highly actionable effect zone, i.e. the vertical line on the right. All other features of the figure mirror those of Figure 4.4. }\label{fig:powerImpact}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=6in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/waitTimeNThetaMidPoint} 
+
+}
+
+\caption{Impact of different wait times upon the average observed sample size given the true treatment effect equals the average of the absolute trivial and highly actionable effect boundaries, i.e. the middle of the two vertical lines. When the observation lag is zero, the observed sample size equals the total sample size. All other features of the figure mirror those of Figure 4.4.}\label{fig:n}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=6in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/waitTimeStopNotTrivialTheta0} 
+
+}
+
+\caption{Impact of different wait times upon the probability of concluding the treatment effect is not trivial given the null true treatment.  This an interval null analog to the Type I Error for a given effect. All other features of the figure mirror those of Figure 4.4.}\label{fig:powInterval}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=6in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/waitTimeStopNotTrivialThetaDeltaG1} 
+
+}
+
+\caption{Impact of different wait times upon the probability of concluding the treatment effect is not trivial given the true effect equals the upper bound defining Trivial effects. This is an interval null analog to Type I error for a given effect.  This figure focuses on the boundary of the Trivial effects where the error probability is greatest. All other features of the figure mirror those of Figure 4.4. }\label{fig:typeiTrivial}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=6in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/waitTimeStopNotTrivialThetaDeltaG2} 
+
+}
+
+\caption{Impact of different wait times upon the probability of concluding the treatment effect is not trivial given the true effect equals the boundary of the highly actionable effect zone, ie the vertical line on the right. This is an interval null analog to power for a given effect. All other features of the figure mirror those of Figure 4.4.}\label{fig:typeii}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=6in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/waitTimeInconclusiveThetaDeltaMidPoint} 
+
+}
+
+\caption{Impact of different wait times upon the probability of being inconclusive after stopping for observed outcomes and then observing remaining observations (50 observations in these simulations).  In this figure, the true effect is given to be the absolute average of the Trivial and Highly Actionable regions (i.e. the mid point between the two regions); this is the treatment effect with the worst probability of being inconclusive.  Refer to figure 3 for the probability of being inconclusive across the range of treatment effects under setting 3 (A). All other features of the figure 11 mirror those of Figure 4.4.}\label{fig:inconclusive}
+\end{figure}
+
+On whole, this suggests waiting no longer than when the Margin of Error
+achieves a length equal to this midpoint and may motivate waiting
+slightly longer (i.e.~for a smaller Margin of Error). In certain
+settings, when the boundary of the trivial effects is close to half the
+boundary of the highly actionable boundary (settings 3 and 4), waiting
+for a slightly smaller Margin of Error has little added burden on the
+average sample size (Figure \ref{fig:n}, compare settings 3 and 4 to
+setting 2). Across these simulations, waiting for a slightly tighter
+Margin of Error balances well maximizing operating characteristics
+without a substantive increase in average observed sample size.
+
+As a separate practical recommendation, we suggest increasing the number
+of affirmation steps before stopping when observations are not
+immediately observable relative to enrollment. For effects that are
+neither Trivial nor Highly Actionable, there's a very plausible chance
+the study ends conclusively for the outcomes observed yet becomes
+inconclusive after observing the outcomes of remaining study
+observations (Figure \ref{fig:inconclusive}). To reduce this risk, we
+recommend increasing the number of steps required to affirm stopping
+rules.
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
@@ -2001,6 +2317,10 @@ Ciolino, Jody, Wenle Zhao, Renee Martin, and Yuko Palesch. 2011.
 imbalances in clinical trial randomization.'' \emph{Contemporary
 Clinical Trials} 32 (2): 250--59.
 
+\leavevmode\hypertarget{ref-Collier:2009du}{}%
+Collier, Roger. 2009. ``Rapidly rising clinical trial costs worry
+researchers.'' \emph{CMAJ} 180 (3): 277--78.
+
 \leavevmode\hypertarget{ref-DienerWest:1989uq}{}%
 Diener-West, M, T W Dobbins, T L Phillips, and D F Nelson. 1989.
 ``Identification of an optimal subgroup for treatment evaluation of
@@ -2053,6 +2373,12 @@ Hobbs, Brian P, and Bradley P Carlin. 2008. ``Practical Bayesian design
 and analysis for drug and device clinical trials.'' \emph{Journal of
 Biopharmaceutical Statistics} 18 (1): 54--80.
 
+\leavevmode\hypertarget{ref-Johnston:2006ju}{}%
+Johnston, S Claiborne, John D Rootenberg, Shereen Katrak, Wade S Smith,
+and Jacob S Elkins. 2006. ``Effect of a US National Institutes of Health
+programme of clinical trials on public health and costs.'' \emph{Lancet
+(London, England)} 367 (9519): 1319--27.
+
 \leavevmode\hypertarget{ref-Kallus:2018um}{}%
 Kallus, N, and 2018. 2018. ``Optimal a priori balance in the design of
 controlled experiments.'' \emph{Journal of the Royal Statistical Society
@@ -2091,6 +2417,12 @@ Medicine, AC Atkinson Statistics in, and 1999. 1999. ``Optimum
 biased-coin designs for sequential treatment allocation with covariate
 information (With Discussion).'' \emph{Journal of the Royal Statistical
 Society Series B} 18 (14): 1753--5.
+
+\leavevmode\hypertarget{ref-Moore:wc}{}%
+Moore, T J, H Zhang, G Anderson JAMA internal, and 2018. n.d.
+``Estimated costs of pivotal trials for novel therapeutic agents
+approved by the US Food and Drug Administration, 2015-2016.''
+\emph{Jamanetwork.com}.
 
 \leavevmode\hypertarget{ref-Morgan:2012iq}{}%
 Morgan, K L, and D B Rubin. 2012. ``Rerandomization to improve covariate

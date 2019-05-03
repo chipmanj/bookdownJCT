@@ -209,14 +209,14 @@ NINDS Reviewed costs of trials between 1977 and 2002
 
 \begin{frame}{Outline}
 
-Three methods paper to increase RCT efficiency and efficacy.
+Three papers to increase study efficiency and efficacy.
 
 \vspace{0.2cm}
 \bi
   \item Motivating Example: REACH Trial
   \item Paper 1: Sequential Rematched Randomization
   \item Paper 2: Adaptive Monitoring Using the Second Generation p-value
-  \item Paper 3: sgpvAM R package and methods to controll adaptive monitoring errors
+  \item Paper 3: sgpvAM R package and practical guidance to control adaptive monitoring errors
 \ei
 
 
@@ -575,6 +575,7 @@ Conclusions
   \item Permutation efficiency achieves nearly same efficiency as fully-adjusted model with Block Randomization
 \ei
 
+\vspace{0.5cm}
 Practical Recommendations
 \bi
   \item Recommend adjusting to all baseline covariates
@@ -584,71 +585,586 @@ Practical Recommendations
 \end{frame}
 
 
+\begin{frame}
+Paper 2: Adaptive Monitoring Using the Second Generation p-value
 
+\end{frame}
+
+
+
+
+\begin{frame}{Prematurely Ending Clinical Trial(s)}
+
+\vspace{.75cm}
+
+\center{Towards a Revolution in COPD Health (TORCH) (\cite{Calverley:2007gx})
+
+\vspace{0.5cm}
+
+Primary Aim: Establish whether beta-agonist (salmeterol plus fluticasone propionate) has survival benefit in patients with chronic obstructive pulmonary disease}
+
+\vspace{.5cm}
+
+\bi
+\item[2007] 6112 patients
+\item HR 0.825 (95\% CI: 0.681-1.002, p-adjusted=0.052)
+\item Awkward Conclusion: primary outcome did not reach statistical significance, yet 'significant benefits in all other outcomes.'
+\ei
+
+
+%    \begin{textblock}{50}(80,87)
+% \cite{Pocock:2016ey}
+%     \end{textblock}
+
+\end{frame}
+
+
+
+\begin{frame}{Prematurely Ending Clinical Trial(s)}
+\addtocounter{framenumber}{-1}
+
+\vspace{.75cm}
+
+\center{Towards a Revolution in COPD Health (TORCH) (\cite{Calverley:2007gx})
+
+\vspace{0.5cm}
+
+Primary Aim: Establish whether beta-agonist (salmeterol plus fluticasone propionate) has survival benefit in patients with chronic obstructive pulmonary disease}
+
+\vspace{.5cm}
+
+\bi
+\item[2007] 6112 patients
+\item HR 0.825 (95\% CI: 0.681-\textcolor{red}{1.000}, p-adjusted=\textcolor{red}{0.05})
+\item Awkward Conclusion: primary outcome did not reach statistical significance, yet 'significant benefits in all other outcomes.'
+\ei
+
+
+\end{frame}
+
+
+
+\begin{frame}{Prematurely Ending Clinical Trial(s)}
+\addtocounter{framenumber}{-1}
+
+\vspace{.75cm}
+
+\center{Towards a Revolution in COPD Health (TORCH) (\cite{Calverley:2007gx})
+
+\vspace{0.5cm}
+
+Primary Aim: Establish whether beta-agonist (salmeterol plus fluticasone propionate) has survival benefit in patients with chronic obstructive pulmonary disease}
+
+\vspace{.5cm}
+
+\bi
+\item[2007] 6112 patients
+\item HR 0.825 (95\% CI: 0.681-\textcolor{red}{0.998}, p-adjusted=\textcolor{red}{0.0498})
+\item Awkward Conclusion: primary outcome did not reach statistical significance, yet 'significant benefits in all other outcomes.'
+\ei
+
+
+
+\end{frame}
+
+
+
+
+\begin{frame}{Second Generation p-value (SGPV; \cite{Blume:SGPV})}
+
+\begin{center} What proportion of interval overlaps with trivial effects? \end{center}
+
+\figh{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/SGPVv02}{.3}
+
+\vspace{0.5cm}
+
+Interpretation of SGPV$_T$ (T for trivial effects)
+\bi
+\item SGPV$_T$ = 0.0: Evidence to rule out trivial effects
+\item SGPV$_T$ = 1.0: Evidence to rule out non-trivial effects
+\item SGPV$_T$ = 0.5: Inconclusive, need more data
+\ei
+
+
+%    \begin{textblock}{50}(80,87)
+% 	   	See also, \cite{Kruschke:2013jya}
+%     \end{textblock}
+
+
+\end{frame}
+
+
+
+
+\begin{frame}{Second Generation p-value (SGPV; \cite{Blume:SGPV})}
+
+
+\begin{centering}
+\vspace{0.3cm}
+
+Example of indifferenze zone with TORCH
+
+\vspace{1.3cm}
+
+
+\figw{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/izTORCH}{.6}
+
+\vspace{0.6cm}
+
+If HR were 0.825 (95\% CI: 0.681-0.899)\\
+
+Interpretation of SGPV$_T$ = 0: Rule out trivial effects
+
+\vspace{0.5cm}
+
+
+\end{centering}
+
+
+
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]{REACH}
+
+
+\begin{centering}
+\vspace{0.3cm}
+
+\textbf{R}apid \textbf{E}ducation/Encouragement \textbf{A}nd \textbf{C}ommunications for \textbf{H}ealth
+
+\vspace{1.3cm}
+
+
+\figw{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/izREACH}{0.5}
+
+\vspace{0.6cm}
+
+A decrease is HbA1c of 0.15 (ex. 7.5 to 7.35)\\is considered essentially no change
+
+\end{centering}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]{REACH}
+
+\begin{centering}
+\vspace{0.3cm}
+
+\textbf{R}apid \textbf{E}ducation/Encouragement \textbf{A}nd \textbf{C}ommunications for \textbf{H}ealth
+
+\vspace{1.3cm}
+
+
+\figw{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/cmREACH}{0.5}
+
+\vspace{0.6cm}
+
+A decrease is HbA1c of 0.5 (ex. 7.5 to 7.0)\\would highly suggest adopting intervention
+
+\end{centering}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]{REACH}
+\begin{centering}
+\vspace{0.3cm}
+
+\textbf{R}apid \textbf{E}ducation/Encouragement \textbf{A}nd \textbf{C}ommunications for \textbf{H}ealth
+
+\vspace{1.3cm}
+
+
+\figw{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/merrREACH}{0.5}
+
+\vspace{0.6cm}
+
+A decrease is HbA1c of between 0.15 and 0.5 is interesting\\it may suggest adopting intervention
+
+
+\end{centering}
+
+
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]{REACH}
+
+
+\begin{centering}
+\vspace{0.3cm}
+
+\textbf{R}apid \textbf{E}ducation/Encouragement \textbf{A}nd \textbf{C}ommunications for \textbf{H}ealth
+
+\vspace{1.3cm}
+
+
+\figw{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/izCmREACH}{0.5}
+
+\vspace{0.6cm}
+
+SGPV$_T$ to rule out trivial effects\\
+SGPV$_{HA}$ to rule out highly-actionable effects
+
+\vspace{0.6cm}
+
+\bi
+	{\setlength\itemindent{15pt}\item[] SGPV$_{T}$ = 0.0: Ruled out trivial effects}
+	{\setlength\itemindent{15pt}\item[] SGPV$_{HA}$ = 0.0: Ruled out highly actionable effects}
+\ei
+
+\end{centering}
+
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{Adaptive Monitoring with SGPV}
+\addtocounter{framenumber}{-1}
+
+\vspace{.3cm}
+
+\bi
+	{\setlength\itemindent{15pt}\item[Wait] interval width stabilizes}
+	{\setlength\itemindent{15pt}\item[Monitor] interval and SGPV at desired looks}
+	{\setlength\itemindent{15pt}\item[Alert] SGPV$_{T}$ = 0.0: Ruled out trivial effects}
+	{\setlength\itemindent{15pt}\item[] SGPV$_{HA}$ = 0.0: Ruled out highly actionable effects}
+	{\setlength\itemindent{15pt}\item[Affirm] stop if same conclusion [40] patients later}
+	{\setlength\itemindent{15pt}\item[] end of resources (n = 512)}
+	{\setlength\itemindent{15pt}\item[Report] only the final interval when stopping}
+\ei
+
+
+\end{frame}
+
+
+\begin{frame}{Adaptive Monitoring with SGPV}
+\addtocounter{framenumber}{-1}
+
+\vspace{.3cm}
+
+\bi
+  {\setlength\itemindent{15pt}\item[Wait] interval width stabilizes}
+	{\setlength\itemindent{15pt}\item[Monitor] interval and SGPV at desired looks}
+	{\setlength\itemindent{15pt}\item[Alert] SGPV$_{T}$ = 0.0: Ruled out trivial effects}
+	{\setlength\itemindent{15pt}\item[] SGPV$_{HA}$ = 0.0: Ruled out highly actionable effects}
+	{\setlength\itemindent{15pt}\item[Affirm] stop if same conclusion [40] patients later}
+	{\setlength\itemindent{15pt}\item[] end of resources (n = 512)}
+	{\setlength\itemindent{15pt}\item[Report] only the final interval when stopping}
+\ei
+
+%\begin{center}\animategraphics[autoplay,height=4cm,every=1]{65}{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/mu00exampleSeed7_}{1}{1}\end{center}
+
+
+\end{frame}
+
+
+
+\begin{frame}{Adaptive Monitoring with SGPV}
+\addtocounter{framenumber}{-1}
+
+\vspace{.3cm}
+
+\bi
+  {\setlength\itemindent{15pt}\item[Wait] interval width stabilizes}
+	{\setlength\itemindent{15pt}\item[Monitor] interval and SGPV at desired looks}
+	{\setlength\itemindent{15pt}\item[Alert] SGPV$_{T}$ = 0.0: Ruled out trivial effects}
+	{\setlength\itemindent{15pt}\item[] SGPV$_{HA}$ = 0.0: Ruled out highly actionable effects}
+	{\setlength\itemindent{15pt}\item[Affirm] stop if same conclusion [40] patients later}
+	{\setlength\itemindent{15pt}\item[] end of resources (n = 512)}
+	{\setlength\itemindent{15pt}\item[Report] only the final interval when stopping}
+\ei
+
+%\begin{center}\animategraphics[autoplay,height=4cm,every=5]{65}{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/mu00exampleSeed7_}{1}{301}\end{center}
+
+
+\end{frame}
+
+
+
+\begin{frame}{Adaptive Monitoring with SGPV}
+\addtocounter{framenumber}{-1}
+
+\vspace{.3cm}
+
+\bi
+  {\setlength\itemindent{15pt}\item[Wait] interval width stabilizes}
+	{\setlength\itemindent{15pt}\item[Monitor] interval and SGPV at desired looks}
+	{\setlength\itemindent{15pt}\item[Alert] SGPV$_{T}$ = 0.0: Ruled out trivial effects}
+	{\setlength\itemindent{15pt}\item[] SGPV$_{HA}$ = 0.0: Ruled out highly actionable effects}
+	{\setlength\itemindent{15pt}\item[Affirm] stop if same conclusion [40] patients later}
+	{\setlength\itemindent{15pt}\item[] end of resources (n = 512)}
+	{\setlength\itemindent{15pt}\item[Report] only the final interval when stopping}
+\ei
+
+%\begin{center}\animategraphics[autoplay,height=4cm,every=5]{65}{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/mu00example}{4}{484}\end{center}
+
+
+\end{frame}
+
+
+\begin{frame}{Adaptive Monitoring with SGPV}
+\addtocounter{framenumber}{-1}
+
+\vspace{.3cm}
+
+\bi
+  {\setlength\itemindent{15pt}\item[Wait] interval width stabilizes}
+	{\setlength\itemindent{15pt}\item[Monitor] interval and SGPV at desired looks}
+	{\setlength\itemindent{15pt}\item[Alert] SGPV$_{T}$ = 0.0: Ruled out trivial effects}
+	{\setlength\itemindent{15pt}\item[] SGPV$_{M}$ = 0.0: Ruled out highly actionable effects}
+	{\setlength\itemindent{15pt}\item[Affirm] stop if same conclusion [40] patients later}
+	{\setlength\itemindent{15pt}\item[] end of resources (n = 512)}
+	{\setlength\itemindent{15pt}\item[Report] only the final interval when stopping}
+\ei
+
+
+%\begin{center}\animategraphics[autoplay,height=4cm,every=1]{65}{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/mu07example}{1}{1}\end{center}
+
+
+\end{frame}
+
+
+\begin{frame}{Adaptive Monitoring with SGPV}
+\addtocounter{framenumber}{-1}
+
+\vspace{.3cm}
+
+\bi
+  {\setlength\itemindent{15pt}\item[Wait] interval width stabilizes}
+	{\setlength\itemindent{15pt}\item[Monitor] interval and SGPV at desired looks}
+	{\setlength\itemindent{15pt}\item[Alert] SGPV$_{T}$ = 0.0: Ruled out trivial effects}
+	{\setlength\itemindent{15pt}\item[] SGPV$_{HA}$ = 0.0: Ruled out highly actionable effects}
+	{\setlength\itemindent{15pt}\item[Affirm] stop if same conclusion [40] patients later}
+	{\setlength\itemindent{15pt}\item[] end of resources (n = 512)}
+	{\setlength\itemindent{15pt}\item[Report] only the final interval when stopping}
+\ei
+
+
+%\begin{center}\animategraphics[autoplay,height=4cm,every=5]{65}{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/slidesmu07example}{2}{257}\end{center}
+
+
+\end{frame}
+
+
+
+
+\begin{frame}{Adaptive Monitoring with SGPV}
+\addtocounter{framenumber}{-1}
+
+\vspace{.3cm}
+
+\bi
+  {\setlength\itemindent{15pt}\item[Wait] interval width stabilizes}
+	{\setlength\itemindent{15pt}\item[Monitor] interval and SGPV at desired looks}
+	{\setlength\itemindent{15pt}\item[Alert] SGPV$_{T}$ = 0.0: Ruled out trivial effects}
+	{\setlength\itemindent{15pt}\item[] SGPV$_{HA}$ = 0.0: Ruled out highly actionable effects}
+	{\setlength\itemindent{15pt}\item[Affirm] stop if same conclusion [40] patients later}
+	{\setlength\itemindent{15pt}\item[] end of resources (n = 512)}
+	{\setlength\itemindent{15pt}\item[Report] only the final interval when stopping}
+\ei
+
+
+
+%\begin{center}\animategraphics[autoplay,height=4cm,every=1]{65}{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/mu03example}{1}{1}\end{center}
+
+
+\end{frame}
+
+\begin{frame}{Adaptive Monitoring with SGPV}
+\addtocounter{framenumber}{-1}
+
+\vspace{.3cm}
+
+\bi
+  {\setlength\itemindent{15pt}\item[Wait] interval width stabilizes}
+	{\setlength\itemindent{15pt}\item[Monitor] interval and SGPV at desired looks}
+	{\setlength\itemindent{15pt}\item[Alert] SGPV$_{T}$ = 0.0: Ruled out trivial effects}
+	{\setlength\itemindent{15pt}\item[] SGPV$_{HA}$ = 0.0: Ruled out meaningful effects}
+	{\setlength\itemindent{15pt}\item[Affirm] stop if same conclusion [40] patients later}
+	{\setlength\itemindent{15pt}\item[] end of resources (n = 512)}
+	{\setlength\itemindent{15pt}\item[Report] only the final interval when stopping}
+\ei
+
+
+
+%\begin{center}\animategraphics[autoplay,height=4cm,every=5]{65}{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/Conferences/SCT/slides/mu03example}{4}{224}\end{center}
+
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+\begin{frame}
+
+	\figh{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/powerCalibratedLooks20}{.9}
+
+\end{frame}
+
+
+
+
+\begin{frame}[c]
+
+	\figh{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs//biasLooks20}{.9}
+
+\end{frame}
+
+
+
+\begin{frame}[c]
+
+	\figh{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/coverageLooks20}{.9}
+
+\end{frame}
+
+
+\begin{frame}
+
+Paper 3: sgpvAM R package and practical guidance to control adaptive monitoring errors
+
+\end{frame}
+
+
+
+
+\begin{frame}{sgpvAM package}
+
+1. How to easily operationalize?
+
+2. Encourage not changing clinical relevance
+
+3. Under fully sequentially monitored study, how long to wait to ensure Type I Error < 0.05?
+
+4. What are operating characteristics when observations are not observed immediately?  When limited in sample size?
+
+\end{frame}
+
+
+\begin{frame}{sgpvAM package}
+sgpvAM package
+
+1. Uses Valerie's spgv package on github
+
+2. Vignette with examples
+
+-- Example 1-sided study with at most trivial effects = 0.2 and minimal highly actionable effect of 0.5, lag of 50 observations, will monitor no more frequently than 10 patients.
+
+\end{frame}
+
+
+\begin{frame}{sgpvAM package}
+
+\figw{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/sgpvAMexampleRejPN}{.9}
+
+\end{frame}
+
+
+\begin{frame}{sgpvAM package}
+
+\figw{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/sgpvAMexampleAveN}{.9}
+
+\end{frame}
+
+
+\begin{frame}{sgpvAM package}
+
+\figw{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/sgpvAMexampleProbMore}{.9}
+
+\end{frame}
+
+\begin{frame}{sgpvAM package}
+
+\figh{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/waitTimeRejPN}{.8}
+
+\end{frame}
+
+\begin{frame}{sgpvAM package}
+
+\figh{\string~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/waitTimeInconclusiveThetaDeltaMidPoint}{.8}
+
+\end{frame}
 
 
 
 % \begin{frame}{Acknowledgements}
-% 
+%
 % Joint work with:
 % \bi
 %   \item Robert A. Greevy, Jr, PhD
 %   \item Lindsay Mayberry, PhD
 % \ei
-% 
+%
 % \vspace{0.3cm}
 % REACH RO1 Funding: NIDDK R01 DK100694
-% 
+%
 % \end{frame}
-
-
 
 \bibliographystyle{plainnat}
 \begin{frame}{References}
   \addtocounter{framenumber}{-1}
   \bibliography{citations}
 \end{frame}
-% 
-% 
+%
+%
 % \begin{frame}{End of Study Treatment Balance}
 % \addtocounter{framenumber}{-1}
-% 
+%
 % \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/trtBalance}{.7}
 % \end{frame}
-% 
+%
 % % \section{Additional Results}
-% 
-% 
+%
+%
 % \begin{frame}[fragile]{ }
 % \addtocounter{framenumber}{-1}
 % \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/MaxSMD_uu_bonus}{.825}
 % \end{frame}
-% 
-% 
+%
+%
 % \begin{frame}[fragile]{ }
 % \addtocounter{framenumber}{-1}
 % \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/AveSMD_uu_bonus}{.825}
 % \end{frame}
-% 
-% 
+%
+%
 % \begin{frame}[fragile]{ }
 % \addtocounter{framenumber}{-1}
 % \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/modelAdjCIwidth_uu_bonus}{.825}
 % \end{frame}
-% 
+%
 % \begin{frame}[fragile]{ }
 % \addtocounter{framenumber}{-1}
-% 
+%
 % \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/permutationCIwidth_uu2_bonus}{.825}
-% 
+%
 % \end{frame}
-% 
-% 
+%
+%
 % \begin{frame}
 % \addtocounter{framenumber}{-1}
-% 
+%
 % \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/resSize}{0.8}
-% 
+%
 % \end{frame}
 
 
