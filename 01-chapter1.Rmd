@@ -1,4 +1,4 @@
-# Rematching on-the-fly: Sequential Matched Randomization and a case for covariate-adjusted randomization
+# Rematching on-the-fly: Sequential Rematched Randomization and a case for covariate-adjusted randomization
 
 ```{r echo=FALSE,include=FALSE,fig.keep=FALSE,warning=FALSE,message=FALSE}
 load("~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/results.RData")
@@ -124,7 +124,7 @@ Many studies set sample size based on the average performance of block randomiza
 
 
 ```{r MaxSMD, echo=FALSE, fig.pos = "H",fig.cap="Boxplot of the maximum absolute Standardized Mean Difference among all baseline covariates for each of 20,000 simulated allocation sequences per allocation scheme.  Matched-based Randomization schemes are shaded in blue.  Seq Matched (20p) is Sequential Matching before applying proposed extensions; it uses a fixed 20th percentile of the F(p, i-p) distribution.  Min SE schemes are Minimization schemes proposed by Atkinson and Begg and Iglewicz to reduce the standard error of a pre-specified Ordinary Least Squares Model.  Min SE (Atk, 2/3 Prob) uses a 2/3 biased coin to randomize to the favorable arm under Atkinson's Minimization."}
-knitr::include_graphics("~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/MaxSMD.jpg")
+knitr::include_graphics("~/Dropbox/statistics/work/vandy/RandomizationMethods/journal-clinical trials/latex/MaxSMD.jpeg")
 ```
 
 ```{r AveSMD, echo=FALSE, fig.pos = "H", fig.cap="Boxplot of the average absolute Standardized Mean Difference among all baseline covariates for each of 20,000 simulated allocation sequences per allocation scheme."}
