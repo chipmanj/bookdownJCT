@@ -1,0 +1,635 @@
+%% LyX 2.2.1 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[10pt]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{fancyvrb}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\usepackage{url}
+\usepackage{animate}
+\usepackage{natbib}     
+\usepackage{bibentry}
+\usepackage{relsize} 
+\usepackage{pgfpages}
+\usepackage{amsmath}% http://ctan.org/pkg/amsmath
+\usepackage{bm}
+\usepackage{blkarray}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+
+\renewcommand\theadalign{bc}
+% \renewcommand\theadfont{\bfseries}
+\renewcommand\theadgape{\Gape[4pt]}
+\renewcommand\cellgape{\Gape[4pt]}
+
+
+
+\ifx\hypersetup\undefined
+  \AtBeginDocument{%
+    \hypersetup{unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 0},pdfborderstyle={},backref=false,colorlinks=false}
+  }
+\else
+  \hypersetup{unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 0},pdfborderstyle={},backref=false,colorlinks=false}
+\fi
+\usepackage{breakurl}
+\usepackage{subcaption}
+
+%\usepackage[usenames]{colors} 
+%\definecolor{darkred}{rgb}{0.545,0,0} 
+%\definecolor{midnightblue}{rgb}{0.098,0.098,0.439} 
+% \DefineVerbatimEnvironment{Sinput}{Verbatim}{fontshape=sl,formatcom={\color{blue}}} 
+% \DefineVerbatimEnvironment{Soutput}{Verbatim}{formatcom={\color{red}}} 
+% \DefineVerbatimEnvironment{Scode}{Verbatim}{fontshape=sl,formatcom={\color{blue}}} 
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em, formatcom={\color{red}}}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em, formatcom={\color{red}}}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em, formatcom={\color{red}}}
+%\fvset{listparameters={\setlength{\topsep}{0pt}}}
+%\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+% \newcommand{\figdur}[1]{/Users/chipmanj/Dropbox/statistics/work/vandy/RandomizationMethods/DFCI/developtalk/#1/}
+
+% \graphicspath{{\figdur{visualPresentations}},{\figdur}}
+
+\graphicspath{{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/DFCI/developtalk/}}
+
+
+\newcommand{\ft}[1]{\frametitle{#1}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+%\newcommand{\ba}{\begin{align*}}
+%\newcommand{\ea}{\end{align*}}
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+\newenvironment{myitemize}{%
+   \setlength{\topsep}{0pt}
+   \setlength{\partopsep}{0pt}
+   \renewcommand*{\@listi}{\leftmargin\leftmargini \parsep\z@ \topsep\z@ \itemsep\z@}
+   \let\@listI\@listi
+   \itemize
+}{\enditemize}
+
+
+%Macros to make graphics insertions easy
+%Command for sizing to width    \figw{file}{fraction of \textwidth}
+\newcommand{\figw}[2]{\centerline{\includegraphics[width=#2\textwidth]{#1}}}
+%Command for sizing to height   \figh{file}{fraction of \textheight}
+\newcommand{\figh}[2]{\centerline{\includegraphics[height=#2\textheight]{#1}}}
+%Use \figh{graphics file name}{1} to size to whole text height
+%For graphics needing no shrinkage:  \fig{file}
+\newcommand{\fig}[1]{\centerline{\includegraphics{#1}}}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+\setbeamercolor{footline}{fg=black}
+
+% \DefineVerbatimEnvironment{Sinput}{Verbatim}{fontseries=bc,frame=single}
+% \DefineVerbatimEnvironment{Soutput}{Verbatim}{fontseries=bc,frame=leftline}
+% \DefineVerbatimEnvironment{Scode}{Verbatim}{fontseries=bc}
+% 
+% \usepackage{minted}
+% 
+% \renewenvironment{Sinput}{\minted[frame=single]{r}}{\endminted}
+% \DefineVerbatimEnvironment{Soutput}{Verbatim}{frame=leftline}
+% \DefineVerbatimEnvironment{Scode}{Verbatim}{}
+
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+ % this default might be overridden by plain title style
+ \newcommand\makebeamertitle{\frame{\maketitle}}%
+ % (ERT) argument for the TOC
+ \AtBeginDocument{%
+   \let\origtableofcontents=\tableofcontents
+   \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+   \def\gobbletableofcontents#1{\origtableofcontents}
+ }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usetheme{vandy}
+
+\makeatother
+
+\usepackage{Sweave}
+\begin{document}
+\input{Defense-concordance}
+\nobibliography*
+
+
+
+
+
+
+
+
+
+\title[RCT Efficiency, Balance, and EFficacy]{Sequential Rematching Randomization and Adaptive Monitoring with the Second-Generation p-value to increase the efficiency and efficacy of Randomized Clinical Trials}
+\author[Jonathan Chipman]{Jonathan Chipman, MS\\[3mm]Department of Biostatistics\\[1mm]Vanderbilt University}
+\date{May 10, 2019}
+
+\makebeamertitle
+
+
+\begin{frame}{RCT Costs and Benefits}
+
+\vspace{0.2cm}
+
+2015-2016 Pivotal Trials accepted by FDA \cite{Moore:wc}
+\bi
+  \item 138 Trials to approve 59 novel therapeutic drugs
+  \item Enrolled on median 488 patients (IQR: 230, 740)
+  \item Cost per patient on median \$41K (IQR: \$32K - \$82K)
+  \item 53 Used surrogate marker as primary endpoint
+\ei
+
+NINDS Reviewed costs of trials between 1977 and 2002
+\bi
+  \item Overall quality of life benefits $>>$ Overall costs
+\ei
+
+
+"Reducing the costs of trials is absolutely crucial for the public good" -- Dr. Claiborne Johnston (UCSF) \cite{@Johnston:2006ju}
+
+
+\end{frame}
+
+
+
+\begin{frame}{Outline}
+
+Three methods paper to increase RCT efficiency and efficacy.
+
+\vspace{0.2cm}
+\bi
+  \item Motivating Example: REACH Trial
+  \item Paper 1: Sequential Rematched Randomization
+  \item Paper 2: Adaptive Monitoring Using the Second Generation p-value
+  \item Paper 3: sgpvAM R package and methods to controll adaptive monitoring errors
+\ei
+
+
+\end{frame}
+
+
+
+\section{REACH RCT}
+
+\begin{frame}[fragile]{REACH Trial}
+
+
+\begin{centering}
+\vspace{0.3cm}
+
+\textbf{R}apid \textbf{E}ducation/Encouragement \textbf{A}nd \textbf{C}ommunications for \textbf{H}ealth
+
+\vspace{0.6cm}
+
+\bi
+	{\setlength\itemindent{50pt}\item [Population:] Adults with Type 2 Diabetes (DM)}
+	{\setlength\itemindent{50pt}\item [Purpose:] Increase glycemic control and adherence to medications}
+	{\setlength\itemindent{50pt}\item [Main Intervention:] Text message-delivered diabetes support for 12 months}
+	{\setlength\itemindent{50pt}\item [Outcome:] Glycemic control (A1c) compared to control}
+	{\setlength\itemindent{50pt}\item [Multi-site enrollment:] 512 patients from Vanderbilt and Non-Vanderbilt Clinics}
+	{\setlength\itemindent{50pt}\item [Clinical Relevance:] Change clinical practice -- Decrease in A1c of 0.5 or more}
+\ei
+
+\vspace{0.4cm}
+
+% /Users/Chipman/Dropbox/statistics/work/byu/2018 Faculty application/slides
+
+\figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/REACHphone}{0.7}
+
+\end{centering}
+
+\end{frame}
+
+
+\begin{frame}{Key Baseline Covariates}
+
+
+\begin{columns}[t]
+  \begin{column}{0.5\textwidth}
+    Biological Factors
+    \bi
+      \item Baseline A1c$^{\ast}$
+      \item Age at baseline
+      \item Time since DM dx$^{\ast}$
+      \item DM type$^{\ast}$
+      \item Race $/$ Ethnicity
+    \ei
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    Socio-economic Factors
+    \bi
+      \item Yrs of education
+      \item Income level
+      \item Insurance type
+    \ei
+  \end{column}
+\end{columns}
+
+\vspace{0.3cm}
+$^{\ast}$ Greater association with outcome
+
+\end{frame}
+
+
+\begin{frame}{Stratified Block Randomization}
+
+\bi
+  \item Randomize within categories of similar patients (ex: Site)
+  \item Continuous covariates must be categorized
+  \item REACH Example: Randomize within site and Baseline A1c (6 strata)
+\ei
+
+\vspace{0.3cm}
+\figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/stratification/Slide1}{.5}
+
+\end{frame}
+
+
+\begin{frame}{Stratified Block Randomization}
+
+\bi
+  \item Limited in number of covariates creating strata
+  \item 4000+ Strata - Stratifying on all covariates$^{\ast}$
+  \item 2 * 3 * 3 * 2 = 36 Strata - Stratifying on:
+    \bi
+      \item 2 Sites
+      \item 3 Baseline A1c levels
+      \item 3 DM Types
+      \item 2 Time since DM Dx levels
+    \ei
+\ei
+
+
+\vspace{0.3cm}
+$^{\ast}$Continuous baseline covariates categorized as:
+
+\begin{table}[]
+\begin{flushleft}
+\begin{tabular}{@{}llll@{}}
+Baseline A1c:            & \textless{}\textcolor{white}{0}7 & 7-8    &$\ge$8 \\
+Age:                     & \textless{}60 & $\ge$60 &            \\
+Yrs of Education:        & \textless{}12 & $\ge$12 &            \\
+Time since DM Dx: & \textless{}10 & $\ge$10 &
+\end{tabular}
+\end{flushleft}
+\end{table}
+
+\end{frame}
+
+
+\begin{frame}{Matched Randomization \citep{Greevy:2004ke}}
+\addtocounter{framenumber}{-1}
+
+
+\figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/BipartiteImage}{.5}
+
+Refined stratification into pairs of patients using distance matrix
+\bi
+\item Pairs selected for smallest total distance
+\item Allows for any number of continuous and categorical covariates
+\item All participants known before randomization
+\ei
+
+\end{frame}
+
+
+\frame{
+\ft{Sequential Matching \citep{Kapelner:2014cu}}
+\centering
+\vspace*{\fill}
+\animategraphics[autoplay,height=5cm]{2}{Anime}{0}{0}
+\vspace*{\fill}
+}
+
+
+\frame{
+\ft{Sequential Matching \citep{Kapelner:2014cu}}
+\addtocounter{framenumber}{-1}
+\centering
+\vspace*{\fill}
+\animategraphics[autoplay,height=5cm]{2}{Anime}{1}{10}
+\vspace*{\fill}
+}
+
+\frame{
+\ft{Sequential Matching \citep{Kapelner:2014cu}}
+\addtocounter{framenumber}{-1}
+\centering
+\vspace*{\fill}
+\animategraphics[autoplay,height=5cm]{.7}{Anime}{14}{18}
+\vspace*{\fill}
+}
+
+\frame{
+\ft{Sequential Matching \citep{Kapelner:2014cu}}
+\addtocounter{framenumber}{-1}
+\centering
+\vspace*{\fill}
+\animategraphics[autoplay,height=5cm]{.5}{Anime}{19}{21}
+\vspace*{\fill}
+}
+
+\frame{
+\ft{Sequential Matching \citep{Kapelner:2014cu}}
+\addtocounter{framenumber}{-1}
+\centering
+\vspace*{\fill}
+\animategraphics[autoplay,height=5cm]{.5}{Anime}{22}{24}
+\vspace*{\fill}
+}
+
+
+
+\frame{
+\ft{Matching OTF, some additional notes \citep{Kapelner:2014cu}}
+Pre-specification:
+\bi
+\item Initial reservoir size
+\item Threshold to denote degree of similarity
+\ei
+\vspace{\baselineskip}
+
+
+Fixed Threshold: Match is better than [20\%] of random matches
+\bi
+  \item Mahalanobis Distance of random pairs scales to $F_{(p,n-p)}$
+  \item Assumes normally distributed baseline covariates
+\ei
+
+\vspace{\baselineskip}
+Reservoir:
+\bi
+\item Not required to deplete
+\item May result in unequal treatment group sizes
+\ei
+\vspace{\baselineskip}
+
+}
+
+
+\frame{
+
+\ft{Extension 1: Dynamic Threshold}
+
+Dynamic percentile of random match distances
+
+\bi
+\item[1.] Chance of matching now versus later
+\item[2.] Random match distances (from data, ie not assumed normal)
+\item[3.] Remove threshold at end to ensure all patients match
+\ei
+
+Patients enroll in $b$ enrollment blocks\\
+$|| U_b ||$: Number of unmatched patients at b$^{th}$ enrollment\\
+$|| R_b ||$: Number remaining patients after b$^{th}$ enrollment\\
+\begin{equation*}
+Q_b = \frac{||  U_b || - 1}{ ||U_b|| + ||R_b|| - 1}
+\end{equation*}
+
+\begin{equation*}
+Threshold_b = \begin{cases} F_b^{-1} (Q_b) &  || U_b || < || R_b || \\
+                    \text{best match(es)}      &  || U_b || \ge || R_b || \\
+      \end{cases}
+\end{equation*}
+
+$F_b$ is estimated by $\hat{F_b}$ by bootstrap sampling random matches from distance matrix.
+
+}
+
+
+\frame{
+\ft{Extension 2: Sequential Re-Matching}
+
+Sequential Matching
+\bi
+\item Formed matches remain through study
+% \item TIM: Treatment Independent Matching
+\ei
+\vspace*{\fill}
+
+Sequential Re-Matching
+\bi
+  \item Matches are allowed to break if a better match enters
+  \item However, participants keep original treatment assignment
+  \bi
+    \item New participant: Match to anybody
+    \item Former enrolled participant: Match to anyone of opposite treatment or new participant
+  \ei
+  % \item TDM: Treatment Dependent Matching
+\ei
+}
+
+
+\begin{frame}[fragile]{ }
+
+\centering
+Case study using REACH Data to \\
+comparing randomization schemes
+
+\vspace{0.3cm}
+
+\bi
+	{\setlength\itemindent{100pt}\item[Balance] of baseline covariates}
+  {\setlength\itemindent{100pt}\item[Efficiency] estimating treatment effect}
+\ei
+
+\vspace{0.5cm}
+Results will vary based on baseline covariates
+\bi
+  {\setlength\itemindent{80pt}\item Number of patients}
+  {\setlength\itemindent{80pt}\item Number of covariates}
+  {\setlength\itemindent{80pt}\item Distribution of covariates}
+  {\setlength\itemindent{80pt}\item Adjusted $R^2$ of covariates}
+\ei
+
+\end{frame}
+
+
+\begin{frame}{Simulations to evaluate Sequential Rematching Randomization}
+
+% \vspace{0.2cm}
+
+Generate 20K MCMC replicates under potential outcomes framework:
+
+\bi
+  \item Bootstrap sample 512 observations from REACH trial
+  \item Outcomes
+  \bi
+    \item Y(0) = Predicted three month A1c + random residual
+    \item Y(1) = Y(0) - 0.5
+  \ei
+  \item Generate randomization scheme under
+  \bi
+    \item Block Randomization
+    \item Stratified Block Randomization
+    \item Matched Randomization
+  \ei
+  \item Observe
+  \bi
+    \item Balance: Average Standardized Mean Difference among all covariates
+    \item Efficiency: CI Width of 1) fully-adjusted linear model and 2) Permutation distribution
+  \ei
+\ei
+
+
+Where Stratified and Matched randomization adjusts for
+  \bi
+    \item Site, Baseline A1c, DM Type, and Time since DM Dx (Adj )
+    \item All baseline covariates (3m A1c Adj $R^2 = 0.46$)
+  \ei
+
+\end{frame}
+
+
+
+% \begin{frame}[fragile]{ }
+% \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/MaxSMD_uu}{.825}
+% \end{frame}
+
+\begin{frame}[fragile]{ }
+\figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/AveSMD_uu}{.825}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{ }
+\figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/modelAdjCIwidth_uu}{.825}
+\end{frame}
+
+% \begin{frame}[fragile]{ }
+% \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/permutationCIwidth_uu}{.825}
+% \end{frame}
+
+\begin{frame}[fragile]{ }
+\figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/permutationCIwidth_uu2}{.825}
+\end{frame}
+
+
+\begin{frame}{Recommendations regarding balance and efficiency}
+
+Conclusions
+\bi
+  \item Greatest overall balance by adjusting for all baseline covariates
+  \vspace{0.5cm}
+  \item Greatest linear gains in efficiency
+    \bi
+      \item Model efficiency: adjusting randomization to all baseline covariates
+      \item Permutation efficiency: adjusting randomization to priority covariates
+    \ei
+  \vspace{0.5cm}
+  \item Permutation efficiency achieves nearly same efficiency as fully-adjusted model with Block Randomization
+\ei
+
+Practical Recommendations
+\bi
+  \item Recommend adjusting to all baseline covariates
+  \item Adaptively monitor until reaching a clear clinical conclusion
+\ei
+
+\end{frame}
+
+
+
+
+
+
+% \begin{frame}{Acknowledgements}
+% 
+% Joint work with:
+% \bi
+%   \item Robert A. Greevy, Jr, PhD
+%   \item Lindsay Mayberry, PhD
+% \ei
+% 
+% \vspace{0.3cm}
+% REACH RO1 Funding: NIDDK R01 DK100694
+% 
+% \end{frame}
+
+
+
+\bibliographystyle{plainnat}
+\begin{frame}{References}
+  \addtocounter{framenumber}{-1}
+  \bibliography{citations}
+\end{frame}
+% 
+% 
+% \begin{frame}{End of Study Treatment Balance}
+% \addtocounter{framenumber}{-1}
+% 
+% \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/trtBalance}{.7}
+% \end{frame}
+% 
+% % \section{Additional Results}
+% 
+% 
+% \begin{frame}[fragile]{ }
+% \addtocounter{framenumber}{-1}
+% \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/MaxSMD_uu_bonus}{.825}
+% \end{frame}
+% 
+% 
+% \begin{frame}[fragile]{ }
+% \addtocounter{framenumber}{-1}
+% \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/AveSMD_uu_bonus}{.825}
+% \end{frame}
+% 
+% 
+% \begin{frame}[fragile]{ }
+% \addtocounter{framenumber}{-1}
+% \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/modelAdjCIwidth_uu_bonus}{.825}
+% \end{frame}
+% 
+% \begin{frame}[fragile]{ }
+% \addtocounter{framenumber}{-1}
+% 
+% \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/permutationCIwidth_uu2_bonus}{.825}
+% 
+% \end{frame}
+% 
+% 
+% \begin{frame}
+% \addtocounter{framenumber}{-1}
+% 
+% \figw{\string~/Dropbox/statistics/work/vandy/RandomizationMethods/ExtendingMOTF/FigsRefs/visualPresentations/resSize}{0.8}
+% 
+% \end{frame}
+
+
+
+\end{document}

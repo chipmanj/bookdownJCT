@@ -1373,27 +1373,33 @@ study to be two-sided. That is, \(\delta_E\) = -0.50, \(\delta_{TE}\) =
 \hypertarget{simulation}{%
 \subsection{Simulation}\label{simulation}}
 
-For comparison, 20,000 bootstrap samples of baseline Hemoglobin A1c were
-drawn for assessing the second-generation \emph{p}-value and Bayesian
-adaptive design. With block two randomization, half of each bootstrap's
-sampled patients were assigned to intervention. Their outcome equaled
-baseline Hemoglobin A1c plus a treatment effect at settings \{Treatment
-Effect: -1, -0.75, -0.50, -0.45, -0.35, -0.20, -0.15, 0\}. The outcome
-of those on the standard of care equaled their baseline Hemoglobin A1c.
-Only negative effects were investigated but by symmetry, increases in
-Hemoglobin A1c of the same magnitude perform similarly. For these
-simulations, outcomes occurred instantaneously.
+The performance of adaptive monitoring using the second generation
+p-value and posterior probabilities was observed from 20,000 bootstrap
+samples REACH patients. With block two randomization half of the
+patients were randomized to receive the REACH intervention. For
+outcomes, we used three month predicted Hemoglobin A1c from an ordinary
+least square model adjusting for baseline covariates including
+Hemoglobin A1c, age at enrollment, gender, years of education, years of
+diabetes, race / ethnicity, medication type, income, and type of
+insurance. All continuous baseline covariates flexibly allowed for
+non-linear associations through restricted cubic splines. Predicted
+Hemoglobin A1c changed by a treatment effect for those randomized to the
+REACH intervention. We simulated multiple treatment effect settings
+\{Treatment Effect: -1, -0.75, -0.50, -0.375, -0.15, 0\}. Only negative
+effects were investigated but by symmetry, increases in Hemoglobin A1c
+of the same magnitude perform similarly. In these simulations we assumed
+instantaneous outcomes.
 
-Monitoring began after the 60th enrolled patient and continued every
-60th patient until either affirming an alert 60 patients later or until
+Monitoring began after the 40th enrolled patient and continued every
+20th patient until either affirming an alert 40 patients later or until
 reaching the end of resources (512 patients). For each second-generation
 \emph{p}-value Monitoring Interval, we fit a marginal ordinary least
 squares regression of outcome Hemoglobin A1c given treatment assignment
 and obtained the 95\% Confidence Interval for the treatment effect. And,
-for the Bayesian adaptive monitoring, we used a Bayesian alternative to
-the t-test: two-sample difference of means where the intervention group
-mean, \(Y_I\), and control group mean, \(Y_C\), were both distributed
-\(t(\mu, \sigma, \nu)\) (Kruschke
+for adaptive monitoring using posterior probabilities, we used a
+Bayesian alternative to the t-test: two-sample difference of means where
+the intervention group mean, \(Y_I\), and control group mean, \(Y_C\),
+were both distributed \(t(\mu, \sigma, \nu)\) (Kruschke
 \protect\hyperlink{ref-Kruschke:2013jy}{2013}).
 
 For Bayesian priors, we set \(\mu\) \textasciitilde{} \(N(\bar{y}\), 1 /
@@ -1410,19 +1416,18 @@ chosen such that with the flat prior yielded group means similar to raw
 means.
 
 The two Bayesian adaptive designs (one with a flat and the other
-skeptical prior) were calibrated by finding the
+skeptical prior) were calibrated to the second generation \emph{p}-value
+design by finding the
 \(\alpha_{criteria-not-actionable} = \alpha_{criteria-not-trivial}\)
-that achieve the same Type I Error and probability of stopping for
-efficacy as the second-generation \emph{p}-value adaptive design. The
+that achieve the same Type I Error given the true effect is zero and
+that achieve the same probability of stopping for a not-trivial effect
+given the true effect is -0.15 (the border of trivial effects). The
 later calibration was then used to compare adaptive designs in terms of
-average trial sample size, bias, and coverage of reported interval.
-Operating characteristics are estimated for given treatment effects.
-When allowing for distributional assumptions, a correctly specified
-prior has zero bias. A challenge lies in comparing the operating
-charactersitics from two different priors, as one would be assumed true
-and the other a sensitivity analysis. However, priors are often
-determined as though a true reflection of distribution of effects that
-may be observed.
+reasons for stopping, average trial sample size, bias, and coverage of
+the reported interval. Operating characteristics are estimated for given
+treatment effects. When allowing for distributional assumptions of
+observing the treatment effect, a correctly specified prior has zero
+bias.
 
 \hypertarget{results}{%
 \subsection{Results}\label{results}}
@@ -1430,84 +1435,90 @@ may be observed.
 The flat and skeptical prior Credible Interval adaptive monitoring
 designs were calibrated to have the same Type I Error as adaptive
 monitoring with the second-generation \emph{p}-value (Type I Error =
-0.049; Figure 3). While this was close to 0.05, the Type I Error changes
-depending on the wait time until monitoring and the number of looks.
-Adaptive monitoring using the second-generation \emph{p}-value and flat
-prior Credible Interval were near identical in Power; whereas, adaptive
-monitoring using a skeptical prior Credible Interval achieved less
-Power. The same trend was seen in all other results.
+0.049; \textbf{Figure 3.7}). While this was close to 0.05, the Type I
+Error changes depending on the wait time until monitoring and the number
+of looks. Adaptive monitoring using the second-generation \emph{p}-value
+and flat prior Credible Interval were near identical in Power.
+\textbf{whereas, adaptive monitoring using a skeptical prior Credible
+Interval achieved less Power. The same trend was seen in all other
+results.}
 
 The probability of stopping for being not-trivial provides an adaptive
 monitoring analog for a Type I error under an interval null hypothesis.
-When the treatment effect was truly zero, and when adaptively monitoring
-with second-generation \emph{p}-values, the probability of stopping for
-efficacy was 0.015 (Figure 4). Again, the adaptive monitoring designs
-using the flat prior Credible Interval and skeptical prior Credible
-Interval were calibrated to the same probability. The probability of
-stopping for efficacy was slightly higher when monitoring on the flat
-prior Credible Interval. However, for a clinically meaningful treatment
-effect of -0.50, monitoring on the flat prior Credible Interval had a
-higher false negative rate than monitoring with the second generation
-\emph{p}-value. The two designs that monitored on Credible Intervals
-were more likely to stop for futility than monitoring on the
-second-generation \emph{p}-value. This was dramatically true for
-monitoring on the skeptical prior Credible Interval. However, the
-skeptical prior Credible Interval design could be re-tuned (such as
-having a longer burn in) to improve performance.
+When the true treatment effect was truly -0.15 (i.e.~the boundary of
+trivial effects), and when adaptively monitoring with second-generation
+\emph{p}-values, the probability of stopping for concluding not-trivial
+was \emph{0.015} (\emph{Figure 4}). Posterior probability monitoring
+designs were again calibrated to this same probability for this and the
+remaining figure results. The probability of stopping for being
+not-trivial was slightly higher when monitoring on the flat prior
+Credible Interval. However, for a clinically meaningful treatment effect
+of -0.50, monitoring on the flat prior Credible Interval had a higher
+probability of stopping for concluding a non-highly-actionable effect
+than monitoring with the second generation \emph{p}-value. The two
+designs that monitored on Credible Intervals were more likely to stop
+for concluding not-highly actionable effects than monitoring on the
+second-generation \emph{p}-value; this is consistent with both priors
+being at least slightly favorable to the point null. \emph{This was
+dramatically true for monitoring on the skeptical prior Credible
+Interval. However, the skeptical prior Credible Interval design could be
+re-tuned (such as having a longer burn in) to improve performance.}
 
-Trials lasted longer when the treatment effect was neither trivial nor
-clinically meaningful (Figure 5). The exception was when monitoring with
-the skeptical prior Credible Interval. Because treatment effects were
-drawn to the null early on, treatment effects were estimated to be
-outside the \emph{Clinically Highly Actionable Region} before the data
-could adequately overwhelm the prior. As a consequence, the bias and
-coverage suffered greatly when monitoring with the skeptical prior
-Credible Interval (Figures 6 and 7).
+Trials lasted longer when the treatment effect was moderately-actionable
+(\emph{Figure 5}). \emph{The exception was when monitoring with the
+skeptical prior Credible Interval. Because treatment effects were drawn
+to the null early on, treatment effects were estimated to be outside the
+\emph{Clinically Highly Actionable Region} before the data could
+adequately overwhelm the prior. As a consequence, the bias and coverage
+suffered greatly when monitoring with the skeptical prior Credible
+Interval (Figures 6 and 7).}
 
 The bias was well mitigated when adaptively monitoring with the second
-generation \emph{p}-value and flat prior Credible Interval (Figure 6).
-The flat prior Credible Interval pulls estimates toward the point null,
-which tended to slightly help when the treatment effect was clinically
-meaningful and slightly hurt when the trivially null. Coverage rates
+generation \emph{p}-value and a posterior conditioned on a flat prior
+(Figure 6). The flat prior Credible Interval pulls estimates toward the
+point null, which tended to slightly help when the treatment effect was
+clinically meaningful and slightly hurt when the trivially null. Neither
+the flat nor skeptical prior are biased if they are each reflective of
+the true distribution of observing treatment effects. Coverage rates
 were slightly higher when monitoring with the flat prior Credible
 Interval compared to the second generation \emph{p}-value. Of the
-treatment effects investigated, the worst coverage was 0.93 when
+treatment effects investigated, the worst coverage was \emph{0.93} when
 monitoring with the second generation \emph{p}-value.
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/powerCalibrated} 
+{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/powerCalibratedLooks20} 
 
 }
 
-\caption{In the REACH target population, a decrease in Hemoglobin A1c reflects desireable improvement in glycemic control.  The Power curve (i.e. the probability of rejecting the point null of 0), was estimated from 20,000 adaptive monitoring simulations when monitoring using the second generation p-value, a Credible Interval with a flat prior, and a Credible Interval with a skeptical prior.  The intervention was simulated to have an effect of -1 (highly beneficial), -0.75, -0.50, -0.45, -0.35, -0.20, -0.15, to 0 effect (the point null).  Bayesian adaptive designs were calibrated to have the same Type I Error as the second generation p-value adaptive design.}\label{fig:Power}
+\caption{In the REACH target population, a decrease in Hemoglobin A1c reflects desireable improvement in glycemic control.  The Power curve (i.e. the probability of rejecting the point null of 0), was estimated from 20,000 adaptive monitoring simulations when monitoring using the second generation p-value (red circle) and posteriors conditioning on a flat prior (blue triangle) and skeptical prior (purple square).  The intervention was simulated to have an effect of -1 (highly beneficial), -0.75, -0.50, -0.375, -0.15, to 0 effect (the point null).  Bayesian adaptive monitoring designs were calibrated to have the same Type I Error as the second generation p-value adaptive design.}\label{fig:Power}
 \end{figure}
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=2in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probEff} \includegraphics[width=2in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probFut} \includegraphics[width=2in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probMore} 
+{\centering \includegraphics[width=2in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probEffLooks20} \includegraphics[width=2in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probFutLooks20} \includegraphics[width=2in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/probMoreLooks20} 
 
 }
 
-\caption{In adaptive monitoring, a study can end in one of three states: ending for efficacy / harm, ending for futility, or ending at the end of resources.  Above are estimated probabilities of ending in each of these states for each design and treatment effect.  The probability of stopping for efficacy / harm is an interval null equivalent to Power.  The Bayesian adaptive monitoring designs were calibrated to have the same probability of stopping for efficacy as adaptive monitoring with the second generation p-value.  All following results are based off this calibration.  The skeptical prior is pulled so much to the null that studies tend to end for futility too soon.  This can be overcome with a longer burn in.}\label{fig:state}
+\caption{In adaptive monitoring, a study can end in one of three states: concluding non-trivial effect, concluding non-highly-actionable effect, or ending at the end of resources.  Above are estimated probabilities of ending in each of these states for each design and treatment effect.  The probability of concluding non-trivial is an interval null analog to Power.  The Bayesian adaptive monitoring designs were calibrated to have the same probability of concluding a non-trivial effect as adaptive monitoring with the second generation p-value.  All following results are based off this calibration.}\label{fig:state}
 \end{figure}
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/averageN} 
+{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/averageNLooks20} 
 
 }
 
-\caption{Across  simulations, the average time to stopping for the three adaptive designs is shown above.  In these simulations the earliest possible stopping time was the 120th patient.  Monitoring began at the 60th patient and continued at every 60th patient.  Stopping requires raising an alert and affirming the alert 60 patients later.  When monitoring with the second-generation p-value and Credible Interval with a flat prior, the longest studies are were when the treatment effect was neither trivial nor clinically meaningful.}\label{fig:sampleSize}
+\caption{Across  simulations, the average time to stopping for the three adaptive designs is shown above.  In these simulations the earliest possible stopping time was the 80th patient.  Monitoring began at the 40th patient and continued at every 20th patient.  Stopping required raising an alert and affirming the alert 40 patients later.  Moderately actionable treatment effects required the greater sample size, while highly actionable and trivial effects required smaller sample sizes to suggest stopping.}\label{fig:sampleSize}
 \end{figure}
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/bias} 
+{\centering \includegraphics[width=3.5in]{~/Dropbox/statistics/work/vandy/AdaptiveMonitoring/manuscript/figs/biasLooks20} 
 
 }
 
-\caption{At the study end, the final estimate and interval are reported.  Across simulations, the bias (and displayed inner quartile range) was well mitagated when adaptively monitoring using the second generation p-value and flat prior Credible Interval.  A positive bias occurs when being pulled toward the null, as happens with the skeptical prior.}\label{fig:bias}
+\caption{At the study end, the final estimate and interval are reported.  Across simulations, the bias was well mitagated when adaptively monitoring using the second generation p-value and posterior probability conditioned on a flat prior.  A positive bias occurs when being pulled toward the null, as happens with the skeptical prior.}\label{fig:bias}
 \end{figure}
 
 \begin{figure}[H]
@@ -1516,7 +1527,7 @@ monitoring with the second generation \emph{p}-value.
 
 }
 
-\caption{At the study end, the final estimate and interval are reported.  In these simulations, a 95\% Confidence Interval was reported when adaptively monitoring with the second-generation p-value (though any other interval could have been used for monitoring and reporting).  And, Credible Intervals are reported for the Bayesian adaptive designs.  The final Credible Interval from a skeptical prior quickly drops off because these studies quickly reach a false conclusion of futility (Figure 4).  A longer burn-in will help the coverage of the skeptical prior design.}\label{fig:coverage}
+\caption{At the study end, the final estimate and interval are reported.  In these simulations, a 95\% Confidence Interval was reported when adaptively monitoring with the second-generation p-value (though any other interval could have been used for monitoring and reporting).  And, Credible Intervals are reported for the Bayesian adaptive designs.}\label{fig:coverage}
 \end{figure}
 
 \hypertarget{discussion}{%
@@ -1527,14 +1538,14 @@ We developed an adaptive monitoring scheme, using the second generation
 or clinically highly actionable treatment effects. Two major
 contributions come from this scheme: (1) the monitoring scheme
 incorporates clinically relevant guideposts that may help trivially null
-and clinically meaningful studies stop quickly while still reaching a
-clear clinical conclusion and (2) the easy-to-calculate second
-generation \emph{p}-value allows an investigator to adaptively monitor
-with their inferential interval of choice (including but not limited to
-Confidence Intervals, Credible Intervals, Support Intervals, etc.).
-While not explored explicity in this paper, this design is well suited
-for following multiple outcomes and following subgroups until they reach
-clear clinical conclusions.
+and clinically highly actionable studies stop quickly while still
+reaching a clear clinical conclusion and (2) the easy-to-calculate
+second generation \emph{p}-value allows an investigator to adaptively
+monitor with their inferential interval of choice (including but not
+limited to Confidence Intervals, Credible Intervals, and Support
+Intervals). While not explored explicity in this paper, this design is
+well suited for following multiple outcomes and following subgroups
+until they reach clear clinical conclusions.
 
 As seen in other similar designs, the use of an interval null decreases
 the False Discovery Rate, making the results more reproducible (Blume et
@@ -1547,30 +1558,31 @@ choosing a sample size.
 
 With data from the REACH randomized clinical trial, we simulated
 adaptive monitoring using rules based on the second-generation
-\emph{p}-value compared to rules based on the Credible Interval. The
-second-generation \emph{p}-value and flat prior Credible Interval
-adaptive monitoring designs performed similarly in terms of Power,
-probability of stopping for efficacy, average sample size, bias, and
-reported interval coverage. Monitoring using a flat prior Credible
-Interval had a slight edge in these metrics but also a slightly worse
-False Negative Rate for a clinically meaningful treatment effect.
+\emph{p}-value compared to rules based on the posterior probabilities.
+Monitoring with the second-generation \emph{p}-value and posterior
+probabilities conditioned on a flat prior performed similarly in terms
+of Power, probability of stopping for efficacy, average sample size,
+bias, and reported interval coverage. Monitoring using a flat prior
+Credible Interval had a slight edge in these metrics but also a slightly
+worse probability of concluding highly-actionable effects were
+not-highly actionable. The flat prior was not uniformly flat, it
+slightly favored the point null.
 
-In these simulations, adaptive monitoring with a skeptical prior
+\emph{In these simulations, adaptive monitoring with a skeptical prior
 Credible Interval did not perform well. The skeptical prior pulled
 estimates close to the null such that simulated adaptive trials stopped
 before being overwhelmed by the data. However, a longer burn or an
 alternative tuning to \(\alpha_{criteria-not-actionable}\) would
-ameliorate the skeptical prior Credible Interval design.
+ameliorate the skeptical prior Credible Interval design.}
 
 All of the adaptive designs studied may be modified to achieve a desired
 Type I Error and Power. When adaptively monitoring with the second
 generation \emph{p}-value, one may change the wait time before
 monitoring and number of looks. We encourage clinical guideposts to be
 anchored on clinical relevance and not change solely for the purpose of
-achieving statistical properties. The same tuning parameters hold true
-for monitoring with Credible Intervals. Monitoring with Credible
-Intervals are even more customizable by choosing the monitoring
-\(\alpha_{criteria}\) to achieve desired Type I Errors and Power.
+achieving statistical properties. The same encouragement to not change
+anchors denoting clinical relevance hold true for monitoring with
+posterior probabilities.
 
 \hypertarget{the-sgpvam-package-and-practical-recommendations-for-adaptive-monitoring-with-the-second-generation-p-value}{%
 \chapter{The sgpvAM Package and Practical Recommendations for Adaptive
