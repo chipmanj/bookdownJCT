@@ -4,14 +4,13 @@ The top-level auxiliary file: Defense.aux
 The style file: plainnat.bst
 Database file #1: citations.bib
 Warning--I didn't find a database entry for "Moore:wc"
-Warning--I didn't find a database entry for "@Johnston:2006ju"
 Warning--I didn't find a database entry for "Greevy:2004ke"
 Warning--I didn't find a database entry for "Kapelner:2014cu"
 Warning--I didn't find a database entry for "Calverley:2007gx"
 Warning--I didn't find a database entry for "Blume:SGPV"
 You've used 0 entries,
             2773 wiz_defined-function locations,
-            604 strings with 4991 characters,
+            602 strings with 4959 characters,
 and the built_in function-call counts, 33 in all, are:
 = -- 0
 > -- 0
@@ -50,4 +49,4 @@ warning$ -- 0
 while$ -- 0
 width$ -- 0
 write$ -- 7
-(There were 6 warnings)
+(There were 5 warnings)
